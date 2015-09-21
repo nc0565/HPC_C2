@@ -1,0 +1,6 @@
+*.png
+*.o
+*.s
+*.optrpt
+simulation/lbm
+simulation/*.dat
