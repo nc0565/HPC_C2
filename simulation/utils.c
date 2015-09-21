@@ -129,6 +129,9 @@ void initialise(const char* param_file, accel_area_t * accel_area,
     retval = fscanf(fp,"%lf\n",&(params->omega));
     if (retval != 1) DIE("Could not read param file: omega");
 
+    if (params->nx < 100) DIE("x dimension of grid in input file was too small (must be >100)");
+    if (params->ny < 100) DIE("y dimension of grid in input file was too small (must be >100)");
+
     /* read column/row to accelerate */
     char accel_dir_buf[11];
     int idx;
