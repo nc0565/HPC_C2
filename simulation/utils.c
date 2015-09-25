@@ -137,6 +137,7 @@ void initialise(const char* param_file, accel_area_t * accel_area,
     int idx;
     retval = fscanf(fp,"%*s %10s %d\n", accel_dir_buf, &idx);
     if (retval != 2) DIE("Could not read param file: could not parse acceleration specification");
+    if (idx > 100 || idx < 0) DIE("Acceleration index (%d) out of range (must be bigger than 0 and less than 100)", idx);
 
     if (!(strcmp(accel_dir_buf, "row")))
     {
@@ -164,6 +165,11 @@ void initialise(const char* param_file, accel_area_t * accel_area,
             &obstacles[ii].obs_x_min, &obstacles[ii].obs_y_min,
             &obstacles[ii].obs_x_max, &obstacles[ii].obs_y_max);
         if (retval != 4) DIE("Could not read param file: location of obstacle %d", ii + 1);
+        if (obstacles[ii].obs_x_min < 0 || obstacles[ii].obs_y_min < 0 ||
+            obstacles[ii].obs_x_max > 100 || obstacles[ii].obs_y_max > 100)
+        {
+            DIE("Obstacle %d out of range (must be bigger than 0 and less than 100)", ii);
+        }
     }
 
     /* close file */
