@@ -170,6 +170,8 @@ void initialise(const char* param_file, accel_area_t * accel_area,
         {
             DIE("Obstacle %d out of range (must be bigger than 0 and less than 100)", ii);
         }
+        if (obstacles[ii].obs_x_min > obstacles[ii].obs_x_max) DIE("Left x coordinate is bigger than right x coordinate - this will result in no obstacle being made");
+        if (obstacles[ii].obs_y_min > obstacles[ii].obs_y_max) DIE("Bottom y coordinate is bigger than top y coordinate - this will result in no obstacle being made");
     }
 
     /* close file */
