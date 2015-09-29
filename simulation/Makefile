@@ -14,6 +14,10 @@ REF_AV_VELS_FILE=../check/input_128x128.av_vels_ref.dat
 
 LDLIBS=-lm
 
+SUBMIT_DIR=submission
+SUBMIT_FILES=Makefile lbm.c lbm.h simulation.c utils.c
+ENV_SCRIPT=env.sh
+
 $(EXE) : utils.o lbm.o simulation.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
@@ -28,6 +32,27 @@ plot:
 
 check:
 	python ../check/check.py --ref-av-vels-file=$(REF_AV_VELS_FILE) --ref-final-state-file=$(REF_FINAL_STATE_FILE) --av-vels-file=$(AV_VELS_FILE) --final-state-file=$(FINAL_STATE_FILE)
+
+submit:
+	@if [ -e $(SUBMIT_DIR) ] ; \
+	then \
+		echo ; \
+		echo "\"$(SUBMIT_DIR)\" already exists and will be deleted" ; \
+		read -r -p "Confirm [Y/n] " ; \
+		if [[ $$REPLY =~ ^([yY][eE][sS]|[yY]|)$$ ]] ; \
+		then \
+			rm -rf $(SUBMIT_DIR); \
+		else \
+			echo Aborting ; \
+			false ; \
+		fi ; \
+	fi
+
+	@rm -rf $(SUBMIT_DIR)
+	@mkdir $(SUBMIT_DIR)
+	@cp $(SUBMIT_FILES) $(SUBMIT_DIR)
+	@if [ -r $(ENV_SCRIPT) ]; then cp $(ENV_SCRIPT) $(SUBMIT_DIR); fi
+	@cd $(SUBMIT_DIR) && ../../check/check_submission
 
 .PHONY: clean
 clean:
