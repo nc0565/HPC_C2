@@ -58,3 +58,18 @@ All the options for this script can be examined by passing the --help flag to it
 
 A plot of the final state can also be done by doing `make plot`, which will create a .png file in the directory. _NOTE: This only works with a final state file called final\_state.plt_. If you want to run this on your own computer, you need gnuplot installed.
 
+## Checking submission
+
+Running `make submit` will copy all files needed for submission to a
+`submission` sub-directory. It will then check that they build
+correctly with a clean environment.
+
+If you have created additional files that are needed to build the
+program, you should add them to the `SUBMIT_FILES` variable inside the
+Makefile.
+
+If you are using any modules that are not defaults, or need to set any
+additional environment variables for your program to work correctly,
+then you should create an `env.sh` file containing a set of `module
+load` and `export` commands that will be run before compiling and
+running your code.
