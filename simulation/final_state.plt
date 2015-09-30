@@ -1,6 +1,7 @@
 set title 'Fluid Velocity'
 set xlabel 'cell # along x-dimension'
 set ylabel 'cell # along y-dimension'
+set size ratio -1
 
 set terminal png
 set output 'final_state.png'
