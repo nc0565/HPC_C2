@@ -1,7 +1,17 @@
 #!/usr/bin/env python2
 
+import sys
+
+# Check for python version - requires 2.7 (and not 3)
+if sys.version_info[:2] != (2,7):
+    print "Requires Python 2.7"
+    print "On BCP3 run:"
+    print "module load languages/python-2.7.6"
+    exit(1)
+
 import argparse
 import numpy as np
+
 
 # Intermediate class to parse arguments
 class InputParser(argparse.ArgumentParser):
