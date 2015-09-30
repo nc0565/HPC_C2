@@ -45,6 +45,16 @@ Elapsed user CPU time:		13.123005 (s)
 Elapsed system CPU time:	0.002999 (s)
 ```
 
+- input_large_pipe.params
+```
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_large_pipe.params
+==done==
+Reynolds number:		8.531247814429E+00
+Elapsed time:			518.568430 (s)
+Elapsed user CPU time:		517.334353 (s)
+Elapsed system CPU time:	0.019996 (s)
+```
+
 - input_rect.params
 ```
 ./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_rect.params
