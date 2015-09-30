@@ -120,8 +120,8 @@ print_diffs(final_state_strings, final_state_diffs)
 print
 
 # Find out if either of them failed
-final_state_failed = np.isnan(final_state_diffs["max_diff_pcnt"]) or np.abs(final_state_diffs["max_diff_pcnt"]) > parsed_args.tolerance[0]
-av_vels_failed = np.isnan(av_vels_diffs["max_diff_pcnt"]) or np.abs(av_vels_diffs["max_diff_pcnt"]) > parsed_args.tolerance[0]
+final_state_failed = (not np.isfinite(final_state_diffs["max_diff_pcnt"])) or (np.abs(final_state_diffs["max_diff_pcnt"]) > parsed_args.tolerance[0])
+av_vels_failed = (not np.isfinite(av_vels_diffs["max_diff_pcnt"])) or (np.abs(av_vels_diffs["max_diff_pcnt"]) > parsed_args.tolerance[0])
 
 if final_state_failed:
     print "final state failed check"
