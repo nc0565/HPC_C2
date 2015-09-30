@@ -14,7 +14,7 @@ To compile, go into the simulation folder and type `make`. Editing the values fo
 
 Inputs, final state output files, and parameter files are all specified on the command line of the `lbm` executable. eg:
 
-    $ ./lbm -a av_vels.dat -f final_state.dat -p ../inputs/input_128x128.params
+    $ ./lbm -a av_vels.dat -f final_state.dat -p ../inputs/box.params
 
 The options for the program can be found by passing the `-h` flag to the executable.
 
@@ -22,14 +22,14 @@ It should be possible to compile and run the program in one by typing `make run 
 
     $ make run FINAL_STATE_FILE=./other_output_file.dat PARAM_FILE=./my_input_file.params
 
-By default, all of these options will use the 128x128 input parameter file and the associated reference results.
+By default, all of these options will use the 128x128 box input parameter file and the associated reference results.
 
 ## Checking results
 
 An automated result checking function is provided that requires you to load Python 2.x (e.g. module load languages/python-2.7.6). Running `make check` will check the output file (average veclocities and final state) against some reference results. By default, it should look something like this:
 
     $ make check
-    python ../check/check.py --ref-av-vels-file=../check/input_128x128.av_vels_ref.dat --ref-final-state-file=../check/input_128x128.final_state_ref.dat --av-vels-file=./av_vels.dat --final-state-file=./final_state.dat
+    python ../check/check.py --ref-av-vels-file=../check/box.av_vels.dat --ref-final-state-file=../check/box.final_state.dat --av-vels-file=./av_vels.dat --final-state-file=./final_state.dat
     Total difference in av_vels : 5.270812566515E-11
     Biggest difference (at step 1219) : 1.000241556248E-14
       1.595203170657E-02 vs. 1.595203170658E-02 = 6.3e-11%
@@ -43,7 +43,7 @@ An automated result checking function is provided that requires you to load Pyth
 This script takes both the reference results and the results to check (both average velocities and final state). This is also specified in the makefile and can be changed like the other options:
 
     $ make run PARAM_FILE=./my_input_file.params
-    ./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_128x128.params
+    ./lbm -a ./av_vels.dat -f ./final_state.dat -p ./my_input_file.params
     ...
     $ make check REF_FINAL_STATE_FILE=./my_final_state_ref.dat REF_AV_VELS_FILE=./my_av_vels_ref.dat
     python ../check/check.py --ref-av-vels-file=./my_av_vels_ref.dat --ref-final-state-file=./my_final_state_ref.dat --av-vels-file=./av_vels.dat --final-state-file=./final_state.dat

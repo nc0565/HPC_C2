@@ -25,9 +25,9 @@ The obstacles are defined with two co-ordinates defining the bottom-left and top
 
 # Serial output for sample inputs
 Running times were taken on a Phase 3 node.
-- input_128x128.params
+- box.params
 ```
-./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_128x128.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/box.params
 ==done==
 Reynolds number:		2.039107350801E+01
 Elapsed time:			103.457805 (s)
@@ -35,9 +35,9 @@ Elapsed user CPU time:		103.205310 (s)
 Elapsed system CPU time:	0.004999 (s)
 ```
 
-- input_small_pipe.params
+- small_pipe.params
 ```
-./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_small_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/small_pipe.params
 ==done==
 Reynolds number:		2.889654348141E+01
 Elapsed time:			13.158120 (s)
@@ -45,9 +45,9 @@ Elapsed user CPU time:		13.123005 (s)
 Elapsed system CPU time:	0.002999 (s)
 ```
 
-- input_large_pipe.params
+- large_pipe.params
 ```
-./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
 ==done==
 Reynolds number:		8.531247814429E+00
 Elapsed time:			518.568430 (s)
@@ -55,9 +55,9 @@ Elapsed user CPU time:		517.334353 (s)
 Elapsed system CPU time:	0.019996 (s)
 ```
 
-- input_rect.params
+- rect.params
 ```
-./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_rect.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/rect.params
 ==done==
 Reynolds number:		3.740889367644E+01
 Elapsed time:			212.361721 (s)

@@ -4,13 +4,13 @@ CFLAGS=-O3 -g -Wall
 
 EXE=lbm
 
-PARAM_FILE=../inputs/input_128x128.params
+PARAM_FILE=../inputs/box.params
 
 FINAL_STATE_FILE=./final_state.dat
 AV_VELS_FILE=./av_vels.dat
 
-REF_FINAL_STATE_FILE=../check/input_128x128.final_state_ref.dat
-REF_AV_VELS_FILE=../check/input_128x128.av_vels_ref.dat
+REF_FINAL_STATE_FILE=../check/box.final_state.dat
+REF_AV_VELS_FILE=../check/box.av_vels.dat
 
 LDLIBS=-lm
 
