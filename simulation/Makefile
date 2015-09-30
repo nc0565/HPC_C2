@@ -1,6 +1,6 @@
 CC=gcc
 
-CFLAGS=-O3 -g
+CFLAGS=-O3 -g -Wall
 
 EXE=lbm
 
