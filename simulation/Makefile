@@ -27,14 +27,6 @@ $(EXE) : utils.o lbm.o simulation.o
 run: $(EXE)
 	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
-HOSTNAME=$(shell hostname)
-run-bcp3:
-ifeq (,$(findstring newblue,$(HOSTNAME)))
-        $(error You must be on BlueCrystal Phase 3 to run this command)
-else
-        qsub lbm_job_submit
-endif
-
 plot:
 	gnuplot final_state.plt
 
