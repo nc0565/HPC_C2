@@ -24,7 +24,7 @@ done < <(cat .MODULES | tail -n +2)
 echo "Loading default modules"
 module load shared default-environment
 module load openmpi/gcc/64/1.6.5
-module load cuda/toolkit/6.5
+module load cuda60/toolkit/6.0.37
 
 if [ -r $ENV ]
 then
