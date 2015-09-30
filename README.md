@@ -58,6 +58,27 @@ All the options for this script can be examined by passing the --help flag to it
 
 A plot of the final state can also be done by doing `make plot`, which will create a .png file in the directory. _NOTE: This only works with a final state file called final\_state.plt_. If you want to run this on your own computer, you need gnuplot installed.
 
+## Running on BlueCrystal Phase 3
+
+The `make run` command will run the executable locally. When you wish
+to submit a job to the queuing system on BlueCrystal, you should use
+the job submission script provided.
+
+    $ qsub lbm_job_submit
+
+This will dispatch a job to the queue, which you can monitor using the
+`qstat` command:
+
+    $ qstat | grep $USER
+
+When finished, the output from your job will be in a file called
+`LBM.out`:
+
+    $ less LBM.out
+
+If you wish to run a different set of input parameters, you should
+modify `lbm_job_submit` to update the value assigned to `PARAM_FILE`.
+
 ## Checking SAFE submission
 
 Running `make submission` will copy all files needed for submission to
