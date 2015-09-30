@@ -33,7 +33,7 @@ plot:
 check:
 	python ../check/check.py --ref-av-vels-file=$(REF_AV_VELS_FILE) --ref-final-state-file=$(REF_FINAL_STATE_FILE) --av-vels-file=$(AV_VELS_FILE) --final-state-file=$(FINAL_STATE_FILE)
 
-submit:
+submission:
 	@if [ -e $(SUBMIT_DIR) ] ; \
 	then \
 		echo ; \
