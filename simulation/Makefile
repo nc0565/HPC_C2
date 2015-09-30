@@ -63,7 +63,7 @@ submission:
 	@if [ -r $(ENV_SCRIPT) ]; then cp $(ENV_SCRIPT) $(SUBMIT_DIR); fi
 	@cd $(SUBMIT_DIR) && ../../check/check_submission
 
-.PHONY: clean
+.PHONY: clean submission
 clean:
 	rm -f *.o $(EXE)
 
