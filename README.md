@@ -26,7 +26,7 @@ By default, all of these options will use the 128x128 box input parameter file a
 
 ## Checking results
 
-An automated result checking function is provided that requires you to load Python 2.7 (e.g. module load languages/python-2.7.6). Running `make check` will check the output file (average veclocities and final state) against some reference results. By default, it should look something like this:
+An automated result checking function is provided that requires you to have Python available (BlueCrystal provides Python by default). Running `make check` will check the output file (average veclocities and final state) against some reference results. By default, it should look something like this:
 
     $ make check
     python ../check/check.py --ref-av-vels-file=../check/box.av_vels.dat --ref-final-state-file=../check/box.final_state.dat --av-vels-file=./av_vels.dat --final-state-file=./final_state.dat
