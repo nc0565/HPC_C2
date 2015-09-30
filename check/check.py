@@ -50,11 +50,12 @@ parser = InputParser()
 parsed_args = parser.parse_args()
 
 def load_dat_files(av_vels_filename, final_state_filename):
-    with open(av_vels_filename, "r") as av_vels_ref_file, open(final_state_filename, "r") as final_state_ref_file:
-        av_vels = np.loadtxt(av_vels_ref_file, usecols=[1])
-        final_state = np.loadtxt(final_state_ref_file, usecols=[0, 1, 5])
+    with open(av_vels_filename, "r") as av_vels_ref_file:
+        with open(final_state_filename, "r") as final_state_ref_file:
+            av_vels = np.loadtxt(av_vels_ref_file, usecols=[1])
+            final_state = np.loadtxt(final_state_ref_file, usecols=[0, 1, 5])
 
-        return av_vels, final_state
+            return av_vels, final_state
 
 # Open reference and input files
 av_vels_ref, final_state_ref = load_dat_files(parsed_args.ref_av_vels_file[0], parsed_args.ref_final_state_file[0])
