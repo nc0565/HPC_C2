@@ -35,9 +35,9 @@ Elapsed user CPU time:		103.205310 (s)
 Elapsed system CPU time:	0.004999 (s)
 ```
 
-- input_pipe.params
+- input_small_pipe.params
 ```
-./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/input_small_pipe.params
 ==done==
 Reynolds number:		2.889654348141E+01
 Elapsed time:			13.158120 (s)
