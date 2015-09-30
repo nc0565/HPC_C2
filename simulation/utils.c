@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdarg.h>
+#include <getopt.h>
 
 #include "lbm.h"
 
