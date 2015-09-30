@@ -26,7 +26,7 @@ By default, all of these options will use the 128x128 input parameter file and t
 
 ## Checking results
 
-Running `make check` will check the output file (average veclocities and final state) against some reference results. By default, it should look something like this:
+An automated result checking function is provided that requires you to load Python 2.x (e.g. module load languages/python-2.7.6). Running `make check` will check the output file (average veclocities and final state) against some reference results. By default, it should look something like this:
 
     $ make check
     python ../check/check.py --ref-av-vels-file=../check/input_128x128.av_vels_ref.dat --ref-final-state-file=../check/input_128x128.final_state_ref.dat --av-vels-file=./av_vels.dat --final-state-file=./final_state.dat
