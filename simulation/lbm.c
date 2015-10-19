@@ -105,6 +105,9 @@ int main(int argc, char* argv[])
         #endif
     }
 
+    // Do not remove this, or the timing will be incorrect!
+    clFinish(lbm_context.queue);
+
     gettimeofday(&timstr,NULL);
     toc=timstr.tv_sec+(timstr.tv_usec/1000000.0);
     getrusage(RUSAGE_SELF, &ru);
