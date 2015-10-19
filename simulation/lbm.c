@@ -43,10 +43,8 @@
 ** note the names of the input parameter and obstacle files
 ** are passed on the command line, e.g.:
 **
-**   d2q9-bgk.exe input.params obstacles.dat
+**   ./lbm -a av_vels.dat -f final_state.dat -p ../inputs/box.params
 **
-** be sure to adjust the grid dimensions in the parameter file
-** if you choose a different obstacle file.
 */
 
 #include <stdio.h>
@@ -83,9 +81,13 @@ int main(int argc, char* argv[])
     double usrtim;                /* floating point number to record elapsed user CPU time */
     double systim;                /* floating point number to record elapsed system CPU time */
 
-    parse_args(argc, argv, &final_state_file, &av_vels_file, &param_file);
+    int device_id;
+    lbm_context_t lbm_context;
+
+    parse_args(argc, argv, &final_state_file, &av_vels_file, &param_file, &device_id);
 
     initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles, &av_vels);
+    opencl_initialise(device_id, params, accel_area, &lbm_context, cells, obstacles);
 
     /* iterate for max_iters timesteps */
     gettimeofday(&timstr,NULL);
@@ -93,7 +95,7 @@ int main(int argc, char* argv[])
 
     for (ii = 0; ii < params.max_iters; ii++)
     {
-        timestep(params, accel_area, cells, tmp_cells, obstacles);
+        timestep(params, accel_area, lbm_context, cells, tmp_cells, obstacles);
         av_vels[ii] = av_velocity(params, cells, obstacles);
 
         #ifdef DEBUG
@@ -119,6 +121,7 @@ int main(int argc, char* argv[])
 
     write_values(final_state_file, av_vels_file, params, cells, obstacles, av_vels);
     finalise(&cells, &tmp_cells, &obstacles, &av_vels);
+    opencl_finalise(lbm_context);
 
     return EXIT_SUCCESS;
 }

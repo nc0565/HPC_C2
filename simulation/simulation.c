@@ -5,12 +5,18 @@
 #include "lbm.h"
 
 void timestep(const param_t params, const accel_area_t accel_area,
+    lbm_context_t lbm_context,
     speed_t* cells, speed_t* tmp_cells, int* obstacles)
 {
     accelerate_flow(params,accel_area,cells,obstacles);
     propagate(params,cells,tmp_cells);
     rebound(params,cells,tmp_cells,obstacles);
     collision(params,cells,tmp_cells,obstacles);
+
+    /*
+    *   TODO
+    *   Run OpenCL kernels on the device
+    */
 }
 
 void accelerate_flow(const param_t params, const accel_area_t accel_area,

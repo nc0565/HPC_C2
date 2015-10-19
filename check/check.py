@@ -86,7 +86,7 @@ def get_diff_values(ref_vals, sim_vals):
     diff = ref_vals - sim_vals
     diff_pcnt = 100.0*(diff/(ref_vals - diff))
 
-    max_diff_step = np.argmax(np.abs(diff))
+    max_diff_step = np.argmax(np.abs(diff_pcnt))
 
     diffs = {
         "max_diff_step" : max_diff_step,

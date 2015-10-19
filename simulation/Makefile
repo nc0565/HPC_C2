@@ -1,6 +1,6 @@
 CC=gcc
 
-CFLAGS=-O3 -g -Wall
+CFLAGS=-O3 -g -Wall -Wextra -Wno-unused-parameter
 
 EXE=lbm
 
@@ -12,20 +12,29 @@ AV_VELS_FILE=./av_vels.dat
 REF_FINAL_STATE_FILE=../check/box.final_state.dat
 REF_AV_VELS_FILE=../check/box.av_vels.dat
 
+DEVICE=0
+
 LDLIBS=-lm
 
+PLATFORM = $(shell uname -s)
+ifeq ($(PLATFORM), Darwin)
+	LDLIBS += -framework OpenCL
+else
+	LDLIBS += -lOpenCL
+endif
+
 SUBMIT_DIR=submission
-SUBMIT_FILES=Makefile lbm.c lbm.h simulation.c utils.c
+SUBMIT_FILES=Makefile lbm.c lbm.h simulation.c utils.c opencl.c kernels.cl
 ENV_SCRIPT=env.sh
 
-$(EXE) : utils.o lbm.o simulation.o
+$(EXE) : utils.o lbm.o simulation.o opencl.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS)
 
 %.o: %.c Makefile lbm.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 run: $(EXE)
-	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
+	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE) -d $(DEVICE)
 
 plot:
 	gnuplot final_state.plt
@@ -55,6 +64,7 @@ submission:
 	@cd $(SUBMIT_DIR) && ../../check/check_submission
 
 .PHONY: clean submission
+
 clean:
 	rm -f *.o $(EXE)
 

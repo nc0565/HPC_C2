@@ -4,7 +4,7 @@
 #PBS -joe
 #PBS -o LBM.out
 #PBS -q teaching
-#PBS -l nodes=1:ppn=16,walltime=00:10:00
+#PBS -l nodes=1:ppn=8:gpus=1,walltime=00:10:00
 
 #! Mail to user if job aborts
 #PBS -m a
@@ -12,8 +12,12 @@
 #! application name
 application="make run"
 
+# Select the GPU that we've been allocated
+device=$(cat $PBS_GPUFILE)
+device=${device#*gpu}
+
 #! Run options for the application
-options="PARAM_FILE=../inputs/box.params"
+options="PARAM_FILE=../inputs/box.params DEVICE=$device"
 
 ###############################################################
 ### You should not have to change anything below this line ####
@@ -29,6 +33,7 @@ echo Directory is `pwd`
 echo PBS job ID is $PBS_JOBID
 echo This jobs runs on the following machines:
 echo `cat $PBS_NODEFILE | uniq`
+echo "Using device $device"
 
 numnodes=`wc $PBS_NODEFILE | awk '{ print $1 }'`
 
