@@ -1,0 +1,33 @@
+Serial 
+
+Box
+Reynolds number:		2.039107350801E+01
+Elapsed time:			103.511089 (s)
+Elapsed user CPU time:		103.262301 (s)
+Elapsed system CPU time:	0.001999 (s)Rect
+==done==
+Reynolds number:        3.740889367644E+01
+Elapsed time:           212.421373 (s)
+Elapsed user CPU time:      211.921782 (s)
+Elapsed system CPU time:    0.002999 (s)
+
+SP
+Reynolds number:        2.889654348141E+01
+Elapsed time:           13.154195 (s)
+Elapsed user CPU time:      13.121005 (s)
+Elapsed system CPU time:    0.003999 (s)
+
+LP
+Reynolds number:        8.531247814429E+00
+Elapsed time:           533.982507 (s)
+Elapsed user CPU time:      532.724013 (s)
+Elapsed system CPU time:    0.023996 (s)
+
+Fast
+Reynolds number:        6.021422556968E+00
+Elapsed time:           0.632081 (s)
+Elapsed user CPU time:      0.628904 (s)
+Elapsed system CPU time:    0.001999 (s)
+==========================================
+
+Replaced cell addresses in accell, prop and rebound and just increment in the second loop.

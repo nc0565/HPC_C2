@@ -1,0 +1,12 @@
+Running on host node31-029
+Time is Fri Nov 6 15:08:10 GMT 2015
+Directory is /panfs/panasas01/cosc/nc0565/c2/UoB-HPC-LBM-2015/simulation
+PBS job ID is 3639977.master.cm.cluster
+This jobs runs on the following machines:
+node31-029
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+==done==
+Reynolds number:		8.531247814429E+00
+Elapsed time:			533.982507 (s)
+Elapsed user CPU time:		532.724013 (s)
+Elapsed system CPU time:	0.023996 (s)
