@@ -70,8 +70,8 @@ void finalise(speed_t** cells_ptr, speed_t** tmp_cells_ptr,
     int** obstacles_ptr, double** av_vels_ptr);
 
 void timestep(const param_t params, const accel_area_t accel_area,
-    lbm_context_t lbm_context,
-    speed_t* cells, speed_t* tmp_cells, int* obstacles);
+    lbm_context_t lbm_context, speed_t* cells, speed_t* tmp_cells,
+    int* obstacles);
 void accelerate_flow(const param_t params, const accel_area_t accel_area,
     speed_t* cells, int* obstacles);
 void propagate(const param_t params, speed_t* cells, speed_t* tmp_cells);

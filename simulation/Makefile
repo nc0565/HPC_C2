@@ -1,16 +1,23 @@
-CC=gcc
+# CC=gcc
+CC=icc
 
-CFLAGS=-O3 -g -Wall -Wextra -Wno-unused-parameter
+# CFLAGS=-O3 -m64 -g -std=c11 -msse4.2  -Wall -Wextra -Wno-unused-parameter #-ffast-math
+CFLAGS=-O3 #-guide -parallel -xHOST -xSSE4.2
+
+# -g
+# -msse3 -ffast-math # -msse4.2 -mavx2 
+# -std=c11
+# -march=native
 
 EXE=lbm
 
-PARAM_FILE=../inputs/fast.params
+PARAM_FILE=../inputs/box.params
 
 FINAL_STATE_FILE=./final_state.dat
 AV_VELS_FILE=./av_vels.dat
 
-REF_FINAL_STATE_FILE=../check/fast.final_state.dat
-REF_AV_VELS_FILE=../check/fast.av_vels.dat
+REF_FINAL_STATE_FILE=../check/box.final_state.dat
+REF_AV_VELS_FILE=../check/box.av_vels.dat
 
 DEVICE=0
 
@@ -33,8 +40,19 @@ $(EXE) : utils.o lbm.o simulation.o opencl.o
 %.o: %.c Makefile lbm.h
 	$(CC) $(CFLAGS) -o $@ -c $<
 
+# debug: CFLAGS +=  -g
+# 	%.o: %.c Makefile lbm.h
+# 	$(CC) $(CFLAGS) -o $@ -c $<
+
 run: $(EXE)
 	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE) -d $(DEVICE)
+
+# testVector:
+# 	$(CC)  $(CFLAGS) -ftree-vectorizer-verbose=2 -o $@ -c $<
+
+vtune:
+	amplxe-cl -quiet -collect hotspots -result-dir r001hs ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE) -d $(DEVICE)
+	amplxe-cl -report hotspots -r r001hs
 
 plot:
 	gnuplot final_state.plt
