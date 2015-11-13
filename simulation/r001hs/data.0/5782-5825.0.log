@@ -1,0 +1,3 @@
+5825 : ERROR : The libpthread.so library could not be found during program initialization.
+The program executable may be dynamic but not depend on libpthread.so. This model is not directly supported now.
+Suggestion: Set the LD_PRELOAD environment variable to the name of the PThreads shared library to make sure it is loaded during program initialization. 

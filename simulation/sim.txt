@@ -1,0 +1,464 @@
+
+Analyzing loop at simulation.c:34
+
+simulation.c:34: note: not vectorized: control flow in loop.
+simulation.c:34: note: bad loop form.
+Analyzing loop at simulation.c:60
+
+simulation.c:60: note: not vectorized: control flow in loop.
+simulation.c:60: note: bad loop form.
+simulation.c:20: note: vectorized 0 loops in function.
+
+simulation.c:27: note: Failed to SLP the basic block.
+simulation.c:27: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:34: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:80: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:20: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:36: note: not consecutive access _22 = *_21;
+
+simulation.c:36: note: Failed to SLP the basic block.
+simulation.c:36: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:40: note: not consecutive access _26 = _25->speeds[4];
+
+simulation.c:40: note: Failed to SLP the basic block.
+simulation.c:40: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:41: note: not consecutive access _28 = _25->speeds[7];
+
+simulation.c:41: note: Failed to SLP the basic block.
+simulation.c:41: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:42: note: not consecutive access _30 = _25->speeds[8];
+
+simulation.c:42: note: Failed to SLP the basic block.
+simulation.c:42: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:45: note: interleaved store with gaps
+simulation.c:45: note: not vectorized: complicated access pattern.
+simulation.c:45: note: Failed to SLP the basic block.
+simulation.c:45: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:34: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:20: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:58: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:20: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:64: note: SLP: step doesn't divide the vector-size.
+simulation.c:64: note: Unknown alignment for access: *(obstacles_20(D) + (sizetype) ((long unsigned int) addr_45 * 4))
+simulation.c:64: note: Failed to SLP the basic block.
+simulation.c:64: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:65: note: SLP: step doesn't divide the vector-size.
+simulation.c:65: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:65: note: not consecutive access _53 = _52->speeds[3];
+
+simulation.c:65: note: Failed to SLP the basic block.
+simulation.c:65: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:66: note: SLP: step doesn't divide the vector-size.
+simulation.c:66: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:66: note: not consecutive access _55 = _52->speeds[6];
+
+simulation.c:66: note: Failed to SLP the basic block.
+simulation.c:66: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:67: note: SLP: step doesn't divide the vector-size.
+simulation.c:67: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:67: note: not consecutive access _57 = _52->speeds[7];
+
+simulation.c:67: note: Failed to SLP the basic block.
+simulation.c:67: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: SLP: step doesn't divide the vector-size.
+simulation.c:70: note: Unknown alignment for access: *(cells_24(D) + (sizetype) ((long unsigned int) addr_45 * 72))
+simulation.c:70: note: interleaved store with gaps
+simulation.c:70: note: not vectorized: complicated access pattern.
+simulation.c:70: note: Failed to SLP the basic block.
+simulation.c:70: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:60: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:20: note: not vectorized: not enough data-refs in basic block.
+
+Analyzing loop at simulation.c:87
+
+simulation.c:87: note: not vectorized: control flow in loop.
+simulation.c:87: note: bad loop form.
+Analyzing loop at simulation.c:90
+
+simulation.c:90: note: not vectorized: data ref analysis failed _32->speeds[1] = _33;
+
+simulation.c:90: note: bad data references.
+simulation.c:82: note: vectorized 0 loops in function.
+
+simulation.c:84: note: Failed to SLP the basic block.
+simulation.c:84: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:114: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:82: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:89: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:82: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:97: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _24->speeds[0]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _32->speeds[1]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _39->speeds[2]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _45->speeds[3]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _52->speeds[4]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _58->speeds[5]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _64->speeds[6]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _70->speeds[7]
+simulation.c:96: note: can't determine dependence between _26->speeds[0] and _76->speeds[8]
+simulation.c:96: note: can't determine dependence between _24->speeds[0] and _32->speeds[1]
+simulation.c:96: note: not vectorized: unhandled data dependence in basic block.
+
+simulation.c:82: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:87: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:82: note: not vectorized: not enough data-refs in basic block.
+
+Analyzing loop at simulation.c:121
+
+simulation.c:121: note: not vectorized: control flow in loop.
+simulation.c:121: note: bad inner-loop form.
+simulation.c:121: note: not vectorized: Bad inner loop.
+simulation.c:121: note: bad loop form.
+Analyzing loop at simulation.c:124
+
+simulation.c:124: note: not vectorized: control flow in loop.
+simulation.c:124: note: bad loop form.
+simulation.c:116: note: vectorized 0 loops in function.
+
+simulation.c:121: note: Failed to SLP the basic block.
+simulation.c:121: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:142: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:116: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:123: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:121: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:116: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:127: note: SLP: step doesn't divide the vector-size.
+simulation.c:127: note: Unknown alignment for access: *(obstacles_12(D) + (sizetype) ((long unsigned int) addr_9 * 4))
+simulation.c:127: note: Failed to SLP the basic block.
+simulation.c:127: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[1]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[2]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[3]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[4]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[5]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[6]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[7]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _17->speeds[8]
+simulation.c:131: note: can't determine dependence between _17->speeds[1] and _19->speeds[1]
+simulation.c:131: note: not vectorized: unhandled data dependence in basic block.
+
+simulation.c:124: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:116: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:116: note: not vectorized: not enough data-refs in basic block.
+
+Analyzing loop at simulation.c:162
+
+simulation.c:162: note: not vectorized: control flow in loop.
+simulation.c:162: note: bad inner-loop form.
+simulation.c:162: note: not vectorized: Bad inner loop.
+simulation.c:162: note: bad loop form.
+Analyzing loop at simulation.c:164
+
+simulation.c:164: note: not vectorized: control flow in loop.
+simulation.c:164: note: bad loop form.
+simulation.c:144: note: vectorized 0 loops in function.
+
+simulation.c:162: note: Failed to SLP the basic block.
+simulation.c:162: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:243: note: not consecutive access _145 = params.omega;
+
+simulation.c:243: note: Failed to SLP the basic block.
+simulation.c:243: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:144: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:168: note: SLP: step doesn't divide the vector-size.
+simulation.c:168: note: Unknown alignment for access: *(obstacles_17(D) + (sizetype) ((long unsigned int) pretmp_272 * 4))
+simulation.c:168: note: Failed to SLP the basic block.
+simulation.c:168: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[0] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[1] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[2] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[3] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[4] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[5] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[6] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[7] and _144->speeds[8]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[0]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[1]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[2]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[3]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[4]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[5]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[6]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[7]
+simulation.c:175: note: can't determine dependence between _244->speeds[8] and _144->speeds[8]
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(tmp_cells_21(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: SLP: step doesn't divide the vector-size.
+simulation.c:175: note: Unknown alignment for access: *(cells_129(D) + (sizetype) ((long unsigned int) pretmp_272 * 72))
+simulation.c:175: note: Build SLP failed: unrolling required in basic block SLP
+simulation.c:175: note: Failed to SLP the basic block.
+simulation.c:175: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:164: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:162: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:144: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:164: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:144: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:144: note: not vectorized: no vectype for stmt: d_equ ={v} {CLOBBER};
+ scalar_type: double[9]
+simulation.c:144: note: Failed to SLP the basic block.
+simulation.c:144: note: not vectorized: failed to find SLP opportunities in basic block.
+
+Analyzing loop at simulation.c:121
+
+simulation.c:121: note: not vectorized: control flow in loop.
+simulation.c:121: note: bad inner-loop form.
+simulation.c:121: note: not vectorized: Bad inner loop.
+simulation.c:121: note: bad loop form.
+Analyzing loop at simulation.c:124
+
+simulation.c:124: note: not vectorized: control flow in loop.
+simulation.c:124: note: bad loop form.
+simulation.c:7: note: vectorized 0 loops in function.
+
+simulation.c:11: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:14: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:7: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:123: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:121: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:7: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:127: note: SLP: step doesn't divide the vector-size.
+simulation.c:127: note: Unknown alignment for access: *(obstacles_3(D) + (sizetype) ((long unsigned int) addr_11 * 4))
+simulation.c:127: note: Failed to SLP the basic block.
+simulation.c:127: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[1]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[2]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[3]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[4]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[5]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[6]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[7]
+simulation.c:131: note: can't determine dependence between _19->speeds[3] and _18->speeds[8]
+simulation.c:131: note: can't determine dependence between _18->speeds[1] and _19->speeds[1]
+simulation.c:131: note: not vectorized: unhandled data dependence in basic block.
+
+simulation.c:124: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:7: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:7: note: not vectorized: not enough data-refs in basic block.
+
+Analyzing loop at simulation.c:265
+
+simulation.c:265: note: not vectorized: control flow in loop.
+simulation.c:265: note: bad inner-loop form.
+simulation.c:265: note: not vectorized: Bad inner loop.
+simulation.c:265: note: bad loop form.
+Analyzing loop at simulation.c:267
+
+simulation.c:267: note: not vectorized: control flow in loop.
+simulation.c:267: note: bad loop form.
+simulation.c:251: note: vectorized 0 loops in function.
+
+simulation.c:265: note: Failed to SLP the basic block.
+simulation.c:265: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:251: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:251: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:270: note: SLP: step doesn't divide the vector-size.
+simulation.c:270: note: Unknown alignment for access: *(obstacles_21(D) + (sizetype) ((long unsigned int) pretmp_51 * 4))
+simulation.c:270: note: Failed to SLP the basic block.
+simulation.c:270: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: SLP: step doesn't divide the vector-size.
+simulation.c:277: note: Unknown alignment for access: *(cells_25(D) + (sizetype) ((long unsigned int) pretmp_51 * 72))
+simulation.c:277: note: Failed to SLP the basic block.
+simulation.c:277: note: not vectorized: failed to find SLP opportunities in basic block.
+
+simulation.c:267: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:251: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:265: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:251: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:251: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:267: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:251: note: not vectorized: not enough data-refs in basic block.
+
+simulation.c:306: note: not vectorized: not enough data-refs in basic block.
