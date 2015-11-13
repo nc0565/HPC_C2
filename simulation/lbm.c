@@ -103,13 +103,21 @@ int main(int argc, char* argv[])
     for (ii = 0; ii < params.max_iters; ii++)
     {
         timestep(params, accel_area, lbm_context, cells, tmp_cells, obstacles);
-       
+
+        err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+        if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
+        av_vels[ii] = av_velocity(params, cells, obstacles);
+
         // err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_av_vel, 2, NULL, global, NULL, 0, NULL, NULL);
         // if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute av_vel kernel!", err); 
         // err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_av_out_buff, CL_TRUE, 0, (sizeof(double)*params.max_iters), av_out, 0, NULL, NULL);
         // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_av_out_buff", err); 
 
-        av_vels[ii] = /*av_out[ii];*/av_velocity(params, cells, obstacles);
+        // for (int jj = 0; jj < params.nx*params.ny; jj++)
+        // {
+        //     av_vels[ii] += av_out[jj];
+        // }
+        // av_vels[ii] /= (double)((params.ny*params.nx)-4); // hardcode for testing fast.params
 
         #ifdef DEBUG
         printf("==timestep: %d==\n", ii);
@@ -118,7 +126,7 @@ int main(int argc, char* argv[])
         #endif
     }
 
-    // Currently blocks.
+
     err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
     if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
     //=============================================

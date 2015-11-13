@@ -1,18 +1,18 @@
-Running on host node46-002
-Time is Fri Nov 13 13:23:12 GMT 2015
+Running on host node46-003
+Time is Fri Nov 13 14:48:15 GMT 2015
 Directory is /panfs/panasas01/cosc/nc0565/c2/UoB-HPC-LBM-2015/simulation
-PBS job ID is 3686449.master.cm.cluster
+PBS job ID is 3686860.master.cm.cluster
 This jobs runs on the following machines:
-node46-002
+node46-003
 Using device 0
-./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params -d 0
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/box.params -d 0
 Got OpenCL device:
  Device 0:        Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz (CPU)
 Created OpenCL context
 Building program
 Finished initialising OpenCL
 ==done==
-Reynolds number:		8.531247814429E+00
-Elapsed time:			133.521826 (s)
-Elapsed user CPU time:		2060.828706 (s)
-Elapsed system CPU time:	8.192754 (s)
+Reynolds number:		2.039107350801E+01
+Elapsed time:			42.940412 (s)
+Elapsed user CPU time:		364.484589 (s)
+Elapsed system CPU time:	28.401682 (s)

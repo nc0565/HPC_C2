@@ -66,24 +66,9 @@ void collision(param_t params, __global speed_t* cells, __global speed_t* tmp_ce
     /* called after propagate, so taking values from scratch space
     ** mirroring, and writing into main grid */
 
-    if (obstacles[addr])
+    // Prioritise true.
+    if (!obstacles[addr])
     {
-        /* called after propagate, so taking values from scratch space
-        ** mirroring, and writing into main grid */
-        cells[addr].speeds[1] = tmp_cells[addr].speeds[3];
-        cells[addr].speeds[2] = tmp_cells[addr].speeds[4];
-        cells[addr].speeds[3] = tmp_cells[addr].speeds[1];
-        cells[addr].speeds[4] = tmp_cells[addr].speeds[2];
-        cells[addr].speeds[5] = tmp_cells[addr].speeds[7];
-        cells[addr].speeds[6] = tmp_cells[addr].speeds[8];
-        cells[addr].speeds[7] = tmp_cells[addr].speeds[5];
-        cells[addr].speeds[8] = tmp_cells[addr].speeds[6];
-    }
-    /* don't consider occupied cells */
-    else
-    {
-
-
     /* compute local density total */
     local_density = 0.0;
 
@@ -147,6 +132,19 @@ void collision(param_t params, __global speed_t* cells, __global speed_t* tmp_ce
     cells[addr].speeds[7] = (tmp_cells[addr].speeds[7] + params.omega * (d_equ[7] - tmp_cells[addr].speeds[7]));
     cells[addr].speeds[8] = (tmp_cells[addr].speeds[8] + params.omega * (d_equ[8] - tmp_cells[addr].speeds[8]));
 
+    }
+    else
+    {
+        /* called after propagate, so taking values from scratch space
+        ** mirroring, and writing into main grid */
+        cells[addr].speeds[1] = tmp_cells[addr].speeds[3];
+        cells[addr].speeds[2] = tmp_cells[addr].speeds[4];
+        cells[addr].speeds[3] = tmp_cells[addr].speeds[1];
+        cells[addr].speeds[4] = tmp_cells[addr].speeds[2];
+        cells[addr].speeds[5] = tmp_cells[addr].speeds[7];
+        cells[addr].speeds[6] = tmp_cells[addr].speeds[8];
+        cells[addr].speeds[7] = tmp_cells[addr].speeds[5];
+        cells[addr].speeds[8] = tmp_cells[addr].speeds[6];
     }
     /*
     cells[addr].speeds[0] = select((tmp_cells[addr].speeds[0] + params.omega * (d_equ[0] - tmp_cells[addr].speeds[0])), cells[addr].speeds[0], test);
@@ -256,13 +254,14 @@ void av_vel(param_t params, __global speed_t* cells, __global int* obstacles, __
 
 
     /* loop over all non-blocked cells */
-    int addr = get_global_id(0)*params.nx+get_global_id(1);
+    int addr = (get_global_id(0)*params.nx) + get_global_id(1);
     /* ignore occupied cells */
     if (!obstacles[addr])
     {
         /* local density total */
         double local_density = 0.0;
 
+        local_density += cells[addr].speeds[0];
         local_density += cells[addr].speeds[1];
         local_density += cells[addr].speeds[2];
         local_density += cells[addr].speeds[3];
@@ -286,8 +285,9 @@ void av_vel(param_t params, __global speed_t* cells, __global int* obstacles, __
         //tot_u = sqrt(u_x*u_x + u_y*u_y);
         /* increase counter of inspected cells */
         //++tot_cells;
-        av_output[get_group_id(0)] += sqrt(u_x*u_x + u_y*u_y);
+        av_output[addr] == sqrt(u_x*u_x + u_y*u_y);
     }
+    av_output[addr] == (double)0.0;
 
 }
 

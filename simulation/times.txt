@@ -330,38 +330,14 @@ Elapsed system CPU time:        10.519400 (s)
 ==========================================
 
 box with all TS kernals and outside write/read
-Reynolds number:                2.039107350801E+01
-Elapsed time:                   17.101434 (s)
-Elapsed user CPU time:          252.845561 (s)
-Elapsed system CPU time:        1.752733 (s)
-
-RuntimeWarning: divide by zero encountered in divide
-diff_pcnt = 100.0*(diff/(ref_vals - diff))
-Total difference in av_vels : 1.069978186300E+03
-Biggest difference (at step 0) : 1.334043366242E-05
-  0.000000000000E+00 vs. 1.334043366242E-05 = inf%
-
-Total difference in final_state : 0.000000000000E+00
-Biggest difference (at coord (0,0)) : 0.000000000000E+00
-  3.333333333333E-02 vs. 3.333333333333E-02 = 0%
-
-av_vels failed check
+serial op av_vel with pre read
+Elapsed time:                   42.940412 (s)
+Elapsed user CPU time:          364.484589 (s)
+Elapsed system CPU time:        28.401682 (s)
 
 Large_pipe with all TS Kernels
-Reynolds number:                8.531247814429E+00
-Elapsed time:                   133.521826 (s)
-Elapsed user CPU time:          2060.828706 (s)
-Elapsed system CPU time:        8.192754 (s)
+serial op av_vel with pre read
 
-RuntimeWarning: divide by zero encountered in divide
-  diff_pcnt = 100.0*(diff/(ref_vals - diff))
-Total difference in av_vels : 1.893571778572E+02
-Biggest difference (at step 0) : 7.399426587059E-06
-  0.000000000000E+00 vs. 7.399426587059E-06 = inf%
-
-Total difference in final_state : 0.000000000000E+00
-Biggest difference (at coord (0,0)) : 0.000000000000E+00
-  3.333333333333E-02 vs. 3.333333333333E-02 = 0%
 
 ====
 

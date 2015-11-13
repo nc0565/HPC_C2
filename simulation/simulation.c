@@ -288,32 +288,38 @@ void collision(const param_t params, speed_t* cells, speed_t* tmp_cells, int* ob
 
 double av_velocity(const param_t params, speed_t* cells, int* obstacles)
 {
-    int    ii,jj=0,kk,addr;  /* generic counters */
+    int    ii,jj,addr;       /* generic counters */
     int    tot_cells = 0;  /* no. of cells used in calculation */
-    /* initialise */
-    double tot_u = 0.0;    /* accumulated magnitudes of velocity for each cell */
+    double tot_u;          /* accumulated magnitudes of velocity for each cell */
 
     double local_density;  /* total density in cell */
     double u_x;            /* x-component of velocity for current cell */
     double u_y;            /* y-component of velocity for current cell */
 
+    /* initialise */
+    tot_u = 0.0;
+
     /* loop over all non-blocked cells */
     for (ii = 0; ii < params.ny; ii++)
     {
-        addr = ii*params.nx+jj;
-        for (jj = 0; jj < params.nx; jj++/*, addr++*/)
+        for (jj = 0; jj < params.nx; jj++)
         {
+            addr = ii*params.nx + jj;
             /* ignore occupied cells */
             if (!obstacles[addr])
             {
                 /* local density total */
                 local_density = 0.0;
 
-                // __attribute__((optimize("unroll-loops")))
-                for (kk = 0; kk < NSPEEDS; kk++)
-                {
-                    local_density += cells[addr].speeds[kk];
-                }
+                local_density += cells[addr].speeds[0];
+                local_density += cells[addr].speeds[1];
+                local_density += cells[addr].speeds[2];
+                local_density += cells[addr].speeds[3];
+                local_density += cells[addr].speeds[4];
+                local_density += cells[addr].speeds[5];
+                local_density += cells[addr].speeds[6];
+                local_density += cells[addr].speeds[7];
+                local_density += cells[addr].speeds[8];
 
                 /* x-component of velocity */
                 u_x = (cells[addr].speeds[1] +
