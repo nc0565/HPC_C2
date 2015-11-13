@@ -36,6 +36,14 @@ typedef struct {
     cl_context context;
     cl_device_id device;
     cl_command_queue queue;
+    cl_kernel k_collision;
+    cl_kernel k_propagate;
+    cl_kernel k_accel;
+    cl_kernel k_av_vel;
+    cl_mem h_cells_buff;
+    cl_mem h_tcells_buff;
+    cl_mem h_obstacles_buff;
+    cl_mem h_av_out_buff;
 } lbm_context_t;
 
 /* struct to hold the 'speed' values */
@@ -55,10 +63,10 @@ void parse_args (int argc, char* argv[],
 
 void initialise(const char* paramfile, accel_area_t * accel_area,
     param_t* params, speed_t** cells_ptr, speed_t** tmp_cells_ptr,
-    int** obstacles_ptr, double** av_vels_ptr);
+    int** obstacles_ptr, double** av_vels_ptr, double** av_out_ptr);
 
 void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
-    lbm_context_t * lbm_context, speed_t * cells, int * obstacles);
+    lbm_context_t * lbm_context, speed_t * cells, int * obstacles, double * av_out);
 void opencl_finalise(lbm_context_t lbm_context);
 
 void list_opencl_platforms(void);

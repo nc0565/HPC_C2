@@ -144,7 +144,7 @@ void list_opencl_platforms(void)
 }
 
 void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
-    lbm_context_t * lbm_context, speed_t * cells, int * obstacles)
+    lbm_context_t * lbm_context, speed_t * cells, int * obstacles, double * av_out)
 {
     /* get device etc. */
     cl_platform_id * platforms = NULL;
@@ -258,6 +258,51 @@ void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
     *   TODO
     *   Allocate memory and create kernels
     */
+    /*  collision  */
+    lbm_context->k_collision = clCreateKernel(program, "collision", &err);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d creating the collision kernel", err);
+    
+    // cl_mem h_params_buff = clCreateBuffer(lbm_context->context, CL_MEM_READ_ONLY /*| CL_MEM_HOST_WRITE_ONLY*/, sizeof(param_t), NULL, NULL);
+    err = clSetKernelArg(lbm_context->k_collision, 0, sizeof(param_t), &params);
+    
+    lbm_context->h_cells_buff = clCreateBuffer(lbm_context->context, CL_MEM_WRITE_ONLY, (params.nx *params.ny * sizeof(speed_t)), NULL, NULL);
+    // cl_mem h_tcells_buff = clCreateBuffer(lbm_context->context, CL_MEM_READ_ONLY, (params.nx *params.ny * sizeof(speed_t)), NULL, NULL);
+    lbm_context->h_tcells_buff = clCreateBuffer(lbm_context->context, CL_MEM_READ_ONLY, (params.nx *params.ny * sizeof(speed_t)), NULL, NULL);
+    err |= clSetKernelArg(lbm_context->k_collision, 1, sizeof(cl_mem), &(lbm_context->h_cells_buff));
+    err |= clSetKernelArg(lbm_context->k_collision, 2, sizeof(cl_mem), &(lbm_context->h_tcells_buff));
+    lbm_context->h_obstacles_buff = clCreateBuffer(lbm_context->context, CL_MEM_READ_ONLY /*| CL_MEM_HOST_WRITE_ONLY*/, (params.nx *params.ny * sizeof(cl_int)), NULL, NULL);
+    err |= clSetKernelArg(lbm_context->k_collision, 3, sizeof(cl_mem), &(lbm_context->h_obstacles_buff));
+    if (err != CL_SUCCESS) DIE("OpenCL error %d setting kernel arguments for the collision kernel", err);
+
+    /*  k_propagate*/
+    lbm_context->k_propagate = clCreateKernel(program, "prop", &err);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d creating the propagate kernel", err);
+
+    err = clSetKernelArg(lbm_context->k_propagate, 0, sizeof(param_t), &params);
+    err |= clSetKernelArg(lbm_context->k_propagate, 1, sizeof(cl_mem), &(lbm_context->h_cells_buff));
+    err |= clSetKernelArg(lbm_context->k_propagate, 2, sizeof(cl_mem), &(lbm_context->h_tcells_buff));
+    if (err != CL_SUCCESS) DIE("OpenCL error %d setting kernel arguments for the propagate kernel", err);
+
+    /*  k_accel    */
+    lbm_context->k_accel = clCreateKernel(program, "accel", &err);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d creating the accel kernel", err);
+
+    err = clSetKernelArg(lbm_context->k_accel, 0, sizeof(param_t), &params);
+    err |= clSetKernelArg(lbm_context->k_accel, 1, sizeof(accel_area_t), &accel_area);
+    err |= clSetKernelArg(lbm_context->k_accel, 2, sizeof(cl_mem), &(lbm_context->h_cells_buff));
+    err |= clSetKernelArg(lbm_context->k_accel, 3, sizeof(cl_mem), &(lbm_context->h_obstacles_buff));
+    if (err != CL_SUCCESS) DIE("OpenCL error %d setting kernel arguments for the accel kernel", err);
+
+    /*  av_vel  */
+    lbm_context->k_av_vel = clCreateKernel(program, "av_vel", &err);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d creating the av_vel kernel", err);
+
+    lbm_context->h_av_out_buff = clCreateBuffer(lbm_context->context, CL_MEM_WRITE_ONLY,((params.max_iters)*sizeof(double)), NULL, NULL);
+    err = clSetKernelArg(lbm_context->k_av_vel, 0, sizeof(param_t), &params);
+    err |= clSetKernelArg(lbm_context->k_av_vel, 1, sizeof(cl_mem), &(lbm_context->h_cells_buff));
+    err |= clSetKernelArg(lbm_context->k_av_vel, 2, sizeof(cl_mem), &(lbm_context->h_obstacles_buff));
+    err |= clSetKernelArg(lbm_context->k_av_vel, 3, sizeof(cl_mem), &(lbm_context->h_av_out_buff));
+
 }
 
 void opencl_finalise(lbm_context_t lbm_context)

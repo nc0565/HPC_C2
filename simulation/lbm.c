@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
     speed_t* cells     = NULL;    /* grid containing fluid densities */
     speed_t* tmp_cells = NULL;    /* scratch space */
     int*     obstacles = NULL;    /* grid indicating which cells are blocked */
-    double*  av_vels   = NULL;    /* a record of the av. velocity computed for each timestep */
+    double*  av_vels   = NULL, *av_out = NULL;    /* a record of the av. velocity computed for each timestep */
 
     int    ii;                    /*  generic counter */
     struct timeval timstr;        /* structure to hold elapsed time */
@@ -86,8 +86,15 @@ int main(int argc, char* argv[])
 
     parse_args(argc, argv, &final_state_file, &av_vels_file, &param_file, &device_id);
 
-    initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles, &av_vels);
-    opencl_initialise(device_id, params, accel_area, &lbm_context, cells, obstacles);
+    initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles, &av_vels, &av_out);
+    opencl_initialise(device_id, params, accel_area, &lbm_context, cells, obstacles, av_out);
+
+    //==============================================
+    cl_int err = clEnqueueWriteBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d writing to h_cells_buff", err);
+    err = clEnqueueWriteBuffer(lbm_context.queue, lbm_context.h_obstacles_buff, CL_TRUE, 0, (sizeof(int)*params.ny*params.nx), obstacles, 0, NULL, NULL);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d writing to h_cells_buff", err); 
+    const size_t global[2] = {params.ny, params.nx};
 
     /* iterate for max_iters timesteps */
     gettimeofday(&timstr,NULL);
@@ -96,7 +103,13 @@ int main(int argc, char* argv[])
     for (ii = 0; ii < params.max_iters; ii++)
     {
         timestep(params, accel_area, lbm_context, cells, tmp_cells, obstacles);
-        av_vels[ii] = av_velocity(params, cells, obstacles);
+       
+        // err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_av_vel, 2, NULL, global, NULL, 0, NULL, NULL);
+        // if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute av_vel kernel!", err); 
+        // err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_av_out_buff, CL_TRUE, 0, (sizeof(double)*params.max_iters), av_out, 0, NULL, NULL);
+        // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_av_out_buff", err); 
+
+        av_vels[ii] = /*av_out[ii];*/av_velocity(params, cells, obstacles);
 
         #ifdef DEBUG
         printf("==timestep: %d==\n", ii);
@@ -104,6 +117,11 @@ int main(int argc, char* argv[])
         printf("tot density: %.12E\n", total_density(params, cells));
         #endif
     }
+
+    // Currently blocks.
+    err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
+    //=============================================
 
     // Do not remove this, or the timing will be incorrect!
     clFinish(lbm_context.queue);

@@ -1,23 +1,23 @@
-# CC=gcc
-CC=icc
+CC=gcc
 
-# CFLAGS=-O3 -m64 -g -std=c11 -msse4.2  -Wall -Wextra -Wno-unused-parameter #-ffast-math
-CFLAGS=-O3 #-guide -parallel -xHOST -xSSE4.2
+CFLAGS=-O3 -m64 -std=c99 -Wall -Wextra -Wno-unused-parameter
 
 # -g
 # -msse3 -ffast-math # -msse4.2 -mavx2 
 # -std=c11
 # -march=native
 
+# -cl-finite-math-only -cl-denorms-are-zero
+
 EXE=lbm
 
-PARAM_FILE=../inputs/box.params
+PARAM_FILE=../inputs/fast.params
 
 FINAL_STATE_FILE=./final_state.dat
 AV_VELS_FILE=./av_vels.dat
 
-REF_FINAL_STATE_FILE=../check/box.final_state.dat
-REF_AV_VELS_FILE=../check/box.av_vels.dat
+REF_FINAL_STATE_FILE=../check/fast.final_state.dat
+REF_AV_VELS_FILE=../check/fast.av_vels.dat
 
 DEVICE=0
 

@@ -3,18 +3,39 @@
 #include <math.h>
 
 #include "lbm.h"
+// #include "opencl.c"
 
 void timestep(const param_t params, const accel_area_t accel_area,
     lbm_context_t lbm_context, speed_t* cells, speed_t* tmp_cells,
     int* obstacles)
 {
-    accelerate_flow(params,accel_area,cells,obstacles);
-    propagate(params,cells,tmp_cells);
+    // accelerate_flow(params,accel_area,cells,obstacles);
+    //propagate(params,cells,tmp_cells);
     //rebound(params,cells,tmp_cells,obstacles);
-    collision(params,cells,tmp_cells,obstacles);
+    // collision(params,cells,tmp_cells,obstacles);
 
     // to do Start Kernals
+
+    // Commands to update the grids while only collision is a kernel.
+    // cl_int err = clEnqueueWriteBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+    // if (err != CL_SUCCESS) DIE("OpenCL error %d writing to h_cells_buff", err);
+    //// err = clEnqueueWriteBuffer(lbm_context.queue, lbm_context.h_tcells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), tmp_cells, 0, NULL, NULL);
+    //// if (err != CL_SUCCESS) DIE("OpenCL error %d writing to h_tcells_buff", err);
+
+
+    const size_t global[2] = {params.ny, params.nx};
+    cl_int err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_accel, 2, NULL, global, NULL, 0, NULL, NULL);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute accel kernel!", err); 
+
+    err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_propagate, 2, NULL, global, NULL, 0, NULL, NULL);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute prop kernel!", err); 
+
+    err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_collision, 2, NULL, global, NULL, 0, NULL, NULL);
+    if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute collision kernel!", err); 
     
+    // err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+    // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
+    ////clFlush(lbm_context.queue);
 }
 
 void accelerate_flow(const param_t params, const accel_area_t accel_area,
@@ -267,7 +288,7 @@ void collision(const param_t params, speed_t* cells, speed_t* tmp_cells, int* ob
 
 double av_velocity(const param_t params, speed_t* cells, int* obstacles)
 {
-    int    ii,jj,kk,addr;  /* generic counters */
+    int    ii,jj=0,kk,addr;  /* generic counters */
     int    tot_cells = 0;  /* no. of cells used in calculation */
     /* initialise */
     double tot_u = 0.0;    /* accumulated magnitudes of velocity for each cell */
@@ -279,8 +300,8 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles)
     /* loop over all non-blocked cells */
     for (ii = 0; ii < params.ny; ii++)
     {
-        addr = ii*params.nx;
-        for (jj = 0; jj < params.nx; jj++, addr++)
+        addr = ii*params.nx+jj;
+        for (jj = 0; jj < params.nx; jj++/*, addr++*/)
         {
             /* ignore occupied cells */
             if (!obstacles[addr])
@@ -288,6 +309,7 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles)
                 /* local density total */
                 local_density = 0.0;
 
+                // __attribute__((optimize("unroll-loops")))
                 for (kk = 0; kk < NSPEEDS; kk++)
                 {
                     local_density += cells[addr].speeds[kk];
