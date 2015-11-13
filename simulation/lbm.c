@@ -104,8 +104,8 @@ int main(int argc, char* argv[])
     {
         timestep(params, accel_area, lbm_context, cells, tmp_cells, obstacles);
 
-        err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
-        if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
+        /*err = */clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+        // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
         av_vels[ii] = av_velocity(params, cells, obstacles);
 
         // err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_av_vel, 2, NULL, global, NULL, 0, NULL, NULL);
@@ -127,8 +127,8 @@ int main(int argc, char* argv[])
     }
 
 
-    err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
-    if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
+    /*err = */clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+    // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
     //=============================================
 
     // Do not remove this, or the timing will be incorrect!

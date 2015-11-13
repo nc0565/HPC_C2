@@ -231,8 +231,8 @@ void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
     if (CL_SUCCESS != err) DIE("OpenCL error %d creating program", err);
 
     fprintf(stdout, "Building program\n");
-
-    err = clBuildProgram(program, 1, &lbm_context->device, NULL, NULL, NULL);
+    const char options[] = "-cl-denorms-are-zero -cl-single-precision-constant -cl-fast-relaxed-math";
+    err = clBuildProgram(program, 1, &lbm_context->device, options, NULL, NULL);
 
     if (err == CL_BUILD_PROGRAM_FAILURE)
     {

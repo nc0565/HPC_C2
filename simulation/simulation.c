@@ -24,14 +24,14 @@ void timestep(const param_t params, const accel_area_t accel_area,
 
 
     const size_t global[2] = {params.ny, params.nx};
-    cl_int err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_accel, 2, NULL, global, NULL, 0, NULL, NULL);
-    if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute accel kernel!", err); 
+    /*cl_int err = */clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_accel, 2, NULL, global, NULL, 0, NULL, NULL);
+    // if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute accel kernel!", err); 
 
-    err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_propagate, 2, NULL, global, NULL, 0, NULL, NULL);
-    if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute prop kernel!", err); 
+    /*err = */clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_propagate, 2, NULL, global, NULL, 0, NULL, NULL);
+    // if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute prop kernel!", err); 
 
-    err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_collision, 2, NULL, global, NULL, 0, NULL, NULL);
-    if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute collision kernel!", err); 
+    /*err = */clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_collision, 2, NULL, global, NULL, 0, NULL, NULL);
+    // if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute collision kernel!", err); 
     
     // err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
     // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 

@@ -1,4 +1,5 @@
 Topics
+Mem levels
 float vs double in c/cpu/gpu
 adding more error handeling and found propagate vs prop invalid name 46
 build options
@@ -337,7 +338,54 @@ Elapsed system CPU time:        28.401682 (s)
 
 Large_pipe with all TS Kernels
 serial op av_vel with pre read
-
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   319.444061 (s)
+Elapsed user CPU time:          2191.857786 (s)
+Elapsed system CPU time:        14.257832 (s)
 
 ====
+Large_pipe with all TS Kernels
+cpu speed ops
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   321.504837 (s)
+Elapsed user CPU time:          2257.649785 (s)
+Elapsed system CPU time:        12.482102 (s)
 
+(Diff ren, but passes test)
+
+Large_pipe with all TS Kernels
+cpu speed ops Native
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   444.102814 (s)
+Elapsed user CPU time:          357.925587 (s)
+Elapsed system CPU time:        85.819953 (s)
+
+Biggest difference (at step 0) : -1.800029716210E-17
+  7.399426587077E-06 vs. 7.399426587059E-06 = -2.4e-10%
+
+Total difference in final_state : 3.139974391608E-12
+Biggest difference (at coord (222,764)) : 9.998946115530E-15
+  3.297778781261E-02 vs. 3.297778781262E-02 = 3e-11%
+
+Both tests passed!
+
+(bigger diff ren, but passes test)
+
+gpu speed ops
+(not really faster, more accurate than cpu flags)
+
+Reynolds number:                8.529600883297E+00
+Elapsed time:                   318.270362 (s)
+Elapsed user CPU time:          2182.119267 (s)
+Elapsed system CPU time:        13.697917 (s)
+
+Total difference in av_vels : 2.277021283960E-02
+Biggest difference (at step 7999) : 6.862213049998E-06
+  3.554000368040E-02 vs. 3.554686589345E-02 = 0.019%
+
+Total difference in final_state : 5.648553181121E-01
+Biggest difference (at coord (334,703)) : -3.312241369999E-06
+  3.300496165948E-02 vs. 3.300164941811E-02 = -0.01%
+
+
+gpu speed ops (relaxed Math)
