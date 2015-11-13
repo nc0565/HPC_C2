@@ -371,6 +371,7 @@ Both tests passed!
 
 (bigger diff ren, but passes test)
 
+Large_pipe
 gpu speed ops
 (not really faster, more accurate than cpu flags)
 
@@ -387,5 +388,43 @@ Total difference in final_state : 5.648553181121E-01
 Biggest difference (at coord (334,703)) : -3.312241369999E-06
   3.300496165948E-02 vs. 3.300164941811E-02 = -0.01%
 
-
+Large_pipe
 gpu speed ops (relaxed Math)
+Reynolds number:                8.529600883297E+00
+Elapsed time:                   318.798354 (s)
+Elapsed user CPU time:          2208.568246 (s)
+Elapsed system CPU time:        12.751061 (s)
+
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   435.336062 (s)
+Elapsed user CPU time:          347.910109 (s)
+Elapsed system CPU time:        86.941782 (s)
+
+==============================
+Large_pipe OpenMP Reduction
+(ran on the cpu)
+Reynolds number:                8.529600883297E+00
+Elapsed time:                   315.425578 (s)
+Elapsed user CPU time:          2421.664850 (s)
+Elapsed system CPU time:        18.686159 (s)
+
+(rev if order in colis)
+Elapsed time:                   334.942542 (s)
+Elapsed user CPU time:          2794.452178 (s)
+Elapsed system CPU time:        18.047256 (s)
+
+====
+
+(forced gpu)
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   379.122367 (s)
+Elapsed user CPU time:          459.337170 (s)
+Elapsed system CPU time:        87.624679 (s)
+
+(rev if order in colis)
+Reynolds number:                2.396899746655E-01
+Elapsed time:                   411.183856 (s)
+Elapsed user CPU time:          462.660664 (s)
+Elapsed system CPU time:        92.682910 (s)
+
+
