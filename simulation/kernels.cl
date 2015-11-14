@@ -246,7 +246,7 @@ void accel(param_t params, accel_area_t accel_area, __global speed_t* cells, __g
 }
 
 __kernel
-void av_vel(param_t params, __global speed_t* cells, __global int* obstacles, __global double *av_output)
+void av_vel(param_t params, __global speed_t* cells, __global int* obstacles __global double *av_output, __local double * l_sum, __local int l_tot)
 {
     //int    tot_cells = 0;  /* no. of cells used in calculation */
     /* initialise */
@@ -285,9 +285,21 @@ void av_vel(param_t params, __global speed_t* cells, __global int* obstacles, __
         //tot_u = sqrt(u_x*u_x + u_y*u_y);
         /* increase counter of inspected cells */
         //++tot_cells;
-        av_output[addr] == sqrt(u_x*u_x + u_y*u_y);
+
+        l_sum[get_local_id(0)] == sqrt(u_x*u_x + u_y*u_y);
+        l_tot++;
     }
-    av_output[addr] == (double)0.0;
+        barrier(CLK_LOCAL_MEM_FENCE); 
+
+        if (get_local_id(0)==0)
+        {
+            for(int k = 0, k<get_local_size(0), k++)
+                sum += l_sum[k];
+
+            p_sums[get_global_id(0)] = sum/(double)l_tot;
+        }
+
+
 
 }
 

@@ -415,6 +415,8 @@ Elapsed system CPU time:        18.047256 (s)
 
 ====
 
+gpu flaggs
+
 (forced gpu)
 Reynolds number:                8.531247814429E+00
 Elapsed time:                   379.122367 (s)
@@ -427,4 +429,67 @@ Elapsed time:                   411.183856 (s)
 Elapsed user CPU time:          462.660664 (s)
 Elapsed system CPU time:        92.682910 (s)
 
+===
+with select
 
+large_pipe 
+
+Got OpenCL device:
+ Device 0:        Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz (CPU)
+Created OpenCL context
+Building program
+Finished initialising OpenCL
+==done==
+Reynolds number:                8.529600883297E+00
+Elapsed time:                   318.807951 (s)
+Elapsed user CPU time:          2220.074497 (s)
+Elapsed system CPU time:        11.225293 (s)
+
+ Device 1: Tesla K20m (GPU)
+Created OpenCL context
+Building program
+Finished initialising OpenCL
+==done==
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   461.983288 (s)
+Elapsed user CPU time:          353.407273 (s)
+Elapsed system CPU time:        102.403432 (s)
+
+ Device 2: Tesla K20m (GPU)
+Created OpenCL context
+Building program
+Finished initialising OpenCL
+==done==
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   499.432802 (s)
+Elapsed user CPU time:          394.382044 (s)
+Elapsed system CPU time:        104.679086 (s)
+
+with if
+
+Device 0:        Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz (CPU)
+Created OpenCL context
+Building program
+Finished initialising OpenCL
+==done==
+Reynolds number:                8.529600883297E+00
+Elapsed time:                   317.548732 (s)
+Elapsed user CPU time:          2217.309917 (s)
+Elapsed system CPU time:        10.640382 (s)
+
+ Device 1: Tesla K20m (GPU)
+Created OpenCL context
+Building program
+Finished initialising OpenCL
+==done==
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   431.864829 (s)
+Elapsed user CPU time:          345.906414 (s)
+Elapsed system CPU time:        85.721968 (s)
+
+Finished initialising OpenCL
+==done==
+Reynolds number:                8.531247814429E+00
+Elapsed time:                   450.921365 (s)
+Elapsed user CPU time:          365.423447 (s)
+Elapsed system CPU time:        85.202047 (s)
