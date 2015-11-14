@@ -1,18 +1,22 @@
-Running on host node46-002
-Time is Sat Nov 14 01:46:20 GMT 2015
+Running on host node43-037
+Time is Sat Nov 14 16:42:29 GMT 2015
 Directory is /panfs/panasas01/cosc/nc0565/c2/UoB-HPC-LBM-2015/simulation
-PBS job ID is 3688879.master.cm.cluster
+PBS job ID is 3689406.master.cm.cluster
 This jobs runs on the following machines:
-node46-002
+node43-037
 Using device 0
-./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params -d 2
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params -d 0
+Loading library failed: libnvidia-opencl.so.1: cannot open shared object file: No such file or directory
 Got OpenCL device:
- Device 2: Tesla K20m (GPU)
+ Device 0:        Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz (CPU)
 Created OpenCL context
 Building program
 Finished initialising OpenCL
+
+
+CL_DEVICE_LOCAL_MEM_SIZE = 32768
 ==done==
-Reynolds number:		8.531247814429E+00
-Elapsed time:			450.921365 (s)
-Elapsed user CPU time:		365.423447 (s)
-Elapsed system CPU time:	85.202047 (s)
+Reynolds number:		8.529582977295E+00
+Elapsed time:			128.000000 (s)
+Elapsed user CPU time:		1328.902954 (s)
+Elapsed system CPU time:	8.865652 (s)

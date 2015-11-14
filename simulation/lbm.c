@@ -72,21 +72,21 @@ int main(int argc, char* argv[])
     speed_t* cells     = NULL;    /* grid containing fluid densities */
     speed_t* tmp_cells = NULL;    /* scratch space */
     int*     obstacles = NULL;    /* grid indicating which cells are blocked */
-    double*  av_vels   = NULL, *av_out = NULL;    /* a record of the av. velocity computed for each timestep */
+    float*  av_vels   = NULL, *av_out = NULL;    /* a record of the av. velocity computed for each timestep */
 
     int    ii;                    /*  generic counter */
     struct timeval timstr;        /* structure to hold elapsed time */
     struct rusage ru;             /* structure to hold CPU time--system and user */
-    double tic,toc;               /* floating point numbers to calculate elapsed wallclock time */
-    double usrtim;                /* floating point number to record elapsed user CPU time */
-    double systim;                /* floating point number to record elapsed system CPU time */
+    float tic,toc;               /* floating point numbers to calculate elapsed wallclock time */
+    float usrtim;                /* floating point number to record elapsed user CPU time */
+    float systim;                /* floating point number to record elapsed system CPU time */
 
     int device_id;
     lbm_context_t lbm_context;
 
     parse_args(argc, argv, &final_state_file, &av_vels_file, &param_file, &device_id);
-
-    initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles, &av_vels, &av_out);
+    int obstacles_count=0;
+    initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles, &av_vels, &av_out,&obstacles_count);
     opencl_initialise(device_id, params, accel_area, &lbm_context, cells, obstacles, av_out);
 
     //==============================================
@@ -94,7 +94,10 @@ int main(int argc, char* argv[])
     if (err != CL_SUCCESS) DIE("OpenCL error %d writing to h_cells_buff", err);
     err = clEnqueueWriteBuffer(lbm_context.queue, lbm_context.h_obstacles_buff, CL_TRUE, 0, (sizeof(int)*params.ny*params.nx), obstacles, 0, NULL, NULL);
     if (err != CL_SUCCESS) DIE("OpenCL error %d writing to h_cells_buff", err); 
-    const size_t global[2] = {params.ny, params.nx};
+    // const size_t global[2] = {params.ny, params.nx};
+    const int num_groups = 4;
+    const int group_size = (params.nx *params.ny)/num_groups;
+    float *h_p_sum = malloc(sizeof(float)*group_size);
 
     /* iterate for max_iters timesteps */
     gettimeofday(&timstr,NULL);
@@ -104,20 +107,23 @@ int main(int argc, char* argv[])
     {
         timestep(params, accel_area, lbm_context, cells, tmp_cells, obstacles);
 
-        /*err = */clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
+        err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_cells_buff, CL_TRUE, 0, (sizeof(speed_t)*params.nx*params.ny), cells, 0, NULL, NULL);
         // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_cells_buff", err); 
         av_vels[ii] = av_velocity(params, cells, obstacles);
+        
+        /*err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_av_vel, 1, NULL, params.ny*params.nx, \
+            num_groups, 0, NULL, NULL); // hardcode for testing fast.params
+        // err = clEnqueueTask(lbm_context.queue, lbm_context.k_av_vel, 0, NULL, NULL)
+        if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute av_vel kernel!", err); 
+        err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_p_sum_buff, CL_TRUE, 0, \
+            (sizeof(float)*group_size), h_p_sum, 0, NULL, NULL);
+        if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_p_sum_buff", err); 
 
-        // err = clEnqueueNDRangeKernel(lbm_context.queue, lbm_context.k_av_vel, 2, NULL, global, NULL, 0, NULL, NULL);
-        // if (err != CL_SUCCESS) DIE("OpenCL error %d: failed to execute av_vel kernel!", err); 
-        // err = clEnqueueReadBuffer(lbm_context.queue, lbm_context.h_av_out_buff, CL_TRUE, 0, (sizeof(double)*params.max_iters), av_out, 0, NULL, NULL);
-        // if (err != CL_SUCCESS) DIE("OpenCL error %d Reading back h_av_out_buff", err); 
-
-        // for (int jj = 0; jj < params.nx*params.ny; jj++)
-        // {
-        //     av_vels[ii] += av_out[jj];
-        // }
-        // av_vels[ii] /= (double)((params.ny*params.nx)-4); // hardcode for testing fast.params
+        for (int jj = 0; jj < group_size; jj++) // hardcode for testing fast.params
+        {
+            av_vels[ii] += h_p_sum[jj];
+        }
+        av_vels[ii] /= (float)(obstacles_count);*/
 
         #ifdef DEBUG
         printf("==timestep: %d==\n", ii);
@@ -148,6 +154,7 @@ int main(int argc, char* argv[])
     printf("Elapsed user CPU time:\t\t%.6f (s)\n", usrtim);
     printf("Elapsed system CPU time:\t%.6f (s)\n", systim);
 
+    free(h_p_sum);
     write_values(final_state_file, av_vels_file, params, cells, obstacles, av_vels);
     finalise(&cells, &tmp_cells, &obstacles, &av_vels);
     opencl_finalise(lbm_context);
@@ -156,16 +163,16 @@ int main(int argc, char* argv[])
 }
 
 void write_values(const char * final_state_file, const char * av_vels_file,
-    const param_t params, speed_t* cells, int* obstacles, double* av_vels)
+    const param_t params, speed_t* cells, int* obstacles, float* av_vels)
 {
     FILE* fp;                     /* file pointer */
     int ii,jj,kk;                 /* generic counters */
-    const double c_sq = 1.0/3.0;  /* sq. of speed of sound */
-    double local_density;         /* per grid cell sum of densities */
-    double pressure;              /* fluid pressure in grid cell */
-    double u_x;                   /* x-component of velocity in grid cell */
-    double u_y;                   /* y-component of velocity in grid cell */
-    double u;                     /* norm--root of summed squares--of u_x and u_y */
+    const float c_sq = 1.0/3.0;  /* sq. of speed of sound */
+    float local_density;         /* per grid cell sum of densities */
+    float pressure;              /* fluid pressure in grid cell */
+    float u_x;                   /* x-component of velocity in grid cell */
+    float u_y;                   /* y-component of velocity in grid cell */
+    float u;                     /* norm--root of summed squares--of u_x and u_y */
 
     fp = fopen(final_state_file, "w");
 
@@ -241,17 +248,17 @@ void write_values(const char * final_state_file, const char * av_vels_file,
     fclose(fp);
 }
 
-double calc_reynolds(const param_t params, speed_t* cells, int* obstacles)
+float calc_reynolds(const param_t params, speed_t* cells, int* obstacles)
 {
-    const double viscosity = 1.0 / 6.0 * (2.0 / params.omega - 1.0);
+    const float viscosity = 1.0 / 6.0 * (2.0 / params.omega - 1.0);
 
     return av_velocity(params,cells,obstacles) * params.reynolds_dim / viscosity;
 }
 
-double total_density(const param_t params, speed_t* cells)
+float total_density(const param_t params, speed_t* cells)
 {
     int ii,jj,kk;        /* generic counters */
-    double total = 0.0;  /* accumulator */
+    float total = 0.0;  /* accumulator */
 
     for (ii = 0; ii < params.ny; ii++)
     {

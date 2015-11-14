@@ -144,7 +144,7 @@ void list_opencl_platforms(void)
 }
 
 void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
-    lbm_context_t * lbm_context, speed_t * cells, int * obstacles, double * av_out)
+    lbm_context_t * lbm_context, speed_t * cells, int * obstacles, float * av_out)
 {
     /* get device etc. */
     cl_platform_id * platforms = NULL;
@@ -258,6 +258,32 @@ void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
     *   TODO
     *   Allocate memory and create kernels
     */
+
+    /* Get available local memory size */
+    size_t local_size_size;
+    cl_ulong local_size = 0;
+    cl_int cl_local_size;  
+    clGetDeviceInfo(lbm_context->device, CL_DEVICE_LOCAL_MEM_SIZE, sizeof(local_size), &local_size, &local_size_size);    
+    fprintf(stdout, "\n\nCL_DEVICE_LOCAL_MEM_SIZE = %d\n", (int)local_size);
+    cl_local_size = local_size /2;
+
+    /*int tmp = 9, size =512;
+
+    while(2^tmp++ < params.nx *params.ny) size = 2^tmp;
+    while(size < params.nx *params.ny) size += params.nx;
+
+    lbm_context->size_global = size;
+    tmp = 8;
+    while(size % tmp != 0) --tmp; // while allways succed at 1.
+    lbm_context->num_workgroups =  size / tmp;
+    */
+    // size_t local_size_size;
+
+    // clGetDeviceInfo(lbm_context->device, CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE, sizeof(local_size), &local_size, &local_size_size);    
+    // fprintf(stdout, "\n\nCL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE = %d\n", (int)local_size);
+
+
+
     /*  collision  */
     lbm_context->k_collision = clCreateKernel(program, "collision", &err);
     if (err != CL_SUCCESS) DIE("OpenCL error %d creating the collision kernel", err);
@@ -294,14 +320,20 @@ void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
     if (err != CL_SUCCESS) DIE("OpenCL error %d setting kernel arguments for the accel kernel", err);
 
     /*  av_vel  */
-    lbm_context->k_av_vel = clCreateKernel(program, "av_vel", &err);
-    if (err != CL_SUCCESS) DIE("OpenCL error %d creating the av_vel kernel", err);
+    //lbm_context->k_av_vel = clCreateKernel(program, "av_vel", &err);
+    //if (err != CL_SUCCESS) DIE("OpenCL error %d creating the av_vel kernel", err);
 
-    lbm_context->h_av_out_buff = clCreateBuffer(lbm_context->context, CL_MEM_WRITE_ONLY,((params.max_iters)*sizeof(double)), NULL, NULL);
-    err = clSetKernelArg(lbm_context->k_av_vel, 0, sizeof(param_t), &params);
-    err |= clSetKernelArg(lbm_context->k_av_vel, 1, sizeof(cl_mem), &(lbm_context->h_cells_buff));
-    err |= clSetKernelArg(lbm_context->k_av_vel, 2, sizeof(cl_mem), &(lbm_context->h_obstacles_buff));
-    err |= clSetKernelArg(lbm_context->k_av_vel, 3, sizeof(cl_mem), &(lbm_context->h_av_out_buff));
+    //lbm_context->h_av_out_buff = clCreateBuffer(lbm_context->context, CL_MEM_WRITE_ONLY,((params.max_iters)*sizeof(cl_float)), NULL, NULL);
+    //err = clSetKernelArg(lbm_context->k_av_vel, 0, sizeof(param_t), &params);
+    //err |= clSetKernelArg(lbm_context->k_av_vel, 1, sizeof(cl_mem), &(lbm_context->h_cells_buff));
+    //err |= clSetKernelArg(lbm_context->k_av_vel, 2, sizeof(cl_mem), &(lbm_context->h_obstacles_buff));
+    //// err |= clSetKernelArg(lbm_context->k_av_vel, 3, sizeof(cl_mem), &(lbm_context->h_av_out_buff));
+    //lbm_context->h_p_sum_buff = clCreateBuffer(lbm_context->context, CL_MEM_WRITE_ONLY, \
+        //(((params.nx *params.ny)/4)*sizeof(cl_float)), NULL, NULL);
+    //err |= clSetKernelArg(lbm_context->k_av_vel, 3, sizeof(cl_mem), &(lbm_context->h_p_sum_buff));
+    //err |= clSetKernelArg(lbm_context->k_av_vel, 4, (((params.nx *params.ny)/4)*sizeof(cl_float)), NULL);
+    //// err |= clSetKernelArg(lbm_context->k_av_vel, 4, cl_local_size, NULL);
+    //if (err != CL_SUCCESS) DIE("OpenCL error %d setting kernel arguments for the av_vel kernel", err);
 
 }
 

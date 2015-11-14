@@ -4,7 +4,7 @@
 #PBS -joe
 #PBS -o LBM.out
 #PBS -q teaching
-#PBS -l nodes=1:ppn=8:gpus=1,walltime=00:10:00
+#PBS -l nodes=1:ppn=16:gpus=1,walltime=00:10:00
 
 #! Mail to user if job aborts
 #PBS -m a
@@ -17,7 +17,7 @@ device=$(cat $PBS_GPUFILE)
 device=${device#*gpu}
 
 #! Run options for the application
-options="PARAM_FILE=../inputs/fast.params DEVICE=$device"
+options="PARAM_FILE=../inputs/large_pipe.params DEVICE=1"
 
 ###############################################################
 ### You should not have to change anything below this line ####

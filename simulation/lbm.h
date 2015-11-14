@@ -19,9 +19,9 @@ typedef struct {
     cl_int ny;            /* no. of cells in y-direction */
     cl_int max_iters;      /* no. of iterations */
     cl_int reynolds_dim;  /* dimension for Reynolds number */
-    cl_double density;       /* density per link */
-    cl_double accel;         /* density redistribution */
-    cl_double omega;         /* relaxation parameter */
+    cl_float density;       /* density per link */
+    cl_float accel;         /* density redistribution */
+    cl_float omega;         /* relaxation parameter */
 } param_t;
 
 /* obstacle positions */
@@ -44,11 +44,15 @@ typedef struct {
     cl_mem h_tcells_buff;
     cl_mem h_obstacles_buff;
     cl_mem h_av_out_buff;
+    cl_mem h_p_sum_buff;
+    // cl_int size_global;
+    // cl_int num_workgroups;
+    // cl_int size_workgroup;
 } lbm_context_t;
 
 /* struct to hold the 'speed' values */
 typedef struct {
-    cl_double speeds[NSPEEDS];
+    cl_float speeds[NSPEEDS];
 } speed_t;
 
 typedef enum { ACCEL_ROW=0, ACCEL_COLUMN=1 } accel_e;
@@ -63,19 +67,19 @@ void parse_args (int argc, char* argv[],
 
 void initialise(const char* paramfile, accel_area_t * accel_area,
     param_t* params, speed_t** cells_ptr, speed_t** tmp_cells_ptr,
-    int** obstacles_ptr, double** av_vels_ptr, double** av_out_ptr);
+    int** obstacles_ptr, float** av_vels_ptr, float** av_out_ptr,int * obstacles_count);
 
 void opencl_initialise(int device_id, param_t params, accel_area_t accel_area,
-    lbm_context_t * lbm_context, speed_t * cells, int * obstacles, double * av_out);
+    lbm_context_t * lbm_context, speed_t * cells, int * obstacles, float * av_out);
 void opencl_finalise(lbm_context_t lbm_context);
 
 void list_opencl_platforms(void);
 
 void write_values(const char * final_state_file, const char * av_vels_file,
-    const param_t params, speed_t* cells, int* obstacles, double* av_vels);
+    const param_t params, speed_t* cells, int* obstacles, float* av_vels);
 
 void finalise(speed_t** cells_ptr, speed_t** tmp_cells_ptr,
-    int** obstacles_ptr, double** av_vels_ptr);
+    int** obstacles_ptr, float** av_vels_ptr);
 
 void timestep(const param_t params, const accel_area_t accel_area,
     lbm_context_t lbm_context, speed_t* cells, speed_t* tmp_cells,
@@ -88,13 +92,13 @@ void collision(const param_t params, speed_t* cells, speed_t* tmp_cells, int* ob
 
 /* Sum all the densities in the grid.
 ** The total should remain constant from one timestep to the next. */
-double total_density(const param_t params, speed_t* cells);
+float total_density(const param_t params, speed_t* cells);
 
 /* compute average velocity */
-double av_velocity(const param_t params, speed_t* cells, int* obstacles);
+float av_velocity(const param_t params, speed_t* cells, int* obstacles);
 
 /* calculate Reynolds number */
-double calc_reynolds(const param_t params, speed_t* cells, int* obstacles);
+float calc_reynolds(const param_t params, speed_t* cells, int* obstacles);
 
 /* Exit, printing out formatted string */
 #define DIE(...) exit_with_error(__LINE__, __FILE__, __VA_ARGS__)

@@ -17,6 +17,9 @@ work group size
 cookbook tips
 references
 
+CPU CL_DEVICE_LOCAL_MEM_SIZE = 32768
+
+
 Serial 
 
 Box
@@ -493,3 +496,36 @@ Reynolds number:                8.531247814429E+00
 Elapsed time:                   450.921365 (s)
 Elapsed user CPU time:          365.423447 (s)
 Elapsed system CPU time:        85.202047 (s)
+==================================
+
+floats
+
+lp
+ Device 0:        Intel(R) Xeon(R) CPU E5-2670 0 @ 2.60GHz (CPU)
+Created OpenCL context
+Building program
+Finished initialising OpenCL
+
+
+CL_DEVICE_LOCAL_MEM_SIZE = 32768
+==done==
+Reynolds number:                8.529582977295E+00
+Elapsed time:                   256.000000 (s)
+Elapsed user CPU time:          1361.510986 (s)
+Elapsed system CPU time:        18.624168 (s)
+
+ Device 1: Tesla K20m (GPU)
+Created OpenCL context
+Building program
+Finished initialising OpenCL
+
+
+CL_DEVICE_LOCAL_MEM_SIZE = 49152
+==done==
+Reynolds number:                8.530670166016E+00
+Elapsed time:                   384.000000 (s)
+Elapsed user CPU time:          236.554031 (s)
+Elapsed system CPU time:        79.151970 (s)
+
+
+16 threads

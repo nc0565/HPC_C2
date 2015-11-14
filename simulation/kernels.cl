@@ -4,7 +4,7 @@
 
 /* struct to hold the 'speed' values */
 typedef struct {
-    double speeds[NSPEEDS];
+    float speeds[NSPEEDS];
 } speed_t;
 
 /* struct to hold the parameter values */
@@ -13,9 +13,9 @@ typedef struct {
     int ny;              /* no. of cells in y-direction */
     int max_iters;       /* no. of iterations */
     int reynolds_dim;    /* dimension for Reynolds number */
-    double density;      /* density per link */
-    double accel;        /* density redistribution */
-    double omega;        /* relaxation parameter */
+    float density;      /* density per link */
+    float accel;        /* density redistribution */
+    float omega;        /* relaxation parameter */
 } param_t;
 
 typedef enum { ACCEL_ROW=0, ACCEL_COLUMN=1 } accel_e;
@@ -32,18 +32,18 @@ typedef struct {
 __kernel
 void collision(param_t params, __global speed_t* cells, __global speed_t* tmp_cells, __global int* obstacles)
 {
-     double c_sq = (1.0/3.0);  /* square of speed of sound */
-     double tmp1 = (2.0 * c_sq);
-     double tmp2 = (tmp1 * c_sq);
-     double w0 = (4.0/9.0);    /* weighting factor */
-     double w1 = (1.0/9.0);    /* weighting factor */
-     double w2 = (1.0/36.0);   /* weighting factor */
+     float c_sq = (1.0/3.0);  /* square of speed of sound */
+     float tmp1 = (2.0 * c_sq);
+     float tmp2 = (tmp1 * c_sq);
+     float w0 = (4.0/9.0);    /* weighting factor */
+     float w1 = (1.0/9.0);    /* weighting factor */
+     float w2 = (1.0/36.0);   /* weighting factor */
 
-    double u_x,u_y;               /* av. velocities in x and y directions */
-    double u_sq;                  /* squared velocity */
-    double local_density;         /* sum of densities in a particular cell */
-    double u[NSPEEDS];            /* directional velocities */
-    double d_equ[NSPEEDS];        /* equilibrium densities */
+    float u_x,u_y;               /* av. velocities in x and y directions */
+    float u_sq;                  /* squared velocity */
+    float local_density;         /* sum of densities in a particular cell */
+    float u[NSPEEDS];            /* directional velocities */
+    float d_equ[NSPEEDS];        /* equilibrium densities */
 
     /* loop over the cells in the grid
     ** NB the collision step is called after
@@ -193,7 +193,7 @@ __kernel
 void accel(param_t params, accel_area_t accel_area, __global speed_t* cells, __global int* obstacles)
 {
     /* compute weighting factors */
-    double w1 = params.density * params.accel / 9.0, w2 = params.density * params.accel / 36.0;
+    float w1 = params.density * params.accel / 9.0, w2 = params.density * params.accel / 36.0;
 
     if (accel_area.col_or_row == ACCEL_COLUMN)
     {
@@ -246,20 +246,22 @@ void accel(param_t params, accel_area_t accel_area, __global speed_t* cells, __g
 }
 
 __kernel
-void av_vel(param_t params, __global speed_t* cells, __global int* obstacles __global double *av_output, __local double * l_sum, __local int l_tot)
+void av_vel(param_t params, __global speed_t* cells, __global int* obstacles, \
+    /*__global float *av_output,*/ __global float* p_sum, __local float * l_sum/*, __local int l_tot*/)
 {
     //int    tot_cells = 0;  /* no. of cells used in calculation */
     /* initialise */
-    //double tot_u = 0.0;    /* accumulated magnitudes of velocity for each cell */
+    //float tot_u = 0.0;    /* accumulated magnitudes of velocity for each cell */
 
 
     /* loop over all non-blocked cells */
-    int addr = (get_global_id(0)*params.nx) + get_global_id(1);
+    int addr = (get_group_id(0)*get_local_size(0)) + get_local_id(0);
+    //int addr = (get_global_id(0));
     /* ignore occupied cells */
-    if (!obstacles[addr])
+    if (addr < params.nx*params.ny && !obstacles[addr])
     {
         /* local density total */
-        double local_density = 0.0;
+        float local_density = 0.0;
 
         local_density += cells[addr].speeds[0];
         local_density += cells[addr].speeds[1];
@@ -272,12 +274,12 @@ void av_vel(param_t params, __global speed_t* cells, __global int* obstacles __g
         local_density += cells[addr].speeds[8];
 
         /* x-component of velocity */
-        double u_x = (cells[addr].speeds[1]+cells[addr].speeds[5]+cells[addr].speeds[8]
+        float u_x = (cells[addr].speeds[1]+cells[addr].speeds[5]+cells[addr].speeds[8]
             - (cells[addr].speeds[3]+cells[addr].speeds[6]+cells[addr].speeds[7])) /
             local_density;
 
         /* compute y velocity component */
-        double u_y = (cells[addr].speeds[2]+cells[addr].speeds[5]+cells[addr].speeds[6]
+        float u_y = (cells[addr].speeds[2]+cells[addr].speeds[5]+cells[addr].speeds[6]
             - (cells[addr].speeds[4]+cells[addr].speeds[7]+cells[addr].speeds[8])) /
             local_density;
 
@@ -286,19 +288,19 @@ void av_vel(param_t params, __global speed_t* cells, __global int* obstacles __g
         /* increase counter of inspected cells */
         //++tot_cells;
 
-        l_sum[get_local_id(0)] == sqrt(u_x*u_x + u_y*u_y);
-        l_tot++;
+        l_sum[get_local_id(0)] = sqrt(u_x*u_x + u_y*u_y);
+        //l_tot++;
     }
         barrier(CLK_LOCAL_MEM_FENCE); 
 
         if (get_local_id(0)==0)
         {
-            for(int k = 0, k<get_local_size(0), k++)
-                sum += l_sum[k];
+            int sum;
+            for(int l = 0; l<get_local_size(0); l++)
+                sum += l_sum[l];
 
-            p_sums[get_global_id(0)] = sum/(double)l_tot;
+            p_sum[get_group_id(0)] = sum;
         }
-
 
 
 }
