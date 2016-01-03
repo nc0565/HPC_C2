@@ -1,6 +1,6 @@
-CC=gcc
+CC=mpicc #gcc
 
-CFLAGS=-O3 -g -Wall
+CFLAGS=-O3 -Wall -Wextra -Wno-unused-parameter -std=c99
 
 EXE=lbm
 
@@ -26,6 +26,9 @@ $(EXE) : utils.o lbm.o simulation.o
 
 run: $(EXE)
 	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
+
+test: $(EXE)
+	mpirun -n 5 ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
 plot:
 	gnuplot final_state.plt

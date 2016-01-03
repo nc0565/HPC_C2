@@ -4,7 +4,7 @@
 #PBS -joe
 #PBS -o LBM.out
 #PBS -q teaching
-#PBS -l nodes=1:ppn=16,walltime=00:10:00
+#PBS -l nodes=1:ppn=2,walltime=00:10:00
 
 #! Mail to user if job aborts
 #PBS -m a
@@ -23,6 +23,8 @@ options="PARAM_FILE=../inputs/box.params"
 
 cd $PBS_O_WORKDIR
 
+LD_PRELOAD=""
+export LD_PRELOAD=""
 echo Running on host `hostname`
 echo Time is `date`
 echo Directory is `pwd`
@@ -30,9 +32,17 @@ echo PBS job ID is $PBS_JOBID
 echo This jobs runs on the following machines:
 echo `cat $PBS_NODEFILE | uniq`
 
+# count the number of processors available:
+#numprocs=`wc $PBS_NODEFILE | awk '{print $1}'`
+
+# launch the program using mpiexec:
+#mpiexec -np $numprocs ./my-mpi-program
+
+#! Create a machine file for MPI
+cat $PBS_NODEFILE > machine.file.$PBS_JOBID
+
 numnodes=`wc $PBS_NODEFILE | awk '{ print $1 }'`
 
-export OMP_NUM_THREADS=$numnodes
-
-#! Run the executable
-$application $options
+#! Run the parallel MPI executable (nodes*ppn)
+# -npernode 1 for openmp
+mpirun -np $numnodes -machinefile machine.file.$PBS_JOBID $application $options

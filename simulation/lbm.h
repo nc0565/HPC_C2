@@ -69,6 +69,9 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles);
 /* calculate Reynolds number */
 double calc_reynolds(const param_t params, speed_t* cells, int* obstacles);
 
+/* calculate local stripes */
+void calculate_local_stripes(param_t params, int* local_nrows, int* local_ncols, int com_size, int my_rank, int grid_fat, speed_t** send_buff, speed_t** read_buff, speed_t** local_work_space);
+
 /* Exit, printing out formatted string */
 #define DIE(...) exit_with_error(__LINE__, __FILE__, __VA_ARGS__)
 void exit_with_error(int line, const char* filename, const char* format, ...)

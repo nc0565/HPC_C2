@@ -233,6 +233,13 @@ void initialise(const char* param_file, accel_area_t * accel_area,
                     y_pos >= obstacles[kk].obs_y_min &&
                     y_pos <  obstacles[kk].obs_y_max)
                 {
+                    // if (x_pos >= obstacles[kk].obs_x_min &&
+                    // x_pos <  obstacles[kk].obs_x_max && (y_pos == obstacles[kk].obs_y_min || y_pos == obstacles[kk].obs_y_max)
+                    // ||
+                    // y_pos >= obstacles[kk].obs_y_min &&
+                    // y_pos <  obstacles[kk].obs_y_max && (x_pos == obstacles[kk].obs_x_min || x_pos == obstacles[kk].obs_x_max))
+                    // {(*obstacles_ptr)[ii*params->nx + jj] = 2;} // A border case.
+                    // else
                     (*obstacles_ptr)[ii*params->nx + jj] = 1;
                 }
             }
