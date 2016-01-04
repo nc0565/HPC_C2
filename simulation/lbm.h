@@ -13,6 +13,9 @@ typedef struct {
     int ny;            /* no. of cells in y-direction */
     int max_iters;      /* no. of iterations */
     int reynolds_dim;  /* dimension for Reynolds number */
+    int my_rank;        // The current rank number
+    int local_nrows;    // Local number of rows in the rank
+    int local_ncols;    // Local number of columns in the rank
     double density;       /* density per link */
     double accel;         /* density redistribution */
     double omega;         /* relaxation parameter */
@@ -36,6 +39,8 @@ typedef struct {
     accel_e col_or_row;
     int idx;
 } accel_area_t;
+
+typedef enum { HALO, INITIALISE, DONE} mpi_tag;
 
 /* Parse command line arguments to get filenames */
 void parse_args (int argc, char* argv[],
@@ -70,7 +75,8 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles);
 double calc_reynolds(const param_t params, speed_t* cells, int* obstacles);
 
 /* calculate local stripes */
-void calculate_local_stripes(param_t params, int* local_nrows, int* local_ncols, int com_size, int my_rank, int grid_fat, speed_t** send_buff, speed_t** read_buff, speed_t** local_work_space);
+void calculate_local_stripes(param_t* params, int com_size, int grid_fat, speed_t** send_buff
+    , speed_t** read_buff, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles);
 
 /* Exit, printing out formatted string */
 #define DIE(...) exit_with_error(__LINE__, __FILE__, __VA_ARGS__)
