@@ -76,6 +76,75 @@ void accelerate_flow(const param_t params, const accel_area_t accel_area,
     }
 }
 
+void accelerate_flow_Colum_RW(const param_t params, const accel_area_t accel_area,
+    speed_t* cells, int* obstacles)
+{
+    int ii,jj;     /* generic counters */
+    float w1,w2;  /* weighting factors */
+
+    /* compute weighting factors */
+    w1 = params.density * params.accel / 9.0;
+    w2 = params.density * params.accel / 36.0;
+
+    jj = accel_area.idx;
+
+    for (ii = 1; ii < params.local_nrows; ii++)
+    {
+        int addr = ii*params.local_ncols + jj;
+        /* if the cell is not occupied and
+        ** we don't send a density negative */
+        if (!obstacles[addr] &&
+        (cells[addr].speeds[4] - w1) > 0.0 &&
+        (cells[addr].speeds[7] - w2) > 0.0 &&
+        (cells[addr].speeds[8] - w2) > 0.0 )
+        {
+            /* increase 'north-side' densities */
+            cells[addr].speeds[2] += w1;
+            cells[addr].speeds[5] += w2;
+            cells[addr].speeds[6] += w2;
+            /* decrease 'south-side' densities */
+            cells[addr].speeds[4] -= w1;
+            cells[addr].speeds[7] -= w2;
+            cells[addr].speeds[8] -= w2;
+        }
+    }
+
+}
+
+void accelerate_flow_Row_RW(const param_t params, const accel_area_t accel_area,
+    speed_t* cells, int* obstacles)
+{
+    int ii,jj;     /* generic counters */
+    float w1,w2;  /* weighting factors */
+
+    /* compute weighting factors */
+    w1 = params.density * params.accel / 9.0;
+    w2 = params.density * params.accel / 36.0;
+
+    ii = accel_area.idx;
+    int addr = ii*params.local_ncols+1;
+
+    for (jj = 0; jj < params.local_ncols; jj++, addr++)
+    {
+        /* if the cell is not occupied and
+        ** we don't send a density negative */
+        if (!obstacles[addr] &&
+        (cells[addr].speeds[3] - w1) > 0.0 &&
+        (cells[addr].speeds[6] - w2) > 0.0 &&
+        (cells[addr].speeds[7] - w2) > 0.0 )
+        {
+            /* increase 'east-side' densities */
+            cells[addr].speeds[1] += w1;
+            cells[addr].speeds[5] += w2;
+            cells[addr].speeds[8] += w2;
+            /* decrease 'west-side' densities */
+            cells[addr].speeds[3] -= w1;
+            cells[addr].speeds[6] -= w2;
+            cells[addr].speeds[7] -= w2;
+        }
+    }
+}
+
 void propagate(const param_t params, speed_t* cells, speed_t* tmp_cells)
 {
     int ii,jj;            /* generic counters */

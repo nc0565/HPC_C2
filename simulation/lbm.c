@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
     }
 
     // Create mpi type for param
-    int blocklengths[2] = {7,3};
+    int blocklengths[2] = {8,3};
     MPI_Datatype types[2] = {MPI_INT, MPI_DOUBLE};
     MPI_Aint displacements[2];
     MPI_Get_address(&params.nx, &displacements[0]);
@@ -129,7 +129,7 @@ int main(int argc, char* argv[])
 
 
     // Set stripe and buffer direction and size
-    int grid_fat = ((params.nx - params.ny) >= -200)? 1:0; /* 1 if the grid is square or fat, 0 if it's tall */
+    params.grid_fat = ((params.nx - params.ny) >= -200)? 1:0; /* 1 if the grid is square or fat, 0 if it's tall */
     //int params.local_nrows;    // Number of rows in the current rank         Done in params
     //int params.local_ncols;    // Number of cols in the current rank
     // int last_nrows = -1;     // Number of rows in the last rank
@@ -146,8 +146,8 @@ int main(int argc, char* argv[])
     int*     local_obstacles = NULL;
 
 
-    calculate_local_stripes(&params, com_size, grid_fat,
-     &send_buff, &read_buff, &local_work_space, &local_temp_space, &local_obstacles);
+    calculate_local_stripes(&params, com_size, &send_buff, &read_buff,
+     &local_work_space, &local_temp_space, &local_obstacles);
     // printf("Rank:%d params.local_nrows=%d params.local_ncols=%d\n", params.my_rank, params.local_nrows, params.local_ncols);
 
     // Create mpi type for spee_t
@@ -155,26 +155,18 @@ int main(int argc, char* argv[])
     MPI_Type_create_struct(1, (int[1]){9}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_DOUBLE}, &mpi_speed_t);
     MPI_Type_commit(&mpi_speed_t);
 
-    // Refactor with if(fat_grid)
-    // Create mpi type for rows
-    // if (params.my_rank!=com_size-1)
-    // {
-        MPI_Datatype mpi_row;
-        MPI_Type_contiguous(params.local_ncols, mpi_speed_t, &mpi_row);
-        MPI_Type_commit(&mpi_row);
-    // }
-    // else
-    // {
-    //     MPI_Datatype mpi_last_row;
-    //     MPI_Type_contiguous(params.local_ncols, mpi_speed_t, &mpi_last_row);
-    //     MPI_Type_commit(&mpi_last_row);
-    // }
+    MPI_Datatype mpi_row;
 
     // scatter, shift and exchange based on striping
-    if (grid_fat!=0)
+    if (params.grid_fat!=0)
     {               // Row stripes are contigous in C memory
-        MPI_Scatter(cells, params.local_nrows*params.local_ncols, mpi_speed_t,
-         local_work_space, params.local_nrows*params.local_ncols, mpi_speed_t,
+        
+        // create data type for
+        MPI_Type_contiguous(params.local_ncols, mpi_speed_t, &mpi_row);
+        MPI_Type_commit(&mpi_row);
+
+        MPI_Scatter(cells, params.local_nrows, mpi_row,
+         local_work_space, params.local_nrows, mpi_row,
           MASTER, MPI_COMM_WORLD);
 
         // Shift out of the halo space
@@ -188,189 +180,101 @@ int main(int argc, char* argv[])
          local_obstacles, params.local_ncols*params.local_nrows, MPI_INT,
           MASTER, MPI_COMM_WORLD);
 
+        // Exchange back
+        MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO,
+         &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
+          MPI_COMM_WORLD, &status);
 
-        // if(params.my_rank==0)
-        // {
-        //     printf("Rank%d nx=%d ny= %d\n\n\n\n", params.my_rank, params.local_ncols, params.local_nrows);
-        //     for (int i = 0; i < params.local_ncols*(params.local_nrows+2); ++i)
-        //     {
-        //         for (int k = 0; k < 8; ++k)
-        //         printf("%f", params.my_rank, local_work_space[i].speeds[k]);
-
-        //         printf("%f_ _", local_work_space[i].speeds[8]);
-        //     }
-        //     printf("working here\n\n\n\n\n\n\n\n\n\n");
-        // }
-        
-        // if (params.my_rank!=com_size-1)
-        // {
-
-
-            MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO,
-             &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
-              MPI_COMM_WORLD, &status);
-
-
-for (int i = 0; i < params.local_ncols; ++i)
-    {
-        if (params.my_rank==0)
-        {
-            for (int k = 0; k < 9; ++k)
-                printf("%f", local_work_space[(params.local_ncols*params.local_nrows)+i].speeds[k]);
-
-                printf("_ _");
-        }
-    }
-    if (params.my_rank==0)
-        {printf("working jgjgjgv  here\n\n\n\n\n\n\n\n\n\n");}
-
-MPI_Barrier(MPI_COMM_WORLD);
-
-            MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
-             local_work_space, 1, mpi_row, prev, HALO,
-              MPI_COMM_WORLD, &status);
-
-
-for (int i = 0; i < params.local_ncols; ++i)
-    {
-        if (params.my_rank==1)
-        {
-            for (int k = 0; k < 9; ++k)
-                printf("%f", local_work_space[i].speeds[k]);
-
-                printf("_ _");
-        }
-    }
-    if (params.my_rank==1)
-        {printf("working dgrhthtjh  here\n\n\n\n\n\n\n\n\n\n");}
-
-MPI_Barrier(MPI_COMM_WORLD);
-
-    /*for (int i = 0; i < params.local_ncols; ++i)
-    {
-        send_buff[i] = local_work_space[(params.local_ncols*params.local_nrows)+i];
-        if (params.my_rank==0)
-        {
-            for (int k = 0; k < 9; ++k)
-                printf("%f", send_buff[i].speeds[k]);
-
-                printf("_ _");
-        }
-    }
-    if (params.my_rank==0)
-        {printf("working jgjgjgv  here\n\n\n\n\n\n\n\n\n\n");}
-
-    MPI_Sendrecv(send_buff, 128, mpi_speed_t, next, HALO,
-             read_buff, 128, mpi_speed_t, prev, HALO,
-              MPI_COMM_WORLD, &status);
-
-    MPI_Barrier(MPI_COMM_WORLD);
-            printf("Rank:%d params.local_nrows=%d params.local_ncols=%d\n", params.my_rank, params.local_nrows, params.local_ncols);
-
-
-    for (int i = 0; i < params.local_ncols; ++i)
-    {
-        local_work_space[i] = read_buff[i];
-        if (params.my_rank==1)
-        {
-            for (int k = 0; k < 9; ++k)
-                printf("%f", read_buff[i].speeds[k]);
-
-                printf("_ _");
-        }
-    }
-    if (params.my_rank==1)
-        {printf("working dgrhthtjh  here\n\n\n\n\n\n\n\n\n\n");}
-
-MPI_Barrier(MPI_COMM_WORLD);
-
-
-
-MPI_Barrier(MPI_COMM_WORLD);
-
-printf("lll\n");
-MPI_Barrier(MPI_COMM_WORLD);*/
-        // }
-        // else
-        // {
-            
-        // }
-
-        // if(params.my_rank==0)
-        // {
-        //     printf("Rank%d nx=%d ny= %d\n\n\n\n", params.my_rank, params.local_ncols, params.local_nrows);
-        //     for (int i = 0; i < params.local_ncols*(params.local_nrows+2); ++i)
-        //     {
-        //         for (int k = 0; k < 9; ++k)
-        //         printf("%f", local_work_space[i].speeds[k]);
-
-        //         //printf("_ _");
-        //     }
-        //     printf("working here\n\n\n\n\n\n\n\n\n\n");
-        // }
-
-        /*if(params.my_rank==0)
-        {
-            printf("Rank%d nx=%d ny= %d\n\n\n\n", params.my_rank, params.local_ncols, params.local_nrows);
-            for (int i = 0; i < 128; ++i)
-            {
-                for (int k = 0; k < 9; ++k)
-                printf("%f", local_work_space[i].speeds[k]);
-
-                printf("_ _");
-            }
-            printf("working jgjgjgv  here\n\n\n\n\n\n\n\n\n\n");
-        }
-
-        MPI_Barrier(MPI_COMM_WORLD);
-        if(params.my_rank==4)
-        {
-            printf("Rank%d nx=%d ny= %d\n\n\n\n", params.my_rank, params.local_ncols, params.local_nrows);
-            for (int i = 26*128; i < (27*128)-1; ++i)
-            {
-                for (int k = 0; k < 9; ++k)
-                printf("%f", local_work_space[i].speeds[k]);
-
-                printf("_ _");
-            }
-            printf("working jgjgjgv  here\n\n\n\n\n\n\n\n\n\n");
-        }*/
-            
+        // Exchange forward
+        MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
+         local_work_space, 1, mpi_row, prev, HALO,
+           MPI_COMM_WORLD, &status);
     }
     else
     {               // Columb stripes need a strided data type
+        // Vector
+        // MPI_Type_commit(&mpi_last_row);
 
     }
 
 
+    // MPI_Barrier(MPI_COMM_WORLD);
+    // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
+    int acel_row_rank;
+    if (grid_fat!=0)
+    {
+        // Calculate the rank and nex index that the acel row exists in
+        if (accel_area.idx==ACCEL_ROW){
+            int lrows = params.ny/com_size;
+            acel_row_rank = accel_area.idx /lrows;
+            if ((accel_area.idx %( lrows)) !=0)  // If there's a remainder, check if the rank should be imcremented.
+            { 
+                acel_row_rank = ((accel_area.idx /(lrows))== com_size)? com_size : acel_row_rank; 
+                // Adjust the index for the local rank
+                if (acel_row_rank>0)
+                {
+                    accel_area.idx -= (acel_row_rank!=com_size)? (acel_row_rank)*lrows:(acel_row_rank-1)*lrows;;
+                    if (idx<1) idx = 1;
+                }
+            }
+            else
+            {
+                if (acel_row_rank!=0)
+                {
+                    acel_row_rank--;
+                    accel_area.idx -= (acel_row_rank)*2;
+                }
+            }
 
-    MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+        }
+    }
+    else
+    {
+        // cacl row rank foe col-wise
+    }
 
     /* iterate for max_iters timesteps */
     gettimeofday(&timstr,NULL);
     tic=timstr.tv_sec+(timstr.tv_usec/1000000.0);
+    if (params.grid_fat!=0)
+    {       // Default striping is row-wise
+        for (ii = 0; ii < params.max_iters; ii++)
+        {
+            // timestep(params, accel_area, cells, tmp_cells, obstacles);
+            if(accel_area.idx==ACCEL_COLUMN)    // Can send through all ranks
+            { accelerate_flow_Colum_RW(params,accel_area,local_work_space,local_obstacles);}
+            else                                // The row is in one rank only, uses the calculated rank and index
+            {if (params.my_rank==acel_row_rank) accelerate_flow_Row_RW(params,accel_area,local_work_space,local_obstacles); }
 
-    for (ii = 0; ii < params.max_iters; ii++)
-    {
-        // timestep(params, accel_area, cells, tmp_cells, obstacles);
-        accelerate_flow(params,accel_area,local_work_space,local_obstacles);
-        propagate(params,local_work_space,local_temp_space);
-        collision(params,local_work_space,local_temp_space,local_obstacles);
+            // To alter
+            propagate(params,local_work_space,local_temp_space);
+            collision(params,local_work_space,local_temp_space,local_obstacles);
 
-        // halo1
-        // Halo2
-        // grab vels and div
+            // Exchange back
+            MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO,
+             &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
+              MPI_COMM_WORLD, &status);
 
+            // Exchange forward
+            MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
+             local_work_space, 1, mpi_row, prev, HALO,
+               MPI_COMM_WORLD, &status);
 
-        av_vels[ii] = av_velocity(params, cells, obstacles);
+            // grab vels and div
 
-        #ifdef DEBUG
-        printf("==timestep: %d==\n", ii);
-        printf("av velocity: %.12E\n", av_vels[ii]);
-        printf("tot density: %.12E\n", total_density(params, cells));
-        #endif
+            av_vels[ii] = av_velocity(params, cells, obstacles);
+
+            #ifdef DEBUG
+            printf("==timestep: %d==\n", ii);
+            printf("av velocity: %.12E\n", av_vels[ii]);
+            printf("tot density: %.12E\n", total_density(params, cells));
+            #endif
+        }
+    }
+    else
+    {       // colwise stripes
+        
     }
 
     gettimeofday(&timstr,NULL);
@@ -517,10 +421,10 @@ double total_density(const param_t params, speed_t* cells)
     return total;
 }
 
-void calculate_local_stripes(param_t* params, int com_size, int grid_fat, speed_t** send_buff
+void calculate_local_stripes(param_t* params, int com_size, speed_t** send_buff
     , speed_t** read_buff, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles)
 {
-    if (grid_fat!=0)   // Row-wise
+    if (params->grid_fat!=0)   // Row-wise
     {
         params->local_ncols = params->nx;     // Each row has all cols
         params->local_nrows = params->ny / com_size;

@@ -16,6 +16,7 @@ typedef struct {
     int my_rank;        // The current rank number
     int local_nrows;    // Local number of rows in the rank
     int local_ncols;    // Local number of columns in the rank
+    int grid_fat;       // 1 if the grid is square or fat, 0 if it's tall */
     double density;       /* density per link */
     double accel;         /* density redistribution */
     double omega;         /* relaxation parameter */
@@ -75,7 +76,7 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles);
 double calc_reynolds(const param_t params, speed_t* cells, int* obstacles);
 
 /* calculate local stripes */
-void calculate_local_stripes(param_t* params, int com_size, int grid_fat, speed_t** send_buff
+void calculate_local_stripes(param_t* params, int com_size, speed_t** send_buff
     , speed_t** read_buff, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles);
 
 /* Exit, printing out formatted string */
