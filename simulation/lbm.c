@@ -156,6 +156,7 @@ int main(int argc, char* argv[])
     MPI_Type_commit(&mpi_speed_t);
 
     MPI_Datatype mpi_row;
+    // Could maybe take the exchange out of the if and just use the row type generally.
 
     // scatter, shift and exchange based on striping
     if (params.grid_fat!=0)

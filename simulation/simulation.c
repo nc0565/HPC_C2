@@ -88,7 +88,8 @@ void accelerate_flow_Colum_RW(const param_t params, const accel_area_t accel_are
 
     jj = accel_area.idx;
 
-    for (ii = 1; ii < params.local_nrows; ii++)
+    // for (ii = 1; ii < params.local_nrows; ii++)
+    for (ii = 0; ii < params.local_nrows+1; ii++)
     {
         int addr = ii*params.local_ncols + jj;
         /* if the cell is not occupied and
@@ -122,7 +123,7 @@ void accelerate_flow_Row_RW(const param_t params, const accel_area_t accel_area,
     w2 = params.density * params.accel / 36.0;
 
     ii = accel_area.idx;
-    int addr = ii*params.local_ncols+1;
+    int addr = ii*params.local_ncols;
 
     for (jj = 0; jj < params.local_ncols; jj++, addr++)
     {
