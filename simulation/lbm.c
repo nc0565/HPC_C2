@@ -138,15 +138,15 @@ int main(int argc, char* argv[])
     int next = (params.my_rank+1) % com_size;
     // printf("Ramk=%d, prev=%d, next=%d\n", params.my_rank, prev, next);
 
-
-    speed_t* send_buff = NULL;
-    speed_t* read_buff = NULL;
+    // Declare buffers
     speed_t* local_work_space = NULL;
     speed_t* local_temp_space = NULL;
+    // speed_t* send_buff = NULL;
+    // speed_t* read_buff = NULL;
     int*     local_obstacles = NULL;
 
 
-    calculate_local_stripes(&params, com_size, &send_buff, &read_buff,
+    calculate_local_stripes(&params, com_size/*, &send_buff, &read_buff*/,
      &local_work_space, &local_temp_space, &local_obstacles);
     // printf("Rank:%d params.local_nrows=%d params.local_ncols=%d\n", params.my_rank, params.local_nrows, params.local_ncols);
 
@@ -203,7 +203,7 @@ int main(int argc, char* argv[])
     // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
     int acel_row_rank;
-    if (grid_fat!=0)
+    if (params.grid_fat!=0)
     {
         // Calculate the rank and nex index that the acel row exists in
         if (accel_area.idx==ACCEL_ROW){
@@ -216,7 +216,7 @@ int main(int argc, char* argv[])
                 if (acel_row_rank>0)
                 {
                     accel_area.idx -= (acel_row_rank!=com_size)? (acel_row_rank)*lrows:(acel_row_rank-1)*lrows;;
-                    if (idx<1) idx = 1;
+                    if (accel_area.idx<1) accel_area.idx = 1;
                 }
             }
             else
@@ -249,22 +249,36 @@ int main(int argc, char* argv[])
             {if (params.my_rank==acel_row_rank) accelerate_flow_Row_RW(params,accel_area,local_work_space,local_obstacles); }
 
             // To alter
-            propagate(params,local_work_space,local_temp_space);
+            propagate_row_wise(params,local_work_space,local_temp_space);
+
+            // Exchange temp halo back
+            MPI_Sendrecv(&local_temp_space[params.local_ncols], 1, mpi_row, prev, HALO,
+             &local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
+              MPI_COMM_WORLD, &status);
+
+            // Exchange temp halo forward
+            MPI_Sendrecv(&local_temp_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
+             local_temp_space, 1, mpi_row, prev, HALO,
+               MPI_COMM_WORLD, &status);
+
+
+            // Check if should alter for col stipes
             collision(params,local_work_space,local_temp_space,local_obstacles);
 
-            // Exchange back
+            // Could skip on last it?
+            // Exchange grid halo back
             MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO,
              &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
               MPI_COMM_WORLD, &status);
 
-            // Exchange forward
+            // Exchange grid halo forward
             MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
              local_work_space, 1, mpi_row, prev, HALO,
                MPI_COMM_WORLD, &status);
 
             // grab vels and div
 
-            av_vels[ii] = av_velocity(params, cells, obstacles);
+            //av_vels[ii] = av_velocity(params, cells, obstacles);
 
             #ifdef DEBUG
             printf("==timestep: %d==\n", ii);
@@ -272,6 +286,20 @@ int main(int argc, char* argv[])
             printf("tot density: %.12E\n", total_density(params, cells));
             #endif
         }
+
+        MPI_Barrier(MPI_COMM_WORLD);
+         // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+        printf("here Rank:%d\n", params.my_rank);
+MPI_Barrier(MPI_COMM_WORLD);
+
+        MPI_GATHER(&local_temp_space[params.local_ncols], (params.local_nrows -1)*params.local_ncols, mpi_speed_t
+            , cells, (params.local_nrows -1)*params.local_ncols, mpi_speed_t,
+             MASTER, MPI_COMM_WORLD);
+
+        MPI_Barrier(MPI_COMM_WORLD);
+         // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+        printf("here Rank:%d\n", params.my_rank);
+MPI_Barrier(MPI_COMM_WORLD);
     }
     else
     {       // colwise stripes
@@ -293,8 +321,8 @@ int main(int argc, char* argv[])
     printf("Elapsed system CPU time:\t%.6f (s)\n", systim);
 
     write_values(final_state_file, av_vels_file, params, cells, obstacles, av_vels);
-    free(send_buff);
-    free(read_buff);
+    // free(send_buff);
+    // free(read_buff);
     free(local_work_space);
     free(local_temp_space);
     free(local_obstacles);
@@ -422,8 +450,8 @@ double total_density(const param_t params, speed_t* cells)
     return total;
 }
 
-void calculate_local_stripes(param_t* params, int com_size, speed_t** send_buff
-    , speed_t** read_buff, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles)
+void calculate_local_stripes(param_t* params, int com_size/*, speed_t** send_buff
+    , speed_t** read_buff*/, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles)
 {
     if (params->grid_fat!=0)   // Row-wise
     {
@@ -442,10 +470,10 @@ void calculate_local_stripes(param_t* params, int com_size, speed_t** send_buff
         }
         
         // Allocate message bufferes and the local workspace with a halo.
-        *send_buff = (speed_t*) malloc(sizeof(speed_t)*params->nx);
-        if (*send_buff == NULL) DIE("Cannot allocate memory for the send buffer");
-        *read_buff = (speed_t*) malloc(sizeof(speed_t)*params->nx);
-        if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
+        // *send_buff = (speed_t*) malloc(sizeof(speed_t)*params->nx);
+        // if (*send_buff == NULL) DIE("Cannot allocate memory for the send buffer");
+        // *read_buff = (speed_t*) malloc(sizeof(speed_t)*params->nx);
+        // if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
         *local_work_space = (speed_t*) malloc(params->nx*(params->local_nrows+2)*sizeof(speed_t));
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
         *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->nx*(params->local_nrows+2));
@@ -470,10 +498,10 @@ void calculate_local_stripes(param_t* params, int com_size, speed_t** send_buff
         }
         
         // Allocate message bufferes and the local workspaces with a halo.
-        *send_buff = (speed_t*) malloc(sizeof(speed_t)*params->ny);
-        if (*send_buff == NULL) DIE("Cannot allocate memory for the send buffer");
-        *read_buff = (speed_t*) malloc(sizeof(speed_t)*params->ny);
-        if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
+        // *send_buff = (speed_t*) malloc(sizeof(speed_t)*params->ny);
+        // if (*send_buff == NULL) DIE("Cannot allocate memory for the send buffer");
+        // *read_buff = (speed_t*) malloc(sizeof(speed_t)*params->ny);
+        // if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
         *local_work_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols+2));
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
         *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols+2));
