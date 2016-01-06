@@ -88,8 +88,8 @@ void accelerate_flow_Colum_RW(const param_t params, const accel_area_t accel_are
 
     jj = accel_area.idx;
 
-    // for (ii = 1; ii < params.local_nrows; ii++)
-    for (ii = 0; ii < params.local_nrows+1; ii++)
+    // for (ii = 0; ii < params.local_nrows+1; ii++)
+    for (ii = 1; ii < params.local_nrows+1; ii++)
     {
         int addr = ii*params.local_ncols + jj;
         /* if the cell is not occupied and
@@ -124,7 +124,9 @@ void accelerate_flow_Row_RW(const param_t params, const accel_area_t accel_area,
 
     ii = accel_area.idx;
     int addr = ii*params.local_ncols;
+    // printf("row=%d, col=%d,  start at index=%d\n", ii, params.local_ncols, addr);
 
+    // The new index accounts for the halo row
     for (jj = 0; jj < params.local_ncols; jj++, addr++)
     {
         /* if the cell is not occupied and

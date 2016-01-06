@@ -76,8 +76,8 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles);
 double calc_reynolds(const param_t params, speed_t* cells, int* obstacles);
 
 /* calculate local stripes */
-void calculate_local_stripes(param_t* params, int com_size/*, speed_t** send_buff
-    , speed_t** read_buff*/, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles);
+void calculate_local_stripes(param_t* params, int com_size, speed_t** send_buff
+    , speed_t** read_buff, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles);
 
 /* Exit, printing out formatted string */
 #define DIE(...) exit_with_error(__LINE__, __FILE__, __VA_ARGS__)
