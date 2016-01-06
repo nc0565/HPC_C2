@@ -197,12 +197,12 @@ void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells
             /* determine indices of axis-direction neighbours
             ** respecting periodic boundary conditions (wrap around) */
             // jj=127; ii=25;
-            // jj=127; ii=1;
+            // jj=0; ii=0;
             // jj=0; ii=25;
             // jj=0; ii=4;
-            y_n = (ii + 1) % params.ny;
+            y_n = (ii + 1) % params.local_nrows;
             x_e = (jj + 1) % params.nx;
-            y_s = (ii - 1);
+            y_s = (ii - 1) ? (ii + params.local_nrows - 1) : (ii - 1);
             x_w = (jj == 0) ? (jj + params.nx - 1) : (jj - 1);
 
             // if (params.my_rank==1)
