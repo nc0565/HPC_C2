@@ -190,14 +190,14 @@ int main(int argc, char* argv[])
 		// }
 
 		// Exchange back
-		MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, INITIALISE,
-		 &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, INITIALISE,
-		  MPI_COMM_WORLD, &status);
+		// MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, INITIALISE,
+		//  &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, INITIALISE,
+		//   MPI_COMM_WORLD, &status);
 
-		// Exchange forward
-		MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, INITIALISE,
-		 local_work_space, 1, mpi_row, prev, INITIALISE,
-		   MPI_COMM_WORLD, &status);
+		// // Exchange forward
+		// MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, INITIALISE,
+		//  local_work_space, 1, mpi_row, prev, INITIALISE,
+		//    MPI_COMM_WORLD, &status);
 
 		int* blok_len = malloc(sizeof(int)*params.local_ncols);
 		int* vel_disps = malloc(sizeof(MPI_Aint)*params.local_ncols);           
@@ -324,10 +324,67 @@ int main(int argc, char* argv[])
 
 			if (params.my_rank==1)
 			{
-				for (int i = 49; i < params.local_ncols-50; ++i)
+			    for (int i = 49; i < params.local_ncols-51; ++i)
+			    {
+			        // local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7] = 5.1f;
+			        printf("North_Source:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+			           , i, local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[6]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[2]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[5]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[3]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[0]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[1]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[4]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[8]);
+			    }
+			}
+			if (params.my_rank==0)
+			{
+			    for (int i = 49; i < params.local_ncols-51; ++i)
+			    {
+			        printf("North_Before:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+			           , i, local_temp_space[i+params.local_ncols].speeds[6]
+			           , local_temp_space[i+params.local_ncols].speeds[2]
+			           , local_temp_space[i+params.local_ncols].speeds[5]
+			           , local_temp_space[i+params.local_ncols].speeds[3]
+			           , local_temp_space[i+params.local_ncols].speeds[0]
+			           , local_temp_space[i+params.local_ncols].speeds[1]
+			           , local_temp_space[i+params.local_ncols].speeds[7]
+			           , local_temp_space[i+params.local_ncols].speeds[4]
+			           , local_temp_space[i+params.local_ncols].speeds[8]);
+			    }
+			}
+
+			// Exchange temp halo back
+			MPI_Sendrecv(&local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_vels_North, prev, HALO_VELS,
+			 &local_temp_space[params.local_ncols], 1, mpi_vels_North, next, HALO_VELS,
+			   MPI_COMM_WORLD, &status);
+			
+
+			if (params.my_rank==0)
+			{
+			    for (int i = 49; i < params.local_ncols-51; ++i)
+			    {
+			        printf("North_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+			        , i, local_temp_space[i+params.local_ncols].speeds[6]
+			           , local_temp_space[i+params.local_ncols].speeds[2]
+			           , local_temp_space[i+params.local_ncols].speeds[5]
+			           , local_temp_space[i+params.local_ncols].speeds[3]
+			           , local_temp_space[i+params.local_ncols].speeds[0]
+			           , local_temp_space[i+params.local_ncols].speeds[1]
+			           , local_temp_space[i+params.local_ncols].speeds[7]
+			           , local_temp_space[i+params.local_ncols].speeds[4]
+			           , local_temp_space[i+params.local_ncols].speeds[8]);
+			    }
+			}
+
+			if (params.my_rank==1)
+			{
+				for (int i = 49; i < params.local_ncols-51; ++i)
 				{
-					local_temp_space[i].speeds[2] = 5.1f;
-					printf("Source:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+					// local_temp_space[i].speeds[2] = 5.1f;
+					printf("South_Source:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
 					   , i, local_temp_space[i].speeds[6]
 					   , local_temp_space[i].speeds[2]
 					   , local_temp_space[i].speeds[5]
@@ -341,9 +398,9 @@ int main(int argc, char* argv[])
 			}
 			if (params.my_rank==0)
 			{
-				for (int i = 49; i < params.local_ncols-50; ++i)
+				for (int i = 49; i < params.local_ncols-51; ++i)
 				{
-					printf("Before:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+					printf("South_Before:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
 					   , i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
@@ -356,17 +413,16 @@ int main(int argc, char* argv[])
 				}
 			}
 
-			// Exchange temp halo back
-			MPI_Sendrecv(&local_temp_space[0], 1, mpi_vels_North, prev, HALO_VELS,
-			 &local_temp_space[params.local_ncols*params.local_nrows], 1, mpi_vels_North, next, HALO_VELS,
+			// Exchange temp halo forward
+			MPI_Sendrecv(&local_temp_space[0], 1, mpi_vels_South, prev, HALO_VELS,
+			 &local_temp_space[params.local_ncols*params.local_nrows], 1, mpi_vels_South, next, HALO_VELS,
 			  MPI_COMM_WORLD, &status);
-			
 
 			if (params.my_rank==0)
 			{
-				for (int i = 49; i < params.local_ncols-50; ++i)
+				for (int i = 49; i < params.local_ncols-51; ++i)
 				{
-					printf("After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+					printf("South_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
 					, i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
@@ -379,62 +435,6 @@ int main(int argc, char* argv[])
 				}
 			}
 
-			// if (params.my_rank==1)
-			// {
-			//     for (int i = 49; i < params.local_ncols-48; ++i)
-			//     {
-			//         local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7] = 5.1f;
-			//         printf("Source:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-			//            , i, local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[6]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[2]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[5]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[3]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[0]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[1]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[4]
-			//            , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[8]);
-			//     }
-			// }
-			// if (params.my_rank==0)
-			// {
-			//     for (int i = 49; i < params.local_ncols-48; ++i)
-			//     {
-			//         printf("Before:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-			//            , i, local_temp_space[i+params.local_ncols].speeds[6]
-			//            , local_temp_space[i+params.local_ncols].speeds[2]
-			//            , local_temp_space[i+params.local_ncols].speeds[5]
-			//            , local_temp_space[i+params.local_ncols].speeds[3]
-			//            , local_temp_space[i+params.local_ncols].speeds[0]
-			//            , local_temp_space[i+params.local_ncols].speeds[1]
-			//            , local_temp_space[i+params.local_ncols].speeds[7]
-			//            , local_temp_space[i+params.local_ncols].speeds[4]
-			//            , local_temp_space[i+params.local_ncols].speeds[8]);
-			//     }
-			// }
-
-			// Exchange temp halo forward
-			MPI_Sendrecv(&local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_vels_South, next, HALO_VELS,
-			 &local_temp_space[params.local_ncols], 1, mpi_vels_South, prev, HALO_VELS,
-			   MPI_COMM_WORLD, &status);
-
-			// if (params.my_rank==0)
-			// {
-			//     for (int i = 49; i < params.local_ncols-48; ++i)
-			//     {
-			//         printf("After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-			//         , i, local_temp_space[i+params.local_ncols].speeds[6]
-			//            , local_temp_space[i+params.local_ncols].speeds[2]
-			//            , local_temp_space[i+params.local_ncols].speeds[5]
-			//            , local_temp_space[i+params.local_ncols].speeds[3]
-			//            , local_temp_space[i+params.local_ncols].speeds[0]
-			//            , local_temp_space[i+params.local_ncols].speeds[1]
-			//            , local_temp_space[i+params.local_ncols].speeds[7]
-			//            , local_temp_space[i+params.local_ncols].speeds[4]
-			//            , local_temp_space[i+params.local_ncols].speeds[8]);
-			//     }
-			// }
-
 
 MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
@@ -443,14 +443,14 @@ MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
 			// Could skip on last it? Do I need grid halos at all?
 			// Exchange grid halo back
-			MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO_CELLS,
-			 &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO_CELLS,
-			  MPI_COMM_WORLD, &status);
+			// MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO_CELLS,
+			//  &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO_CELLS,
+			//   MPI_COMM_WORLD, &status);
 
-			// Exchange grid halo forward
-			MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO_CELLS,
-			 local_work_space, 1, mpi_row, prev, HALO_CELLS,
-			   MPI_COMM_WORLD, &status);
+			// // Exchange grid halo forward
+			// MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO_CELLS,
+			//  local_work_space, 1, mpi_row, prev, HALO_CELLS,
+			//    MPI_COMM_WORLD, &status);
 
 			// grab vels and div
 
@@ -465,8 +465,8 @@ MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
 		// MPI_Barrier(MPI_COMM_WORLD);
 
-		MPI_Gather(&local_temp_space[params.local_ncols], (params.local_nrows -1), mpi_row
-			, cells, (params.local_nrows -1), mpi_row,
+		MPI_Gather(&local_temp_space[params.local_ncols], (params.local_nrows), mpi_row
+			, cells, (params.local_nrows), mpi_row,
 			 MASTER, MPI_COMM_WORLD);
 	}
 	else

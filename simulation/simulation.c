@@ -185,12 +185,13 @@ void propagate(const param_t params, speed_t* cells, speed_t* tmp_cells)
 
 void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells)
 {
-    int ii,jj;            /* generic counters */
+    int ii,jj,addr;            /* generic counters */
 
     /* loop over _all_ cells */
     for (ii = 1; ii <= params.local_nrows; ii++)
     {
-        for (jj = 0; jj < params.local_ncols; jj++)
+        addr = ii*params.local_ncols;
+        for (jj = 0; jj < params.local_ncols; jj++, addr++)
         { 
             /*  Add onstacle consider*/
             int x_e,x_w,y_n,y_s;  /* indices of neighbouring cells */
@@ -217,16 +218,16 @@ void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells
             /* propagate densities to neighbouring cells, following
             ** appropriate directions of travel and writing into
             ** scratch space grid */
-            tmp_cells[ii*params.local_ncols + jj].speeds[0]  = cells[ii*params.local_ncols + jj].speeds[0]; /* central cell, */
+            tmp_cells[ii*params.local_ncols + jj].speeds[0]  = cells[addr].speeds[0]; /* central cell, */
                                                      /* no movement   */
-            tmp_cells[ii *params.local_ncols + x_e].speeds[1] = cells[ii*params.local_ncols + jj].speeds[1]; /* east */
-            tmp_cells[y_n*params.local_ncols + jj].speeds[2]  = cells[ii*params.local_ncols + jj].speeds[2]; /* north */
-            tmp_cells[ii *params.local_ncols + x_w].speeds[3] = cells[ii*params.local_ncols + jj].speeds[3]; /* west */
-            tmp_cells[y_s*params.local_ncols + jj].speeds[4]  = cells[ii*params.local_ncols + jj].speeds[4]; /* south */
-            tmp_cells[y_n*params.local_ncols + x_e].speeds[5] = cells[ii*params.local_ncols + jj].speeds[5]; /* north-east */
-            tmp_cells[y_n*params.local_ncols + x_w].speeds[6] = cells[ii*params.local_ncols + jj].speeds[6]; /* north-west */
-            tmp_cells[y_s*params.local_ncols + x_w].speeds[7] = cells[ii*params.local_ncols + jj].speeds[7]; /* south-west */
-            tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[ii*params.local_ncols + jj].speeds[8]; /* south-east */
+            tmp_cells[ii *params.local_ncols + x_e].speeds[1] = cells[addr].speeds[1]; /* east */
+            tmp_cells[y_n*params.local_ncols + jj].speeds[2]  = cells[addr].speeds[2]; /* north */
+            tmp_cells[ii *params.local_ncols + x_w].speeds[3] = cells[addr].speeds[3]; /* west */
+            tmp_cells[y_s*params.local_ncols + jj].speeds[4]  = cells[addr].speeds[4]; /* south */
+            tmp_cells[y_n*params.local_ncols + x_e].speeds[5] = cells[addr].speeds[5]; /* north-east */
+            tmp_cells[y_n*params.local_ncols + x_w].speeds[6] = cells[addr].speeds[6]; /* north-west */
+            tmp_cells[y_s*params.local_ncols + x_w].speeds[7] = cells[addr].speeds[7]; /* south-west */
+            tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[addr].speeds[8]; /* south-east */
         }
     }
 }
