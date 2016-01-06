@@ -213,6 +213,21 @@ void initialise(const char* param_file, accel_area_t * accel_area,
             (*cells_ptr)[ii*params->nx + jj].speeds[7] = w2;
             (*cells_ptr)[ii*params->nx + jj].speeds[8] = w2;
 
+            // Is needed?
+
+            // /* centre */
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[0] = w0;
+            // /* axis directions */
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[1] = w1;
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[2] = w1;
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[3] = w1;
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[4] = w1;
+            // /* diagonals */
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[5] = w2;
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[6] = w2;
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[7] = w2;
+            // (*tmp_cells_ptr)[ii*params->nx + jj].speeds[8] = w2;
+
             (*obstacles_ptr)[ii*params->nx + jj] = 0;
         }
     }

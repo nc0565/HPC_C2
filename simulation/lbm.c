@@ -156,6 +156,8 @@ int main(int argc, char* argv[])
     MPI_Type_commit(&mpi_speed_t);
 
     MPI_Datatype mpi_row;
+    MPI_Datatype mpi_vels_North;
+    MPI_Datatype mpi_vels_South;
     // Could maybe take the exchange out of the if and just use the row type generally.
 
     // scatter, shift and exchange based on striping
@@ -188,14 +190,69 @@ int main(int argc, char* argv[])
         // }
 
         // Exchange back
-        MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO,
-         &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
+        MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, INITIALISE,
+         &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, INITIALISE,
           MPI_COMM_WORLD, &status);
 
         // Exchange forward
-        MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
-         local_work_space, 1, mpi_row, prev, HALO,
+        MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, INITIALISE,
+         local_work_space, 1, mpi_row, prev, INITIALISE,
            MPI_COMM_WORLD, &status);
+
+        int* blok_len = malloc(sizeof(int)*params.local_ncols);
+        int* vel_disps = malloc(sizeof(MPI_Aint)*params.local_ncols);           
+        blok_len[0] = 1;
+        vel_disps[0] = 2;
+        blok_len[1] = 2;
+        vel_disps[1] = 5;
+        for (int t = 2; t < params.local_ncols; ++t)
+        {
+            blok_len[t]   = 1;
+            vel_disps[t]  = vel_disps[t-2]+9;
+
+            blok_len[++t] = 2;
+            vel_disps[t]  = vel_disps[t-2]+9;
+
+        }
+
+        // for (int i = params.local_ncols-1; i > 0; --i)
+        //     vel_disps[i] -= vel_disps[0];
+
+        // vel_disps[0] = 0;
+
+        MPI_Type_indexed(params.local_ncols, blok_len,
+            vel_disps, MPI_DOUBLE,
+            &mpi_vels_North);
+
+        MPI_Type_commit(&mpi_vels_North);
+
+        blok_len[0] = 1;
+        vel_disps[0] = 4;
+        blok_len[1] = 2;
+        vel_disps[1] = 7;
+        for (int t = 2; t < params.local_ncols; ++t)
+        {
+            blok_len[t]   = 1;
+            vel_disps[t]  = vel_disps[t-2]+9;
+
+            blok_len[++t] = 2;
+            vel_disps[t]  = vel_disps[t-2]+9;
+
+        }
+
+        MPI_Type_indexed(params.local_ncols, blok_len,
+            vel_disps, MPI_DOUBLE,
+            &mpi_vels_South);
+
+        MPI_Type_commit(&mpi_vels_South);
+
+        // for (int i = 0; i < 6; ++i)
+        // if (params.my_rank==1)
+        // printf("blok_len[%d]=%d\nvel_disps[%d]=%d\n",
+        //   i, blok_len[i],  i, vel_disps[i]);
+
+        free(blok_len);
+        free(vel_disps);
     }
     else
     {               // Columb stripes need a strided data type
@@ -265,156 +322,99 @@ int main(int argc, char* argv[])
 
             // Individual velocities moved betweenn cells, so have to recieve temp cells and manually replace velocities
 
-            // Exchange temp halo back
-            // MPI_Sendrecv(&local_temp_space[params.local_ncols], 1, mpi_row, prev, HALO,
-            //  &local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
-            //   MPI_COMM_WORLD, &status);
+            // if (params.my_rank==1)
+            // {printf("Source:\n\n");
+            //     for (int i = 0; i < 5; ++i)
+            //     {
+            //         // local_temp_space[i].speeds[6] = 5.1f;
+            //         printf("Cell:%d\n N_W=%f N=%f N_E=%f\n\n"
+            //            , i, local_temp_space[i].speeds[6]
+            //            , local_temp_space[i].speeds[2]
+            //            , local_temp_space[i].speeds[5]);
+            //     }
+            // }
+            // if (params.my_rank==0)
+            // {printf("Before:\n\n");
+            //     for (int i = 0; i < 5; ++i)
+            //     {
+            //         printf("Cell:%d\n N_W=%f N=%f N_E=%f\n\n"
+            //            , i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
+            //            , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
+            //            , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]);
+            //     }
+            // }
 
-            // for (int i = 0; i < params.local_ncols; ++i)
-            // {
-            //     send_buff[i] =
+            // Exchange temp halo back
+            MPI_Sendrecv(&local_temp_space[0], 1, mpi_vels_North, prev, HALO_VELS,
+             &local_temp_space[params.local_ncols*params.local_nrows], 1, mpi_vels_North, next, HALO_VELS,
+              MPI_COMM_WORLD, &status);
+            
+
+            // if (params.my_rank==0)
+            // {printf("After:\n\n");
+            //     for (int i = 0; i < 5; ++i)
+            //     {
+            //         printf("Cell:%d\n N_W=%f N=%f N_E=%f\n\n"
+            //            , i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
+            //            , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
+            //            , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]);
+            //     }
             // }
 
 
-            speed_t test1[3];
-            if (params.my_rank==1){
-              test1[0] = (speed_t){-1.0,0.0,4.0,0.0,3.0,2.0,1.0,7.0,8.0};
-              test1[1] = (speed_t){-1.0,0.0,4.0,0.0,3.0,2.0,1.0,7.0,8.0};
-              test1[2] = (speed_t){-1.0,4.0,4.0,0.0,3.0,2.0,1.0,7.0,8.0};
+            if (params.my_rank==1)
+            {printf("Source:\n\n");
+                for (int i = 0; i < 5; ++i)
+                {
+                    // local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7] = 5.1f;
+                    printf("Cell:%d\n s_W=%f s=%f s_E=%f\n\n"
+                       , i, local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7]
+                       , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[4]
+                       , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[8]);
+                }
             }
-            
             if (params.my_rank==0)
-            {
-                test1[0] = (speed_t){8.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
-                test1[1] = (speed_t){0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
-                test1[2] = (speed_t){0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+            {printf("Before:\n\n");
+                for (int i = 0; i < 5; ++i)
+                {
+                    printf("Cell:%d\n s_W=%f s=%f s_E=%f\n\n"
+                       , i, local_temp_space[i+params.local_ncols].speeds[7]
+                       , local_temp_space[i+params.local_ncols].speeds[4]
+                       , local_temp_space[i+params.local_ncols].speeds[8]);
+                }
             }
-            
-            int* blok_len = malloc(sizeof(int)*6);
-            int* vel_disps = malloc(sizeof(int)*6);           
-            blok_len[0] = 1;
-            vel_disps[0] = 2;
-            blok_len[1] = 2;
-            vel_disps[1] = 5;
-            for (int t = 2; t < 6; ++t)
-            {
-                blok_len[t]   = 1;
-                vel_disps[t]  = vel_disps[t-2]+9;
-
-                blok_len[++t] = 2;
-                vel_disps[t]  = vel_disps[t-2]+9;
-
-            }
-
-            MPI_Datatype mpi_vels_North;
-            MPI_Type_indexed(6, blok_len,
-                vel_disps, MPI_DOUBLE,
-                &mpi_vels_North);
-
-            MPI_Type_commit(&mpi_vels_North);
-
-            blok_len[0] = 1;
-            vel_disps[0] = 4;
-            blok_len[1] = 2;
-            vel_disps[1] = 7;
-            for (int t = 2; t < 6; ++t)
-            {
-                blok_len[t]   = 1;
-                vel_disps[t]  = vel_disps[t-2]+9;
-
-                blok_len[++t] = 2;
-                vel_disps[t]  = vel_disps[t-2]+9;
-
-            }
-
-
-            MPI_Datatype mpi_vels_South;
-            MPI_Type_indexed(6, blok_len,
-                vel_disps, MPI_DOUBLE,
-                &mpi_vels_South);
-
-            MPI_Type_commit(&mpi_vels_South);
-
-            // for (int i = 0; i < 6; ++i)
-            // if (params.my_rank==1)
-            // printf("blok_len[%d]=%d\nvel_disps[%d]=%d\n",
-            //   i, blok_len[i],  i, vel_disps[i]);
-
-            free(blok_len);
-            free(vel_disps);
-
-            if (params.my_rank==1 || params.my_rank==0)
-            {
-
-                MPI_Sendrecv(test1, 1, mpi_vels_North, (params.my_rank == 0)?1:0, HALO,
-                 test1, 1, mpi_vels_North, (params.my_rank == 0)?1:0, HALO,
-                  MPI_COMM_WORLD, &status);
-                
-                MPI_Sendrecv(test1, 1, mpi_vels_South, (params.my_rank == 0)?1:0, HALO,
-                 test1, 1, mpi_vels_North, (params.my_rank == 0)?1:0, HALO,
-                  MPI_COMM_WORLD, &status);
-
-
-                printf("Rank=%d\n%f,%f,%f,%f,%f,%f,%f,%f,%f\n", params.my_rank, test1[0].speeds[0], test1[0].speeds[1], test1[0].speeds[2], test1[0].speeds[3],
-                 test1[0].speeds[4], test1[0].speeds[5], test1[0].speeds[6], test1[0].speeds[7], test1[0].speeds[8]);
-                printf("Rank=%d\n%f,%f,%f,%f,%f,%f,%f,%f,%f\n", params.my_rank, test1[1].speeds[0], test1[1].speeds[1], test1[1].speeds[2], test1[1].speeds[3],
-                 test1[1].speeds[4], test1[1].speeds[5], test1[1].speeds[6], test1[1].speeds[7], test1[1].speeds[8]);
-                printf("Rank=%d\n%f,%f,%f,%f,%f,%f,%f,%f,%f\n", params.my_rank, test1[2].speeds[0], test1[2].speeds[1], test1[2].speeds[2], test1[2].speeds[3],
-                 test1[2].speeds[4], test1[2].speeds[5], test1[2].speeds[6], test1[2].speeds[7], test1[2].speeds[8]);
-            }
-
-
-            MPI_Type_free(&mpi_vels_North);
-            MPI_Type_free(&mpi_vels_South);
-            MPI_Barrier(MPI_COMM_WORLD);
-            MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
-
-
-            // // Create mpi type for param
-            // int blocklengths[2] = {8,3};
-            // MPI_Datatype types[2] = {MPI_INT, MPI_DOUBLE};
-            // MPI_Aint displacements[2];
-            // MPI_Get_address(&params.nx, &displacements[0]);
-            // MPI_Get_address(&params.density, &displacements[1]);
-            // displacements[1] -= displacements[0];
-            // displacements[0] = 0;
-
-            // MPI_Datatype mpi_param;
-            // MPI_Type_create_struct(2, blocklengths, displacements, types, &mpi_param);
-            // MPI_Type_commit(&mpi_param);
-
-
-
-
-
-
-
-
-
-
-
-
 
             // Exchange temp halo forward
-            // MPI_Sendrecv(&local_temp_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
-            //  local_temp_space, 1, mpi_row, prev, HALO,
-            //    MPI_COMM_WORLD, &status);
+            MPI_Sendrecv(&local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_vels_South, prev, HALO_VELS,
+             &local_temp_space[params.local_ncols], 1, mpi_vels_South, next, HALO_VELS,
+               MPI_COMM_WORLD, &status);
+
+            if (params.my_rank==0)
+            {printf("After:\n\n");
+                for (int i = 0; i < 5; ++i)
+                {
+                    printf("Cell:%d\n s_W=%f s=%f s_E=%f\n\n"
+                       , i, local_temp_space[i+params.local_ncols].speeds[7]
+                       , local_temp_space[i+params.local_ncols].speeds[4]
+                       , local_temp_space[i+params.local_ncols].speeds[8]);
+                }
+            }
 
 
-
+MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
             // Check if should alter for col stipes
             collision(params,local_work_space,local_temp_space,local_obstacles);
 
-            // Could skip on last it?
+            // Could skip on last it? Do I need grid halos at all?
             // Exchange grid halo back
-            MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO,
-             &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO,
+            MPI_Sendrecv(&local_work_space[params.local_ncols], 1, mpi_row, prev, HALO_CELLS,
+             &local_work_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_row, next, HALO_CELLS,
               MPI_COMM_WORLD, &status);
 
             // Exchange grid halo forward
-            MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO,
-             local_work_space, 1, mpi_row, prev, HALO,
+            MPI_Sendrecv(&local_work_space[params.local_ncols*params.local_nrows], 1, mpi_row, next, HALO_CELLS,
+             local_work_space, 1, mpi_row, prev, HALO_CELLS,
                MPI_COMM_WORLD, &status);
 
             // grab vels and div
@@ -467,6 +467,8 @@ int main(int argc, char* argv[])
     MPI_Type_free(&mpi_accel_area);
     MPI_Type_free(&mpi_speed_t);
     MPI_Type_free(&mpi_row);
+    MPI_Type_free(&mpi_vels_North);
+    MPI_Type_free(&mpi_vels_South);
 
     // MPI_Barrier(MPI_COMM_WORLD);
     

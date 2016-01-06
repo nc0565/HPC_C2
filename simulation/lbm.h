@@ -41,7 +41,7 @@ typedef struct {
     int idx;
 } accel_area_t;
 
-typedef enum { HALO, INITIALISE, DONE} mpi_tag;
+typedef enum { HALO_VELS, HALO_CELLS, INITIALISE, DONE} mpi_tag;
 
 /* Parse command line arguments to get filenames */
 void parse_args (int argc, char* argv[],

@@ -199,6 +199,7 @@ void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells
             // jj=127; ii=25;
             // jj=127; ii=1;
             // jj=0; ii=25;
+            // jj=0; ii=4;
             y_n = (ii + 1) % params.ny;
             x_e = (jj + 1) % params.nx;
             y_s = (ii - 1);
