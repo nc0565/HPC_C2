@@ -198,7 +198,7 @@ void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells
             ** respecting periodic boundary conditions (wrap around) */
             // jj=127; ii=25;
             // jj=0; ii=20;
-            jj=0; ii=1;
+            // jj=0; ii=1;
             // jj=0; ii=25;
             // jj=0; ii=4;
             y_n = (ii + 1) % (params.local_nrows+2);
@@ -206,13 +206,13 @@ void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells
             y_s = /*(ii == 0) ? (ii + params.local_nrows - 1) :*/ (ii - 1);
             x_w = (jj == 0) ? (jj + params.nx - 1) : (jj - 1);
 
-            if (params.my_rank==1)
-            {
-              printf("Rank: %d\nCell:%d ii=%d, jj=%d,\n\ty_n=%d\nx_w=%d\t\tx_e=%d\n\ty_s=%d\n\n",params.my_rank,jj+(ii)*params.local_ncols,ii,jj
-                ,y_n*params.local_ncols + jj,ii *params.local_ncols + x_w,ii *params.local_ncols + x_e,y_s*params.local_ncols + jj);
-            }
-            MPI_Barrier(MPI_COMM_WORLD);
-            MPI_Abort(MPI_COMM_WORLD, 0);
+            // if (params.my_rank==1)
+            // {
+            //   printf("Rank: %d\nCell:%d ii=%d, jj=%d,\n\ty_n=%d\nx_w=%d\t\tx_e=%d\n\ty_s=%d\n\n",params.my_rank,jj+(ii)*params.local_ncols,ii,jj
+            //     ,y_n*params.local_ncols + jj,ii *params.local_ncols + x_w,ii *params.local_ncols + x_e,y_s*params.local_ncols + jj);
+            // }
+            // MPI_Barrier(MPI_COMM_WORLD);
+            // MPI_Abort(MPI_COMM_WORLD, 0);
 
             /* propagate densities to neighbouring cells, following
             ** appropriate directions of travel and writing into
