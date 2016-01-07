@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "lbm.h"
+#include "mpi.h"
 
 void timestep(const param_t params, const accel_area_t accel_area,
     speed_t* cells, speed_t* tmp_cells, int* obstacles)
@@ -222,6 +223,125 @@ void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells
             tmp_cells[y_s*params.local_ncols + x_w].speeds[7] = cells[addr].speeds[7]; /* south-west */
             tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[addr].speeds[8]; /* south-east */
         }
+    }
+}
+
+void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cells, double* send_buff, double* recv_buff)
+{
+    int ii,jj,addr;            /* generic counters */
+    int x_e,x_w,y_n,y_s;  /* indices of neighbouring cells */
+    MPI_Status status;
+    
+        addr = params.local_ncols;
+    for (jj = 0; jj < params.local_ncols; jj++, addr++)
+    { 
+        y_n = (ii + 1) % (params.local_nrows+2);
+        x_e = (jj + 1) % (params.nx);
+        y_s = /*(ii == 0) ? (ii + params.local_nrows - 1) :*/ (ii - 1);
+        x_w = (jj == 0) ? (jj + params.nx - 1) : (jj - 1);
+        /* propagate densities to neighbouring cells, following
+        ** appropriate directions of travel and writing into
+        ** scratch space grid */
+        tmp_cells[ii*params.local_ncols + jj].speeds[0]  = cells[addr].speeds[0]; /* central cell, */
+                                                 /* no movement   */
+        tmp_cells[ii *params.local_ncols + x_e].speeds[1] = cells[addr].speeds[1]; /* east */
+        tmp_cells[y_n*params.local_ncols + jj].speeds[2]  = cells[addr].speeds[2]; /* north */
+        tmp_cells[ii *params.local_ncols + x_w].speeds[3] = cells[addr].speeds[3]; /* west */
+        send_buff[jj]  = cells[addr].speeds[4]; /* south */
+        tmp_cells[y_n*params.local_ncols + x_e].speeds[5] = cells[addr].speeds[5]; /* north-east */
+        tmp_cells[y_n*params.local_ncols + x_w].speeds[6] = cells[addr].speeds[6]; /* north-west */
+        send_buff[jj+1] = cells[addr].speeds[7]; /* south-west */
+        send_buff[jj+2] = cells[addr].speeds[8]; /* south-east */
+    }
+
+    // Exchange temp halo back
+    MPI_Sendrecv(send_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
+     recv_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
+      MPI_COMM_WORLD, &status);
+
+    addr = params.local_nrows*params.local_ncols;
+    for (jj = 0; jj < params.local_ncols; jj++, addr++)
+    {
+        tmp_cells[addr].speeds[4] = recv_buff[jj];
+        tmp_cells[addr].speeds[7] = recv_buff[jj+1];
+        tmp_cells[addr].speeds[8] = recv_buff[jj+2];
+    }
+
+    /* loop over _middle_ cells */
+    for (ii = 2; ii < params.local_nrows; ii++)
+    {
+        addr = ii*params.local_ncols;
+        for (jj = 0; jj < params.local_ncols; jj++, addr++)
+        { 
+            /*  Add onstacle consider*/
+            /* determine indices of axis-direction neighbours
+            ** respecting periodic boundary conditions (wrap around) */
+            // jj=127; ii=25;
+            // jj=0; ii=20;
+            // jj=0; ii=1;
+            // jj=0; ii=25;
+            // jj=0; ii=4;
+            y_n = (ii + 1) % (params.local_nrows+2);
+            x_e = (jj + 1) % (params.nx);
+            y_s = /*(ii == 0) ? (ii + params.local_nrows - 1) :*/ (ii - 1);
+            x_w = (jj == 0) ? (jj + params.nx - 1) : (jj - 1);
+
+            // if (params.my_rank==1)
+            // {
+            //   printf("Rank: %d\nCell:%d ii=%d, jj=%d,\n\ty_n=%d\nx_w=%d\t\tx_e=%d\n\ty_s=%d\n\n",params.my_rank,jj+(ii)*params.local_ncols,ii,jj
+            //     ,y_n*params.local_ncols + jj,ii *params.local_ncols + x_w,ii *params.local_ncols + x_e,y_s*params.local_ncols + jj);
+            // }
+            // MPI_Barrier(MPI_COMM_WORLD);
+            // MPI_Abort(MPI_COMM_WORLD, 0);
+
+            /* propagate densities to neighbouring cells, following
+            ** appropriate directions of travel and writing into
+            ** scratch space grid */
+            tmp_cells[ii*params.local_ncols + jj].speeds[0]  = cells[addr].speeds[0]; /* central cell, */
+                                                     /* no movement   */
+            tmp_cells[ii *params.local_ncols + x_e].speeds[1] = cells[addr].speeds[1]; /* east */
+            tmp_cells[y_n*params.local_ncols + jj].speeds[2]  = cells[addr].speeds[2]; /* north */
+            tmp_cells[ii *params.local_ncols + x_w].speeds[3] = cells[addr].speeds[3]; /* west */
+            tmp_cells[y_s*params.local_ncols + jj].speeds[4]  = cells[addr].speeds[4]; /* south */
+            tmp_cells[y_n*params.local_ncols + x_e].speeds[5] = cells[addr].speeds[5]; /* north-east */
+            tmp_cells[y_n*params.local_ncols + x_w].speeds[6] = cells[addr].speeds[6]; /* north-west */
+            tmp_cells[y_s*params.local_ncols + x_w].speeds[7] = cells[addr].speeds[7]; /* south-west */
+            tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[addr].speeds[8]; /* south-east */
+        }
+    }
+
+    addr = (params.local_nrows+1)*params.local_ncols;
+    for (jj = 0; jj < params.local_ncols; jj++, addr++)
+    { 
+        y_n = (ii + 1) % (params.local_nrows+2);
+        x_e = (jj + 1) % (params.nx);
+        y_s = /*(ii == 0) ? (ii + params.local_nrows - 1) :*/ (ii - 1);
+        x_w = (jj == 0) ? (jj + params.nx - 1) : (jj - 1);
+        /* propagate densities to neighbouring cells, following
+        ** appropriate directions of travel and writing into
+        ** scratch space grid */
+        tmp_cells[ii*params.local_ncols + jj].speeds[0]  = cells[addr].speeds[0]; /* central cell, */
+                                                 /* no movement   */
+        tmp_cells[ii *params.local_ncols + x_e].speeds[1] = cells[addr].speeds[1]; /* east */
+        send_buff[jj]  = cells[addr].speeds[2]; /* north */
+        tmp_cells[ii *params.local_ncols + x_w].speeds[3] = cells[addr].speeds[3]; /* west */
+        tmp_cells[y_s*params.local_ncols + jj].speeds[4]  = cells[addr].speeds[4]; /* south */
+        tmp_cells[y_n*params.local_ncols + x_e].speeds[5] = cells[addr].speeds[5]; /* north-east */
+        send_buff[jj+1] = cells[addr].speeds[6]; /* north-west */
+        send_buff[jj+2] = cells[addr].speeds[7]; /* south-west */
+        tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[addr].speeds[8]; /* south-east */
+    }
+
+    MPI_Sendrecv(send_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
+                 recv_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
+                   MPI_COMM_WORLD, &status);
+
+    addr = params.local_ncols;
+    for (jj = 0; jj < params.local_ncols; jj++, addr++)
+    {
+        tmp_cells[addr].speeds[4] = recv_buff[jj];
+        tmp_cells[addr].speeds[7] = recv_buff[jj+1];
+        tmp_cells[addr].speeds[8] = recv_buff[jj+2];
     }
 }
 
