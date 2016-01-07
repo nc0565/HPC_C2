@@ -211,7 +211,7 @@ int main(int argc, char* argv[])
 		vel_disps[0] = 2;
 		blok_len[1] = 2;
 		vel_disps[1] = 5;
-		for (int t = 2; t < params.local_ncols*3; ++t)
+		for (int t = 2; t < params.local_ncols*2; ++t)
 		{
 			blok_len[t]   = 1;
 			vel_disps[t]  = vel_disps[t-2]+9;
@@ -247,7 +247,7 @@ int main(int argc, char* argv[])
 		MPI_Get_address(&local_temp_space[params.local_ncols*(params.local_nrows+1)], &base);
 		vel_disps[0] -= base;*/
 
-		MPI_Type_indexed(params.local_ncols*3, blok_len,
+		MPI_Type_indexed(params.local_ncols*2, blok_len,
 			vel_disps, MPI_DOUBLE,
 			&mpi_vels_North);
 
@@ -257,7 +257,7 @@ int main(int argc, char* argv[])
 		vel_disps[0] = 4;
 		blok_len[1] = 2;
 		vel_disps[1] = 7;
-		for (int t = 2; t < params.local_ncols*3; ++t)
+		for (int t = 2; t < params.local_ncols*2; ++t)
 		{
 			blok_len[t]   = 1;
 			vel_disps[t]  = vel_disps[t-2]+9;
@@ -294,7 +294,7 @@ int main(int argc, char* argv[])
 		MPI_Get_address(&local_temp_space[params.local_ncols*(params.local_nrows+1)], &base);
 		vel_disps[0] -= base;*/
 
-		MPI_Type_indexed(params.local_ncols*3, blok_len,
+		MPI_Type_indexed(params.local_ncols*2, blok_len,
 			vel_disps, MPI_DOUBLE,
 			&mpi_vels_South);
 
@@ -375,66 +375,8 @@ int main(int argc, char* argv[])
 			propagate_row_wise(params,local_work_space,local_temp_space);
 
 			// Individual velocities moved betweenn cells, so have to recieve temp cells and manually replace velocities
-
-			if (params.my_rank==1)
-			{
-			    for (int i = 49; i < params.local_ncols-51; ++i)
-			    {
-			        // local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7] = 5.1f;
-			        printf("North_Source:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-			           , i, local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[6]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[2]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[5]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[3]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[0]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[1]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[4]
-			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[8]);
-			    }
-			}
-			if (params.my_rank==0)
-			{
-			    for (int i = 49; i < params.local_ncols-51; ++i)
-			    {
-			        printf("North_Before:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-			           , i, local_temp_space[i+params.local_ncols].speeds[6]
-			           , local_temp_space[i+params.local_ncols].speeds[2]
-			           , local_temp_space[i+params.local_ncols].speeds[5]
-			           , local_temp_space[i+params.local_ncols].speeds[3]
-			           , local_temp_space[i+params.local_ncols].speeds[0]
-			           , local_temp_space[i+params.local_ncols].speeds[1]
-			           , local_temp_space[i+params.local_ncols].speeds[7]
-			           , local_temp_space[i+params.local_ncols].speeds[4]
-			           , local_temp_space[i+params.local_ncols].speeds[8]);
-			    }
-			}
-
-			// Exchange temp halo back
-			MPI_Sendrecv(&local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_vels_North, prev, HALO_VELS,
-			 &local_temp_space[params.local_ncols], 1, mpi_vels_North, next, HALO_VELS,
-			   MPI_COMM_WORLD, &status);
 			
-
-			if (params.my_rank==0)
-			{
-			    for (int i = 49; i < params.local_ncols-51; ++i)
-			    {
-			        printf("North_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-			        , i, local_temp_space[i+params.local_ncols].speeds[6]
-			           , local_temp_space[i+params.local_ncols].speeds[2]
-			           , local_temp_space[i+params.local_ncols].speeds[5]
-			           , local_temp_space[i+params.local_ncols].speeds[3]
-			           , local_temp_space[i+params.local_ncols].speeds[0]
-			           , local_temp_space[i+params.local_ncols].speeds[1]
-			           , local_temp_space[i+params.local_ncols].speeds[7]
-			           , local_temp_space[i+params.local_ncols].speeds[4]
-			           , local_temp_space[i+params.local_ncols].speeds[8]);
-			    }
-			}
-
-MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
-			/*if (params.my_rank==1)
+			if (params.my_rank==1)
 			{
 				for (int i = 49; i < params.local_ncols-51; ++i)
 				{
@@ -468,12 +410,12 @@ MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 				}
 			}
 
-			// Exchange temp halo forward
+			// Exchange temp halo back
 			MPI_Sendrecv(&local_temp_space[0], 1, mpi_vels_South, prev, HALO_VELS,
 			 &local_temp_space[params.local_ncols*params.local_nrows], 1, mpi_vels_South, next, HALO_VELS,
 			  MPI_COMM_WORLD, &status);
 
-			/*if (params.my_rank==0)
+			if (params.my_rank==0)
 			{
 				for (int i = 49; i < params.local_ncols-51; ++i)
 				{
@@ -488,8 +430,66 @@ MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
 				}
-			}*/
+			}
 
+MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+
+			/*if (params.my_rank==0)
+			{
+			    for (int i = 49; i < params.local_ncols-51; ++i)
+			    {
+			        // local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7] = 5.1f;
+			        printf("North_Source:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+			           , i, local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[6]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[2]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[5]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[3]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[0]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[1]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[7]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[4]
+			           , local_temp_space[i+params.local_ncols*(params.local_nrows+1)].speeds[8]);
+			    }
+			}
+			if (params.my_rank==1)
+			{
+			    for (int i = 49; i < params.local_ncols-51; ++i)
+			    {
+			        printf("North_Before:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+			           , i, local_temp_space[i+params.local_ncols].speeds[6]
+			           , local_temp_space[i+params.local_ncols].speeds[2]
+			           , local_temp_space[i+params.local_ncols].speeds[5]
+			           , local_temp_space[i+params.local_ncols].speeds[3]
+			           , local_temp_space[i+params.local_ncols].speeds[0]
+			           , local_temp_space[i+params.local_ncols].speeds[1]
+			           , local_temp_space[i+params.local_ncols].speeds[7]
+			           , local_temp_space[i+params.local_ncols].speeds[4]
+			           , local_temp_space[i+params.local_ncols].speeds[8]);
+			    }
+			}
+
+			// Exchange temp halo forward
+			MPI_Sendrecv(&local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_vels_North, next, HALO_VELS,
+			 &local_temp_space[params.local_ncols], 1, mpi_vels_North, prev, HALO_VELS,
+			   MPI_COMM_WORLD, &status);
+			
+
+			if (params.my_rank==1)
+			{
+			    for (int i = 49; i < params.local_ncols-51; ++i)
+			    {
+			        printf("North_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+			        , i, local_temp_space[i+params.local_ncols].speeds[6]
+			           , local_temp_space[i+params.local_ncols].speeds[2]
+			           , local_temp_space[i+params.local_ncols].speeds[5]
+			           , local_temp_space[i+params.local_ncols].speeds[3]
+			           , local_temp_space[i+params.local_ncols].speeds[0]
+			           , local_temp_space[i+params.local_ncols].speeds[1]
+			           , local_temp_space[i+params.local_ncols].speeds[7]
+			           , local_temp_space[i+params.local_ncols].speeds[4]
+			           , local_temp_space[i+params.local_ncols].speeds[8]);
+			    }
+			}*/
 
 // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
