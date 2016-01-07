@@ -76,9 +76,9 @@ int main(int argc, char* argv[])
 	int    ii;                  /*  generic counter */
 	struct timeval timstr;      /* structure to hold elapsed time */
 	struct rusage ru;           /* structure to hold CPU time--system and user */
-	double tic,toc;             /* floating point numbers to calculate elapsed wallclock time */
-	double usrtim;              /* floating point number to record elapsed user CPU time */
-	double systim;              /* floating point number to record elapsed system CPU time */
+	double tic,toc;             /* doubleing point numbers to calculate elapsed wallclock time */
+	double usrtim;              /* doubleing point number to record elapsed user CPU time */
+	double systim;              /* doubleing point number to record elapsed system CPU time */
 	char * final_state_file = NULL;
 	char * av_vels_file = NULL;
 	char * param_file = NULL;
@@ -204,8 +204,8 @@ int main(int argc, char* argv[])
 		//  local_work_space, 1, mpi_row, prev, INITIALISE,
 		//    MPI_COMM_WORLD, &status);
 
-		int* blok_len = malloc(sizeof(int)*params.local_ncols*3);
-		int* vel_disps = malloc(sizeof(MPI_Aint)*params.local_ncols*3);
+		int* blok_len = malloc(sizeof(int)*params.local_ncols*2);
+		int* vel_disps = malloc(sizeof(MPI_Aint)*params.local_ncols*2);
 		// MPI_Aint base;           
 		blok_len[0] = 1;
 		vel_disps[0] = 2;
@@ -349,7 +349,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		// cacl row rank foe col-wise
+		// cacl row rank for col-wise
 	}
 
 	if (params.my_rank==MASTER)
@@ -367,7 +367,7 @@ int main(int argc, char* argv[])
 			if(accel_area.col_or_row==ACCEL_COLUMN)    // Can send through all ranks
 			{ 
 				accelerate_flow_Colum_RW(params,accel_area,local_work_space,local_obstacles);
-				// don't need to acel or exchane halo here, as only push non halo to temp
+				// don't need to acel or exchane halo here, as prop only pushes non halo to temp
 			}
 			else                                // The row is in one rank only, uses the calculated rank and index
 			{if (params.my_rank==acel_row_rank) { accelerate_flow_Row_RW(params,accel_area,local_work_space,local_obstacles); }}
@@ -378,7 +378,7 @@ int main(int argc, char* argv[])
 			
 			if (params.my_rank==1)
 			{
-				for (int i = 49; i < params.local_ncols-51; ++i)
+				for (int i = 4; i < params.local_ncols-96; ++i)
 				{
 					// local_temp_space[i].speeds[2] = 5.1f;
 					printf("South_Source:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
@@ -395,7 +395,7 @@ int main(int argc, char* argv[])
 			}
 			if (params.my_rank==0)
 			{
-				for (int i = 49; i < params.local_ncols-51; ++i)
+				for (int i = 4; i < params.local_ncols-96; ++i)
 				{
 					printf("South_Before:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
 					   , i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
@@ -417,7 +417,7 @@ int main(int argc, char* argv[])
 
 			if (params.my_rank==0)
 			{
-				for (int i = 49; i < params.local_ncols-51; ++i)
+				for (int i = 4; i < params.local_ncols-96; ++i)
 				{
 					printf("South_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
 					, i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
@@ -432,7 +432,7 @@ int main(int argc, char* argv[])
 				}
 			}
 
-MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+// MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
 			/*if (params.my_rank==0)
 			{
@@ -466,7 +466,7 @@ MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 			           , local_temp_space[i+params.local_ncols].speeds[4]
 			           , local_temp_space[i+params.local_ncols].speeds[8]);
 			    }
-			}
+			}*/
 
 			// Exchange temp halo forward
 			MPI_Sendrecv(&local_temp_space[params.local_ncols*(params.local_nrows+1)], 1, mpi_vels_North, next, HALO_VELS,
@@ -474,7 +474,7 @@ MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 			   MPI_COMM_WORLD, &status);
 			
 
-			if (params.my_rank==1)
+			/*if (params.my_rank==1)
 			{
 			    for (int i = 49; i < params.local_ncols-51; ++i)
 			    {
@@ -494,27 +494,27 @@ MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
 			// Check if should alter for col stipes
-			collision(params,local_work_space,local_temp_space,local_obstacles);
+			collision_local(params,local_work_space,local_temp_space,local_obstacles);
 
 
-			// if (params.my_rank==0)
-			// {
-			// 	for (int i = 0; i < params.local_ncols; ++i)
-			// 	{
-			// 		printf("Collision_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-			// 		, i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[3]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[0]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[1]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[7]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
-			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
-			// 	}
-			// 	printf("%d down.\n\n", ii);
-			// }
-// if (ii>4)
+			if (params.my_rank==0)
+			{
+				for (int i = 4; i < params.local_ncols-96; ++i)
+				{
+					printf("Collision_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+					, i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[3]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[0]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[1]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[7]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
+					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
+				}
+				printf("%d down.\n\n", ii+1);
+			}
+// if (ii>0)
 // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
 			// Could skip on last it? Do I need grid halos at all?

@@ -24,10 +24,10 @@ typedef struct {
 
 /* obstacle positions */
 typedef struct {
-    float obs_x_min;
-    float obs_x_max;
-    float obs_y_min;
-    float obs_y_max;
+    double obs_x_min;
+    double obs_x_max;
+    double obs_y_min;
+    double obs_y_max;
 } obstacle_t;
 
 /* struct to hold the 'speed' values */
