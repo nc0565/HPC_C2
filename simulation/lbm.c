@@ -150,6 +150,11 @@ int main(int argc, char* argv[])
 	 &local_work_space, &local_temp_space, &local_obstacles);
 	// printf("Rank:%d params.local_nrows=%d params.local_ncols=%d\n", params.my_rank, params.local_nrows, params.local_ncols);
 
+	// printf("Rank:%d\nnx=%d ny=%d maxIt=%d reyDim=%d lrows=%d lcols=%d density=%f accel=%f omega=%f\n\n"
+	// 	, params.my_rank, params.nx, params.ny, params.max_iters, params.reynolds_dim, params.local_nrows, params.local_ncols
+	// 	, params.density, params.accel, params.omega);
+	// MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+
 	// Create mpi type for spee_t
 	MPI_Datatype mpi_speed_t;
 	MPI_Type_create_struct(1, (int[1]){9}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_DOUBLE}, &mpi_speed_t);
@@ -199,13 +204,14 @@ int main(int argc, char* argv[])
 		//  local_work_space, 1, mpi_row, prev, INITIALISE,
 		//    MPI_COMM_WORLD, &status);
 
-		int* blok_len = malloc(sizeof(int)*params.local_ncols);
-		int* vel_disps = malloc(sizeof(MPI_Aint)*params.local_ncols);           
+		int* blok_len = malloc(sizeof(int)*params.local_ncols*3);
+		int* vel_disps = malloc(sizeof(MPI_Aint)*params.local_ncols*3);
+		// MPI_Aint base;           
 		blok_len[0] = 1;
 		vel_disps[0] = 2;
 		blok_len[1] = 2;
 		vel_disps[1] = 5;
-		for (int t = 2; t < params.local_ncols; ++t)
+		for (int t = 2; t < params.local_ncols*3; ++t)
 		{
 			blok_len[t]   = 1;
 			vel_disps[t]  = vel_disps[t-2]+9;
@@ -214,13 +220,34 @@ int main(int argc, char* argv[])
 			vel_disps[t]  = vel_disps[t-2]+9;
 
 		}
+		/*MPI_Get_address(&(local_temp_space[params.local_ncols*(params.local_nrows+1)].speeds[2]), &vel_disps[0]);
+		blok_len[0] = 1;
+		MPI_Get_address(&(local_temp_space[params.local_ncols*(params.local_nrows+1)].speeds[5]), &vel_disps[1]);
+		vel_disps[1] -= vel_disps[0];
+		blok_len[1] = 1;
+		MPI_Get_address(&(local_temp_space[params.local_ncols*(params.local_nrows+1)].speeds[6]), &vel_disps[2]);
+		vel_disps[2] -= vel_disps[0];
+		blok_len[2] = 1;
+		// if (params.my_rank==0) {printf("blen[0]=1\ndips[%d]=%d\ndips[%d]=%d\ndips[%d]=%d\n"
+			// , 0,vel_disps[0],1,vel_disps[1],2,vel_disps[2]);}
+		for (int t = 1; t < params.local_ncols; ++t)
+		{
+			blok_len[t*3] = 1;
+			MPI_Get_address(&(local_temp_space[t+(params.local_ncols*(params.local_nrows+1))].speeds[2]), &vel_disps[t*3]);
+			vel_disps[t*3] -= vel_disps[0];
+			blok_len[(t*3)+1] = 1;
+			MPI_Get_address(&(local_temp_space[t+(params.local_ncols*(params.local_nrows+1))].speeds[5]), &vel_disps[(t*3)+1]);
+			vel_disps[(t*3)+1] -= vel_disps[0];
+			blok_len[(t*3)+2] = 1;
+			MPI_Get_address(&(local_temp_space[t+(params.local_ncols*(params.local_nrows+1))].speeds[6]), &vel_disps[(t*3)+2]);
+			vel_disps[(t*3)+2] -= vel_disps[0];
+			// if (params.my_rank==0) {printf("dips[%d]=%d\ndips[%d]=%d\ndips[%d]=%d\n"
+			// ,t*3,vel_disps[t*3],(t*3)+1,vel_disps[(t*3)+1],(t*3)+2,vel_disps[(t*3)+2]);}
+		}
+		MPI_Get_address(&local_temp_space[params.local_ncols*(params.local_nrows+1)], &base);
+		vel_disps[0] -= base;*/
 
-		// for (int i = params.local_ncols-1; i > 0; --i)
-		//     vel_disps[i] -= vel_disps[0];
-
-		// vel_disps[0] = 0;
-
-		MPI_Type_indexed(params.local_ncols, blok_len,
+		MPI_Type_indexed(params.local_ncols*3, blok_len,
 			vel_disps, MPI_DOUBLE,
 			&mpi_vels_North);
 
@@ -230,7 +257,7 @@ int main(int argc, char* argv[])
 		vel_disps[0] = 4;
 		blok_len[1] = 2;
 		vel_disps[1] = 7;
-		for (int t = 2; t < params.local_ncols; ++t)
+		for (int t = 2; t < params.local_ncols*3; ++t)
 		{
 			blok_len[t]   = 1;
 			vel_disps[t]  = vel_disps[t-2]+9;
@@ -240,7 +267,34 @@ int main(int argc, char* argv[])
 
 		}
 
-		MPI_Type_indexed(params.local_ncols, blok_len,
+		/*MPI_Get_address(&(local_temp_space[0].speeds[4]), &vel_disps[0]);
+		blok_len[0] = 1;
+		MPI_Get_address(&(local_temp_space[0].speeds[7]), &vel_disps[1]);
+		vel_disps[1] -= vel_disps[0];
+		blok_len[1] = 1;
+		MPI_Get_address(&(local_temp_space[0].speeds[8]), &vel_disps[2]);
+		vel_disps[2] -= vel_disps[0];
+		blok_len[2] = 1;
+		// if (params.my_rank==0) {printf("blen[0]=1\ndips[%d]=%d\ndips[%d]=%d\ndips[%d]=%d\n"
+			// , 0,vel_disps[0],1,vel_disps[1],2,vel_disps[2]);}
+		for (int t = 1; t < params.local_ncols; ++t)
+		{
+			blok_len[t*3] = 1;
+			MPI_Get_address(&(local_temp_space[t+(0)].speeds[4]), &vel_disps[t*3]);
+			vel_disps[t*3] -= vel_disps[0];
+			blok_len[(t*3)+1] = 1;
+			MPI_Get_address(&(local_temp_space[t+(0)].speeds[7]), &vel_disps[(t*3)+1]);
+			vel_disps[(t*3)+1] -= vel_disps[0];
+			blok_len[(t*3)+2] = 1;
+			MPI_Get_address(&(local_temp_space[t+(0)].speeds[8]), &vel_disps[(t*3)+2]);
+			vel_disps[(t*3)+2] -= vel_disps[0];
+			// if (params.my_rank==0) {printf("dips[%d]=%d\ndips[%d]=%d\ndips[%d]=%d\n"
+			// ,t*3,vel_disps[t*3],(t*3)+1,vel_disps[(t*3)+1],(t*3)+2,vel_disps[(t*3)+2]);}
+		}
+		MPI_Get_address(&local_temp_space[params.local_ncols*(params.local_nrows+1)], &base);
+		vel_disps[0] -= base;*/
+
+		MPI_Type_indexed(params.local_ncols*3, blok_len,
 			vel_disps, MPI_DOUBLE,
 			&mpi_vels_South);
 
@@ -379,7 +433,8 @@ int main(int argc, char* argv[])
 			    }
 			}
 
-			if (params.my_rank==1)
+MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+			/*if (params.my_rank==1)
 			{
 				for (int i = 49; i < params.local_ncols-51; ++i)
 				{
@@ -418,7 +473,7 @@ int main(int argc, char* argv[])
 			 &local_temp_space[params.local_ncols*params.local_nrows], 1, mpi_vels_South, next, HALO_VELS,
 			  MPI_COMM_WORLD, &status);
 
-			if (params.my_rank==0)
+			/*if (params.my_rank==0)
 			{
 				for (int i = 49; i < params.local_ncols-51; ++i)
 				{
@@ -433,13 +488,34 @@ int main(int argc, char* argv[])
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
 					   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
 				}
-			}
+			}*/
 
 
-MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+// MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
 			// Check if should alter for col stipes
 			collision(params,local_work_space,local_temp_space,local_obstacles);
+
+
+			// if (params.my_rank==0)
+			// {
+			// 	for (int i = 0; i < params.local_ncols; ++i)
+			// 	{
+			// 		printf("Collision_After:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
+			// 		, i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[3]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[0]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[1]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[7]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
+			// 		   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
+			// 	}
+			// 	printf("%d down.\n\n", ii);
+			// }
+// if (ii>4)
+// MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
 			// Could skip on last it? Do I need grid halos at all?
 			// Exchange grid halo back

@@ -89,7 +89,7 @@ void accelerate_flow_Colum_RW(const param_t params, const accel_area_t accel_are
     jj = accel_area.idx;
 
     // for (ii = 0; ii < params.local_nrows+1; ii++)
-    for (ii = 1; ii < params.local_nrows+1; ii++)
+    for (ii = 1; ii <= params.local_nrows; ii++)
     {
         int addr = ii*params.local_ncols + jj;
         /* if the cell is not occupied and
@@ -252,7 +252,7 @@ void collision(const param_t params, speed_t* cells, speed_t* tmp_cells, int* ob
    ** NB the collision step is called after
    ** the propagate step and so values of interest
    ** are in the scratch-space grid */
-   for (ii = 1; ii < params.local_nrows+1; ii++)
+   for (ii = 1; ii <= params.local_nrows; ii++)
    {
        int addr = ii*params.local_ncols;
        for (jj = 0; jj < params.local_ncols; jj++, addr++)
