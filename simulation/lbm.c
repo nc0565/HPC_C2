@@ -101,69 +101,24 @@ int main(int argc, char* argv[])
         initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles, &av_vels); 
     }
 
-    // MPI_Datatype mpi_param;
-    // MPI_Datatype mpi_accel_area;
-    // MPI_Datatype mpi_speed_t;
-    // setup(&params, &accel_area, com_size, &mpi_param, &mpi_accel_area, &mpi_speed_t);
-// =======================================================================================
-    // Create mpi type for param
-    int blocklengths[2] = {10,3};
-    MPI_Datatype types[2] = {MPI_INT, MPI_DOUBLE};
-    MPI_Aint displacements[2];
-    MPI_Get_address(&params.nx, &displacements[0]);
-    MPI_Get_address(&params.density, &displacements[1]);
-    displacements[1] -= displacements[0];
-    displacements[0] = 0;
-
+    // Declare types
     MPI_Datatype mpi_param;
-    MPI_Type_create_struct(2, blocklengths, displacements, types, &mpi_param);
-    MPI_Type_commit(&mpi_param);
-
-    // Broadcast params
-    MPI_Bcast(&params, 1, mpi_param, MASTER, MPI_COMM_WORLD);
-
-    // Restore rank numbers
-    MPI_Comm_rank(MPI_COMM_WORLD, &params.my_rank);
-
     MPI_Datatype mpi_accel_area;
-    MPI_Type_create_struct(1, (int[1]){2}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_INT}, &mpi_accel_area);
-    MPI_Type_commit(&mpi_accel_area);
-
-    // Broadcast accel_area
-    MPI_Bcast(&accel_area, 1, mpi_accel_area, MASTER, MPI_COMM_WORLD);
-
-
-    // Set stripe and buffer direction and size
-    params.grid_fat = ((params.nx - params.ny) >= -200)? 1:0; /* 1 if the grid is square or fat, 0 if it's tall */
-    //int params.local_nrows;    // Number of rows in the current rank         Done in params
-    //int params.local_ncols;    // Number of cols in the current rank
-    // int last_nrows = -1;     // Number of rows in the last rank
-    // int last_ncols = -1;     // Number of cols in the last rank
-    params.prev = (params.my_rank == 0)? (com_size-1) : params.my_rank-1;
-    params.next = (params.my_rank+1) % com_size;
-    // printf("Ramk=%d, prev=%d, next=%d\n", params.my_rank, params.prev, params.next);
-
+    MPI_Datatype mpi_speed_t;
     // Declare buffers
+    setup(&params, &accel_area, com_size, &mpi_param, &mpi_accel_area, &mpi_speed_t);
+
     speed_t* local_work_space = NULL;
     speed_t* local_temp_space = NULL;
-    double* send_buff = NULL;
-    double* read_buff = NULL;
+    double*  send_buff = NULL;
+    double*  read_buff = NULL;
     int*     local_obstacles = NULL;
-
-
     calculate_local_stripes(&params, com_size, &send_buff, &read_buff,
      &local_work_space, &local_temp_space, &local_obstacles);
-    // printf("Rank:%d params.local_nrows=%d params.local_ncols=%d\n", params.my_rank, params.local_nrows, params.local_ncols);
+    // printf("Rank:%d params->local_nrows=%d params->local_ncols=%d\n", params->my_rank, params->local_nrows, params->local_ncols);
 
-    // printf("Rank:%d\nnx=%d ny=%d maxIt=%d reyDim=%d lrows=%d lcols=%d density=%f accel=%f omega=%f\n\n"
-    //  , params.my_rank, params.nx, params.ny, params.max_iters, params.reynolds_dim, params.local_nrows, params.local_ncols
-    //  , params.density, params.accel, params.omega);
-    // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
-    // Create mpi type for spee_t
-    MPI_Datatype mpi_speed_t;
-    MPI_Type_create_struct(1, (int[1]){9}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_DOUBLE}, &mpi_speed_t);
-    MPI_Type_commit(&mpi_speed_t);
+// =======================================================================================
     
     MPI_Datatype mpi_row;
     int acel_row_rank=-1;
@@ -173,6 +128,12 @@ int main(int argc, char* argv[])
         // create data type for
         MPI_Type_contiguous(params.local_ncols, mpi_speed_t, &mpi_row);
         MPI_Type_commit(&mpi_row);
+
+
+        // MPI_Type_create_resized(speed_t, 0, 1*sizeof(speed_t), &cmpi_row_ype);
+
+        // int MPI_Type_size(MPI_Datatype datatype, int *size);
+        // int MPI_Type_size_x(MPI_Datatype datatype, MPI_Count *size);
 
         MPI_Scatter(cells, params.local_nrows, mpi_row,
          &local_work_space[params.local_ncols], params.local_nrows, mpi_row,
@@ -467,66 +428,53 @@ double total_density(const param_t params, speed_t* cells)
     return total;
 }
 
-// void setup(param_t* params, accel_area_t* accel_area, int com_size,
-//  MPI_Datatype* mpi_param, MPI_Datatype* mpi_accel_area, MPI_Datatype* mpi_speed_t)
-// {
-//     // Create mpi type for param
-//     int blocklengths[2] = {10,3};
-//     MPI_Datatype types[2] = {MPI_INT, MPI_DOUBLE};
-//     MPI_Aint displacements[2];
-//     MPI_Get_address(&(params->nx), &displacements[0]);
-//     MPI_Get_address(&(params->density), &displacements[1]);
-//     displacements[1] -= displacements[0];
-//     displacements[0] = 0;
+void setup(param_t* params, accel_area_t* accel_area, int com_size,
+ MPI_Datatype* mpi_param, MPI_Datatype* mpi_accel_area, MPI_Datatype* mpi_speed_t)
+{
+    // Create mpi type for param
+    int blocklengths[2] = {10,3};
+    MPI_Datatype types[2] = {MPI_INT, MPI_DOUBLE};
+    MPI_Aint displacements[2];
+    MPI_Get_address(&(params->nx), &displacements[0]);
+    MPI_Get_address(&(params->density), &displacements[1]);
+    displacements[1] -= displacements[0];
+    displacements[0] = 0;
 
-//     MPI_Type_create_struct(2, blocklengths, displacements, types, mpi_param);
-//     MPI_Type_commit(mpi_param);
+    MPI_Type_create_struct(2, blocklengths, displacements, types, mpi_param);
+    MPI_Type_commit(mpi_param);
 
-//     // Broadcast params
-//     MPI_Bcast(params, 1, *mpi_param, MASTER, MPI_COMM_WORLD);
+    // Broadcast params
+    MPI_Bcast(params, 1, *mpi_param, MASTER, MPI_COMM_WORLD);
 
-//     // Restore rank numbers
-//     MPI_Comm_rank(MPI_COMM_WORLD, &(params->my_rank));
+    // Restore rank numbers
+    MPI_Comm_rank(MPI_COMM_WORLD, &(params->my_rank));
 
-//     MPI_Datatype mpi_accel_area;
-//     MPI_Type_create_struct(1, (int[1]){2}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_INT}, mpi_accel_area);
-//     MPI_Type_commit(mpi_accel_area);
+    MPI_Type_create_struct(1, (int[1]){2}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_INT}, mpi_accel_area);
+    MPI_Type_commit(mpi_accel_area);
 
-//     // Broadcast accel_area
-//     MPI_Bcast(accel_area, 1, *mpi_accel_area, MASTER, MPI_COMM_WORLD);
-
-
-//     // Set stripe and buffer direction and size
-//     params->grid_fat = ((params->nx - params->ny) >= -200)? 1:0; /* 1 if the grid is square or fat, 0 if it's tall */
-//     //int params->local_nrows;    // Number of rows in the current rank         Done in params
-//     //int params->local_ncols;    // Number of cols in the current rank
-//     // int last_nrows = -1;     // Number of rows in the last rank
-//     // int last_ncols = -1;     // Number of cols in the last rank
-//     params->prev = (params->my_rank == 0)? (com_size-1) : params->my_rank-1;
-//     params->next = (params->my_rank+1) % com_size;
-//     // printf("Ramk=%d, prev=%d, next=%d\n", params->my_rank, params->prev, params->next);
-
-//     // Declare buffers
-//     speed_t* local_work_space = NULL;
-//     speed_t* local_temp_space = NULL;
-//     double*  send_buff = NULL;
-//     double*  read_buff = NULL;
-//     int*     local_obstacles = NULL;
+    // Broadcast accel_area
+    MPI_Bcast(accel_area, 1, *mpi_accel_area, MASTER, MPI_COMM_WORLD);
 
 
-//     calculate_local_stripes(params, com_size, &send_buff, &read_buff,
-//      &local_work_space, &local_temp_space, &local_obstacles);
-//     // printf("Rank:%d params->local_nrows=%d params->local_ncols=%d\n", params->my_rank, params->local_nrows, params->local_ncols);
+    // Set stripe and buffer direction and size
+    params->grid_fat = ((params->nx - params->ny) >= -200)? 1:0; /* 1 if the grid is square or fat, 0 if it's tall */
+    //int params->local_nrows;    // Number of rows in the current rank         Done in params
+    //int params->local_ncols;    // Number of cols in the current rank
+    // int last_nrows = -1;     // Number of rows in the last rank
+    // int last_ncols = -1;     // Number of cols in the last rank
+    params->prev = (params->my_rank == 0)? (com_size-1) : params->my_rank-1;
+    params->next = (params->my_rank+1) % com_size;
+    // printf("Ramk=%d, prev=%d, next=%d\n", params->my_rank, params->prev, params->next);
 
-//     // printf("Rank:%d\nnx=%d ny=%d maxIt=%d reyDim=%d lrows=%d lcols=%d density=%f accel=%f omega=%f\n\n"
-//     //  , params->my_rank, params->nx, params->ny, params->max_iters, params->reynolds_dim, params->local_nrows, params->local_ncols
-//     //  , params->density, params->accel, params->omega);
-//     // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+    // printf("Rank:%d\nnx=%d ny=%d maxIt=%d reyDim=%d lrows=%d lcols=%d density=%f accel=%f omega=%f\n\n"
+    //  , params->my_rank, params->nx, params->ny, params->max_iters, params->reynolds_dim, params->local_nrows, params->local_ncols
+    //  , params->density, params->accel, params->omega);
+    // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
 
-//     // Create mpi type for spee_t
-//     MPI_Type_create_struct(1, (int[1]){9}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_DOUBLE}, mpi_speed_t);
-//     MPI_Type_commit(mpi_speed_t);
-// }
+    // Create mpi type for speed_t
+    MPI_Type_create_struct(1, (int[1]){9}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_DOUBLE}, mpi_speed_t);
+    MPI_Type_commit(mpi_speed_t);
+}
 
 void calculate_local_stripes(param_t* params, int com_size, double** send_buff
     , double** read_buff, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles)
