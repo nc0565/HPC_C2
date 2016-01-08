@@ -105,7 +105,7 @@ int main(int argc, char* argv[])
     // MPI_Datatype mpi_accel_area;
     // MPI_Datatype mpi_speed_t;
     // setup(&params, &accel_area, com_size, &mpi_param, &mpi_accel_area, &mpi_speed_t);
-=======================================================================================
+// =======================================================================================
     // Create mpi type for param
     int blocklengths[2] = {10,3};
     MPI_Datatype types[2] = {MPI_INT, MPI_DOUBLE};
@@ -211,7 +211,7 @@ int main(int argc, char* argv[])
     }
     else {printf("Not implemented\n");}
 
-==========================================================
+// ==========================================================
 
     if (params.my_rank == MASTER)
     {
@@ -320,7 +320,7 @@ int main(int argc, char* argv[])
         #endif
     }
 
-================================================================
+// ================================================================
 
     MPI_Gather(&local_temp_space[params.local_ncols], (params.local_nrows), mpi_row
             , cells, (params.local_nrows), mpi_row,
