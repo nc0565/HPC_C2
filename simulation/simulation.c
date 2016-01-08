@@ -392,7 +392,7 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         }
     }
 
-    addr = (params.local_nrows+1)*params.local_ncols;
+    addr = (params.local_nrows)*params.local_ncols;
     ii = params.local_nrows;
     for (jj = 0; jj < params.local_ncols; jj++, addr++)
     { 
