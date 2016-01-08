@@ -300,11 +300,10 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles)
 
 void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cells, double* send_buff, double* recv_buff)
 {
-    int ii=1,jj,addr;            /* generic counters */
+    int ii=0,jj,addr=0;            /* generic counters */
     int x_e,x_w,y_n,y_s;  /* indices of neighbouring cells */
     MPI_Status status;
     
-        addr = params.local_ncols;
     for (jj = 0; jj < params.local_ncols; jj++, addr++)
     { 
         y_n = (ii + 1) % (params.local_nrows+2);
@@ -318,39 +317,38 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         tmp_cells[ii *params.local_ncols + x_e].speeds[1] = cells[addr].speeds[1]; /* east */
         tmp_cells[y_n*params.local_ncols + jj].speeds[2]  = cells[addr].speeds[2]; /* north */
         tmp_cells[ii *params.local_ncols + x_w].speeds[3] = cells[addr].speeds[3]; /* west */
-        send_buff[jj]  = cells[addr].speeds[4]; /* south */
+        send_buff[(jj*3)]  = cells[addr].speeds[4]; /* south */
         tmp_cells[y_n*params.local_ncols + x_e].speeds[5] = cells[addr].speeds[5]; /* north-east */
         tmp_cells[y_n*params.local_ncols + x_w].speeds[6] = cells[addr].speeds[6]; /* north-west */
-        send_buff[jj+1] = cells[addr].speeds[7]; /* south-west */
-        send_buff[jj+2] = cells[addr].speeds[8]; /* south-east */
+        send_buff[(jj*3)+1] = cells[addr].speeds[7]; /* south-west */
+        send_buff[(jj*3)+2] = cells[addr].speeds[8]; /* south-east */
     }
 
+        // printf("Cell:%d Rank %d: sending to Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", 0, params.my_rank, params.prev,
+        //     send_buff[0], send_buff[1], send_buff[2]);
+        // printf("Cell:%d Rank %d: sending to Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", 101, params.my_rank, params.prev,
+            // send_buff[303], send_buff[304], send_buff[305]);
     // Exchange temp halo back
     MPI_Sendrecv(send_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
      recv_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
       MPI_COMM_WORLD, &status);
 
-    addr = params.local_nrows*params.local_ncols;
+    addr = (params.local_nrows-1)*params.local_ncols;
+        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", (params.local_nrows-1)*params.local_ncols, params.my_rank, params.next,
+        //     recv_buff[0], recv_buff[1], recv_buff[2]);
+        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", (params.local_nrows)*params.local_ncols-1, params.my_rank, params.next,
+            // recv_buff[303], recv_buff[304], recv_buff[305]);
     for (jj = 0; jj < params.local_ncols; jj++, addr++)
     {
-        tmp_cells[addr].speeds[4] = recv_buff[jj];
-        tmp_cells[addr].speeds[7] = recv_buff[jj+1];
-        tmp_cells[addr].speeds[8] = recv_buff[jj+2];
+        tmp_cells[addr].speeds[4] = recv_buff[(jj*3)];
+        tmp_cells[addr].speeds[7] = recv_buff[(jj*3)+1];
+        tmp_cells[addr].speeds[8] = recv_buff[(jj*3)+2];
     }
-
-     if (params.my_rank==1)
-    {
-        for (jj = 0; jj < params.local_ncols/*-96*/; ++jj)
-        {
-            printf("South_Source:Cell:%d\ns_W=%f s=%f s_E=%f\n\n\n\n\n"
-               , jj ,tmp_cells[jj+(params.local_ncols*params.local_nrows)].speeds[7]
-               , tmp_cells[jj+(params.local_ncols*params.local_nrows)].speeds[4]
-               , tmp_cells[jj+(params.local_ncols*params.local_nrows)].speeds[8]);
-        }
-    }
+        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", addr, params.my_rank, params.next,
+        //     recv_buff[303], recv_buff[304], recv_buff[305]);
 
     /* loop over _middle_ cells */
-    for (ii = 2; ii < params.local_nrows; ii++)
+    for (ii = 1; ii < params.local_nrows-1; ii++)
     {
         addr = ii*params.local_ncols;
         for (jj = 0; jj < params.local_ncols; jj++, addr++)
@@ -392,8 +390,8 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         }
     }
 
-    addr = (params.local_nrows+1)*params.local_ncols;
-    ii = params.local_nrows;
+    addr = (params.local_nrows-1)*params.local_ncols;
+    ii = params.local_nrows-1;
     for (jj = 0; jj < params.local_ncols; jj++, addr++)
     { 
         x_e = (jj + 1) % (params.nx);
@@ -405,26 +403,34 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         tmp_cells[ii*params.local_ncols + jj].speeds[0]  = cells[addr].speeds[0]; /* central cell, */
                                                  /* no movement   */
         tmp_cells[ii *params.local_ncols + x_e].speeds[1] = cells[addr].speeds[1]; /* east */
-        send_buff[jj]  = cells[addr].speeds[2]; /* north */
+        send_buff[(jj*3)]  = cells[addr].speeds[2]; /* north */
         tmp_cells[ii *params.local_ncols + x_w].speeds[3] = cells[addr].speeds[3]; /* west */
         tmp_cells[y_s*params.local_ncols + jj].speeds[4]  = cells[addr].speeds[4]; /* south */
-        send_buff[jj+1] = cells[addr].speeds[5]; /* north-east */
-        send_buff[jj+2] = cells[addr].speeds[6]; /* north-west */
+        send_buff[(jj*3)+1] = cells[addr].speeds[5]; /* north-east */
+        send_buff[(jj*3)+2] = cells[addr].speeds[6]; /* north-west */
         tmp_cells[y_s*params.local_ncols + x_w].speeds[7] = cells[addr].speeds[7]; /* south-west */
         tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[addr].speeds[8]; /* south-east */
     }
+        // printf("Cell:%d Rank %d: sending to Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", params.local_ncols*(params.local_nrows-1), params.my_rank, params.next,
+            // recv_buff[0], recv_buff[1], recv_buff[2]);
+        // printf("Cell:%d Rank %d: sending to Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", params.local_ncols*params.local_nrows-1, params.my_rank, params.next,
+            // recv_buff[303], recv_buff[304], recv_buff[305]);
 
     MPI_Sendrecv(send_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
                  recv_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
                    MPI_COMM_WORLD, &status);
 
-    addr = params.local_ncols;
+        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", 0, params.my_rank, params.prev,
+            // recv_buff[0], recv_buff[1], recv_buff[2]);
+        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", 101, params.my_rank, params.prev,
+            // recv_buff[303], recv_buff[304], recv_buff[305]);
+    addr = 0;
     for (jj = 0; jj < params.local_ncols; jj++, addr++)
     {
-        tmp_cells[addr].speeds[2] = recv_buff[jj];
-        tmp_cells[addr].speeds[5] = recv_buff[jj+1];
-        tmp_cells[addr].speeds[6] = recv_buff[jj+2];
-    }
+        tmp_cells[addr].speeds[2] = recv_buff[(jj*3)];
+        tmp_cells[addr].speeds[5] = recv_buff[(jj*3)+1];
+        tmp_cells[addr].speeds[6] = recv_buff[(jj*3)+2];
+    }    
 }
 
 void accelerate_flow_Row_RW(const param_t params, const accel_area_t accel_area,
@@ -482,7 +488,7 @@ void collision_local(const param_t params, speed_t* cells, speed_t* tmp_cells, i
     ** NB the collision step is called after
     ** the propagate step and so values of interest
     ** are in the scratch-space grid */
-    for (ii = 1; ii <=  params.local_nrows; ii++)
+    for (ii = 0; ii <  params.local_nrows; ii++)
     {
         for (jj = 0; jj < params.nx; jj++)
         {
@@ -611,7 +617,7 @@ void accelerate_flow_Colum_RW(const param_t params, const accel_area_t accel_are
     w2 = params.density * params.accel / 36.0;
 
     // for (ii = 0; ii < params.local_nrows+1; ii++)
-    for (ii = 1; ii <= params.local_nrows; ii++)
+    for (ii = 0; ii < params.local_nrows; ii++)
     {
         int addr = ii*params.local_ncols + accel_area.idx;
         /* if the cell is not occupied and
@@ -634,7 +640,7 @@ void accelerate_flow_Colum_RW(const param_t params, const accel_area_t accel_are
 
 }
 
-// for buffer-less, exchange on the grid
+// for buffer-less, exchange on the grid with halos
 void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells)
 {
     int ii,jj,addr;            /* generic counters */

@@ -105,8 +105,9 @@ int main(int argc, char* argv[])
     MPI_Datatype mpi_param;
     MPI_Datatype mpi_accel_area;
     MPI_Datatype mpi_speed_t;
+    // MPI_Datatype temp_t;
     // Declare buffers
-    setup(&params, &accel_area, com_size, &mpi_param, &mpi_accel_area, &mpi_speed_t);
+    setup(&params, &accel_area, com_size, &mpi_param, &mpi_accel_area, &mpi_speed_t/*, &temp_t*/);
 
     speed_t* local_work_space = NULL;
     speed_t* local_temp_space = NULL;
@@ -136,11 +137,11 @@ int main(int argc, char* argv[])
         // int MPI_Type_size_x(MPI_Datatype datatype, MPI_Count *size);
 
         MPI_Scatter(cells, params.local_nrows, mpi_row,
-         &local_work_space[params.local_ncols], params.local_nrows, mpi_row,
+         local_work_space, params.local_nrows, mpi_row,
           MASTER, MPI_COMM_WORLD);
 
         MPI_Scatter(obstacles, params.local_ncols*(params.local_nrows), MPI_INT,
-         &local_obstacles[params.local_ncols], params.local_ncols*(params.local_nrows), MPI_INT,
+         local_obstacles, params.local_ncols*(params.local_nrows), MPI_INT,
           MASTER, MPI_COMM_WORLD);
 
         // Calculate the rank and nex index that the acel row exists in
@@ -168,6 +169,7 @@ int main(int argc, char* argv[])
             }
         }
         // printf("acel row %d in rank %d\n", accel_area.idx, acel_row_rank);
+        // accel_area.idx =3;
 
     }
     else {printf("Not implemented\n");}
@@ -180,7 +182,6 @@ int main(int argc, char* argv[])
         gettimeofday(&timstr,NULL);
         tic=timstr.tv_sec+(timstr.tv_usec/1000000.0);
     }
-
     // This only deals with the rowise stripes
     for (ii = 0; ii < params.max_iters; ii++)
     {
@@ -193,87 +194,22 @@ int main(int argc, char* argv[])
             accelerate_flow_Colum_RW(params,accel_area,local_work_space,local_obstacles);
         }
         else                                // The row is in one rank only, uses the calculated rank and index
-        {if (params.my_rank==acel_row_rank) { accelerate_flow_Row_RW(params,accel_area,local_work_space,local_obstacles); }}
-
-        if (params.my_rank==0)
         {
-            for (int i = 0; i < params.local_ncols-96; ++i)
-            {
-                printf("South_Before%d:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-                   , ii+1, i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[3]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[0]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[1]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[7]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
+            // printf("Rank %d here2\n", params.my_rank);
+            if (params.my_rank==acel_row_rank)
+             { 
+                // printf("Rank %d here4\n=================\n", params.my_rank);
+                accelerate_flow_Row_RW(params,accel_area,local_work_space,local_obstacles); 
             }
         }
-        /*if (params.my_rank==1)
-        {
-            for (int i = 0; i < params.local_ncols-96; ++i)
-            {
-                // local_temp_space[i].speeds[2] = 5.1f;
-                printf("South_Source%d:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n\n\n"
-                   , ii+1, i, local_temp_space[i+params.local_ncols].speeds[6]
-                   , local_temp_space[i+(params.local_ncols)].speeds[2]
-                   , local_temp_space[i+(params.local_ncols)].speeds[5]
-                   , local_temp_space[i+(params.local_ncols)].speeds[3]
-                   , local_temp_space[i+(params.local_ncols)].speeds[0]
-                   , local_temp_space[i+(params.local_ncols)].speeds[1]
-                   , local_temp_space[i+(params.local_ncols)].speeds[7]
-                   , local_temp_space[i+(params.local_ncols)].speeds[4]
-                   , local_temp_space[i+(params.local_ncols)].speeds[8]);
-            }
-        }*/
 
         // Includes the two buffered halo steps
         propagate_row_wise2(params,local_work_space,local_temp_space, send_buff, read_buff);
 
-        if (params.my_rank==0)
-        {
-            for (int i = 0; i < params.local_ncols-96; ++i)
-            {
-                printf("South_After%d:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n"
-                    "++++++++++\n\n", ii+1
-                   , i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[3]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[0]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[1]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[7]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
-            }
-        }
-
         collision_local(params,local_work_space,local_temp_space,local_obstacles);
 
-
-        if (params.my_rank==0)
-        {
-            for (int i = 0; i < params.local_ncols-96; ++i)
-            {
-                printf("After_Collision%d:Cell:%d\n N_W=%f N=%f N_E=%f\nC_W=%f C_C=%f C_E=%f\ns_W=%f s=%f s_E=%f\n"
-                    "=======\n\n", ii+1
-                   , i, local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[6]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[2]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[5]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[3]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[0]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[1]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[7]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[4]
-                   , local_temp_space[i+(params.local_ncols*params.local_nrows)].speeds[8]);
-            }
-        }
-
-
-// if (ii>=0)
-// MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+if (ii>=1)
+MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
         #ifdef DEBUG
         printf("==timestep: %d==\n", ii);
         printf("av velocity: %.12E\n", av_vels[ii]);
@@ -283,7 +219,7 @@ int main(int argc, char* argv[])
 
 // ================================================================
 
-    MPI_Gather(&local_temp_space[params.local_ncols], (params.local_nrows), mpi_row
+    MPI_Gather(local_temp_space, (params.local_nrows), mpi_row
             , cells, (params.local_nrows), mpi_row,
              MASTER, MPI_COMM_WORLD);
 
@@ -310,6 +246,7 @@ int main(int argc, char* argv[])
     MPI_Type_free(&mpi_param);
     MPI_Type_free(&mpi_accel_area);
     MPI_Type_free(&mpi_speed_t);
+    // MPI_Type_free(&temp_t);
 
     MPI_Finalize();
 
@@ -429,7 +366,7 @@ double total_density(const param_t params, speed_t* cells)
 }
 
 void setup(param_t* params, accel_area_t* accel_area, int com_size,
- MPI_Datatype* mpi_param, MPI_Datatype* mpi_accel_area, MPI_Datatype* mpi_speed_t)
+ MPI_Datatype* mpi_param, MPI_Datatype* mpi_accel_area, MPI_Datatype* mpi_speed_t/*, MPI_Datatype* temp_t*/)
 {
     // Create mpi type for param
     int blocklengths[2] = {10,3};
@@ -462,7 +399,7 @@ void setup(param_t* params, accel_area_t* accel_area, int com_size,
     //int params->local_ncols;    // Number of cols in the current rank
     // int last_nrows = -1;     // Number of rows in the last rank
     // int last_ncols = -1;     // Number of cols in the last rank
-    params->prev = (params->my_rank == 0)? (com_size-1) : params->my_rank-1;
+    params->prev = (params->my_rank == MASTER)? (com_size-1) : params->my_rank-1;
     params->next = (params->my_rank+1) % com_size;
     // printf("Ramk=%d, prev=%d, next=%d\n", params->my_rank, params->prev, params->next);
 
@@ -470,9 +407,23 @@ void setup(param_t* params, accel_area_t* accel_area, int com_size,
     //  , params->my_rank, params->nx, params->ny, params->max_iters, params->reynolds_dim, params->local_nrows, params->local_ncols
     //  , params->density, params->accel, params->omega);
     // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
-
+// ======================================================================================
     // Create mpi type for speed_t
+    // speed_t sp = (speed_t){0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+    // MPI_Type_create_struct(1, (int[1]){9}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_DOUBLE}, temp_t);
     MPI_Type_create_struct(1, (int[1]){9}, (MPI_Aint[1]){0}, (MPI_Datatype[1]){MPI_DOUBLE}, mpi_speed_t);
+    // MPI_Type_commit(temp_t);
+    // MPI_Aint base, start;
+    // MPI_Get_address(&sp, &base);
+    // MPI_Get_address(&sp.speeds[0], &start);
+    // start -= base;
+    // MPI_Type_create_resized(*temp_t, start, 1*sizeof(speed_t), mpi_speed_t);
+
+    // int s;
+    // MPI_Type_size( *temp_t, &s );
+    // MPI_Type_create_resized(*temp_t, 0, s, mpi_speed_t);
+
+    // MPI_Type_create_resized(*temp_t, 0, 1*sizeof(speed_t), mpi_speed_t);
     MPI_Type_commit(mpi_speed_t);
 }
 
@@ -500,11 +451,11 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         if (*send_buff == NULL) DIE("Cannot allocate memory for the send buffer");
         *read_buff = (double*) malloc(3*sizeof(double)*params->nx);
         if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
-        *local_work_space = (speed_t*) malloc(params->nx*(params->local_nrows+2)*sizeof(speed_t));
+        *local_work_space = (speed_t*) malloc(params->nx*(params->local_nrows)*sizeof(speed_t));
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
-        *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->nx*(params->local_nrows+2));
+        *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->nx*(params->local_nrows));
         if (*local_temp_space == NULL) DIE("Cannot allocate memory for the local temp space");
-        *local_obstacles = (int*) malloc(sizeof(int)*params->nx*((params->local_nrows)+2));
+        *local_obstacles = (int*) malloc(sizeof(int)*params->nx*((params->local_nrows)));
         if (*local_obstacles == NULL) DIE("Cannot allocate memory for the local obstacles");
         
     }
@@ -530,9 +481,9 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
         *local_work_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols+2));
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
-        *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols+2));
+        *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols));
         if (*local_temp_space == NULL) DIE("Cannot allocate memory for the local temp space");
-        *local_obstacles = (int*) malloc(sizeof(int)*params->ny*((params->local_ncols)+2));
+        *local_obstacles = (int*) malloc(sizeof(int)*params->ny*((params->local_ncols)));
         if (*local_obstacles == NULL) DIE("Cannot allocate memory for the local obstacles");
     }
 }
