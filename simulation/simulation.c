@@ -324,8 +324,8 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         send_buff[(jj*3)+2] = cells[addr].speeds[8]; /* south-east */
     }
 
-        // printf("Cell:%d Rank %d: sending to Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", 0, params.my_rank, params.prev,
-        //     send_buff[0], send_buff[1], send_buff[2]);
+        printf("Cell:%d Rank %d: sending to Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", 0, params.my_rank, params.prev,
+            send_buff[0], send_buff[1], send_buff[2]);
         // printf("Cell:%d Rank %d: sending to Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", 101, params.my_rank, params.prev,
             // send_buff[303], send_buff[304], send_buff[305]);
     // Exchange temp halo back
@@ -333,19 +333,25 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
      recv_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
       MPI_COMM_WORLD, &status);
 
-    addr = (params.local_nrows-1)*params.local_ncols;
-        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", (params.local_nrows-1)*params.local_ncols, params.my_rank, params.next,
-        //     recv_buff[0], recv_buff[1], recv_buff[2]);
+        printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%fto cell %d\t S=%fto cell %d\t SE=%fto cell %d\n", (params.local_nrows-1)*params.local_ncols, params.my_rank, params.next,
+            send_buff[0], ((params.local_nrows-1)*params.local_ncols), send_buff[1], ((params.local_nrows-1)*params.local_ncols)-1
+                , send_buff[2], ((params.local_nrows-1)*params.local_ncols)+1);
         // printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", (params.local_nrows)*params.local_ncols-1, params.my_rank, params.next,
             // recv_buff[303], recv_buff[304], recv_buff[305]);
-    for (jj = 0; jj < params.local_ncols; jj++, addr++)
+
+    addr = ((params.local_nrows-1)*params.local_ncols);
+    tmp_cells[addr].speeds[4] = recv_buff[0];
+    tmp_cells[addr+(params.local_ncols-1)].speeds[7] = recv_buff[1];
+    tmp_cells[++addr].speeds[8] = recv_buff[2];
+    for (jj = 1; jj < params.local_ncols-1; jj++, addr)
     {
         tmp_cells[addr].speeds[4] = recv_buff[(jj*3)];
-        tmp_cells[addr].speeds[7] = recv_buff[(jj*3)+1];
-        tmp_cells[addr].speeds[8] = recv_buff[(jj*3)+2];
+        tmp_cells[addr-1].speeds[7] = recv_buff[(jj*3)+1];
+        tmp_cells[++addr].speeds[8] = recv_buff[(jj*3)+2];
     }
-        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", addr, params.my_rank, params.next,
-        //     recv_buff[303], recv_buff[304], recv_buff[305]);
+    tmp_cells[addr].speeds[4] = recv_buff[303];
+    tmp_cells[addr-1].speeds[7] = recv_buff[304];
+    tmp_cells[(params.local_nrows-1)*params.local_ncols].speeds[8] = recv_buff[305];
 
     /* loop over _middle_ cells */
     for (ii = 1; ii < params.local_nrows-1; ii++)
@@ -425,12 +431,18 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         // printf("Cell:%d Rank %d: receiving from Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", 101, params.my_rank, params.prev,
             // recv_buff[303], recv_buff[304], recv_buff[305]);
     addr = 0;
-    for (jj = 0; jj < params.local_ncols; jj++, addr++)
+    tmp_cells[addr].speeds[2] = recv_buff[0];
+    tmp_cells[addr+(params.local_ncols-1)].speeds[5] = recv_buff[2];
+    tmp_cells[++addr].speeds[6] = recv_buff[3];
+    for (jj = 1; jj < params.local_ncols-1; jj++, addr)
     {
         tmp_cells[addr].speeds[2] = recv_buff[(jj*3)];
-        tmp_cells[addr].speeds[5] = recv_buff[(jj*3)+1];
-        tmp_cells[addr].speeds[6] = recv_buff[(jj*3)+2];
-    }    
+        tmp_cells[addr-1].speeds[5] = recv_buff[(jj*3)+1];
+        tmp_cells[++addr].speeds[6] = recv_buff[(jj*3)+2];
+    }
+    tmp_cells[addr].speeds[2] = recv_buff[303];
+    tmp_cells[addr-1].speeds[5] = recv_buff[304];
+    tmp_cells[0].speeds[6] = recv_buff[305];   
 }
 
 void accelerate_flow_Row_RW(const param_t params, const accel_area_t accel_area,

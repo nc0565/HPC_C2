@@ -208,8 +208,9 @@ int main(int argc, char* argv[])
 
         collision_local(params,local_work_space,local_temp_space,local_obstacles);
 
-if (ii>=1)
+if (ii>=0)
 MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+printf("\n");
         #ifdef DEBUG
         printf("==timestep: %d==\n", ii);
         printf("av velocity: %.12E\n", av_vels[ii]);
