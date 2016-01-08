@@ -504,7 +504,7 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
         *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->nx*(params->local_nrows+2));
         if (*local_temp_space == NULL) DIE("Cannot allocate memory for the local temp space");
-        *local_obstacles = (int*) malloc(sizeof(int)*params->nx*((params->local_nrows)*2));
+        *local_obstacles = (int*) malloc(sizeof(int)*params->nx*((params->local_nrows)+2));
         if (*local_obstacles == NULL) DIE("Cannot allocate memory for the local obstacles");
         
     }
@@ -532,7 +532,7 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
         *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols+2));
         if (*local_temp_space == NULL) DIE("Cannot allocate memory for the local temp space");
-        *local_obstacles = (int*) malloc(sizeof(int)*params->ny*((params->local_ncols)*2));
+        *local_obstacles = (int*) malloc(sizeof(int)*params->ny*((params->local_ncols)+2));
         if (*local_obstacles == NULL) DIE("Cannot allocate memory for the local obstacles");
     }
 }
