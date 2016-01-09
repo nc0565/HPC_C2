@@ -751,6 +751,9 @@ void av_velocity_local(const param_t params, speed_t* cells, int* obstacles, dou
     }
 
     MPI_Reduce(&tot_u, recv, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-    MPI_Reduce(&tot_cells, temp, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    if (*temp==-1)
+    {
+        MPI_Reduce(&tot_cells, temp, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    }
     // return tot_u / (double)tot_cells;
 }

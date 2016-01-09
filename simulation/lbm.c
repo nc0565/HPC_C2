@@ -84,6 +84,8 @@ int main(int argc, char* argv[])
     double*  av_vels   = NULL;    /* a record of the av. velocity computed for each timestep */
 
     int    ii;                    /*  generic counter */
+    int    tcount =0;             // A count to calculate what to divide av_vels by
+                                  // nx*ny - (tcount-9).
     struct timeval timstr;        /* structure to hold elapsed time */
     struct rusage ru;             /* structure to hold CPU time--system and user */
     double tic,toc;               /* floating point numbers to calculate elapsed wallclock time */
@@ -98,7 +100,7 @@ int main(int argc, char* argv[])
     if (params.my_rank == MASTER)
     {
         parse_args(argc, argv, &final_state_file, &av_vels_file, &param_file);
-        initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles/*, &av_vels*/); 
+        initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles/*, &av_vels*/, &tcount); 
     }
 
     // Declare types
@@ -121,8 +123,8 @@ int main(int argc, char* argv[])
 
 // =======================================================================================
     
-    int* bl_counts;
-    int* disps;
+    int* bl_counts = NULL;
+    int* disps = NULL;
     MPI_Datatype mpi_row;
     int acel_row_rank=-1;
     // scatter, shift and exchange based on striping
@@ -230,63 +232,67 @@ int main(int argc, char* argv[])
     av_vels = (double*) malloc(sizeof(double)*(params.max_iters));
     if (av_vels == NULL) DIE("Cannot allocate memory for av_vels");
 
-    // This only deals with the rowise stripes
-    for (ii = 0; ii < params.max_iters; ii++)
-    {
-        //timestep(params, accel_area, cells, tmp_cells, obstacles);
-        //av_vels[ii] = av_velocity(params, cells, obstacles);
-
-        if(accel_area.col_or_row==ACCEL_COLUMN)    // Can send through all ranks
-        { 
-            // don't need to acel or exchane halo here, as prop only pushes non halo to temp
-            accelerate_flow_Colum_RW(params,accel_area,local_work_space,local_obstacles);
-        }
-        else                                // The row is in one rank only, uses the calculated rank and index
+    if (grid_shape!=0)
+    { 
+        // This only deals with the rowise stripes
+        for (ii = 0; ii < params.max_iters; ii++)
         {
-            // printf("Rank %d here2\n", params.my_rank);
-            if (params.my_rank==acel_row_rank)
-             { 
-                // printf("Rank %d here4\n=================\n", params.my_rank);
-                accelerate_flow_Row_RW(params,accel_area,local_work_space,local_obstacles); 
+            //timestep(params, accel_area, cells, tmp_cells, obstacles);
+            //av_vels[ii] = av_velocity(params, cells, obstacles);
+
+            if(accel_area.col_or_row==ACCEL_COLUMN)    // Can send through all ranks
+            { 
+                // don't need to acel or exchane halo here, as prop only pushes non halo to temp
+                accelerate_flow_Colum_RW(params,accel_area,local_work_space,local_obstacles);
             }
+            else                                // The row is in one rank only, uses the calculated rank and index
+            {
+                // printf("Rank %d here2\n", params.my_rank);
+                if (params.my_rank==acel_row_rank)
+                 { 
+                    // printf("Rank %d here4\n=================\n", params.my_rank);
+                    accelerate_flow_Row_RW(params,accel_area,local_work_space,local_obstacles); 
+                }
+            }
+
+            // Includes the two buffered halo steps
+            propagate_row_wise2(params, local_work_space, local_temp_space, send_buff/*, read_buff*/);
+
+            collision_local(params, local_work_space, local_temp_space, local_obstacles);
+            int temp=-1;
+            av_velocity_local(params, local_work_space, local_obstacles, &av_vels[ii], &temp/*, double* av_buff*/);
+                // if (params.my_rank==0 && ii ==params.max_iters-1)
+                // printf("Rank:%d temp=%d\n", params.my_rank, temp);
+            av_vels[ii] /= (double) temp;
+
+    // if (ii>=0)
+    // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+    // printf("\n");
+            #ifdef DEBUG
+            printf("==timestep: %d==\n", ii);
+            printf("av velocity: %.12E\n", av_vels[ii]);
+            printf("tot density: %.12E\n", total_density(params, cells));
+            #endif
+        }
+            // if (params.my_rank==0)
+            // printf("Rank:%d tcount=%d\n", params.my_rank, tcount);
+    // ================================================================
+
+        if (grid_shape==-1)
+        {
+            MPI_Gather(local_temp_space, params.local_nrows, mpi_row
+                    , cells, params.local_nrows, mpi_row,
+                     MASTER, MPI_COMM_WORLD);
+        }
+        else
+        {   
+            MPI_Gatherv(local_temp_space, (params.local_nrows), mpi_row
+                    , cells, bl_counts, disps, mpi_row,
+                     MASTER, MPI_COMM_WORLD);
         }
 
-        // Includes the two buffered halo steps
-        propagate_row_wise2(params, local_work_space, local_temp_space, send_buff/*, read_buff*/);
-
-        collision_local(params, local_work_space, local_temp_space, local_obstacles);
-
-        int temp;
-        av_velocity_local(params, local_work_space, local_obstacles, &av_vels[ii], &temp/*, double* av_buff*/);
-
-        av_vels[ii] /= (double) temp;
-
-// if (ii>=0)
-// MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
-// printf("\n");
-        #ifdef DEBUG
-        printf("==timestep: %d==\n", ii);
-        printf("av velocity: %.12E\n", av_vels[ii]);
-        printf("tot density: %.12E\n", total_density(params, cells));
-        #endif
     }
-
-// ================================================================
-
-    if (grid_shape==-1)
-    {
-        MPI_Gather(local_temp_space, params.local_nrows, mpi_row
-                , cells, params.local_nrows, mpi_row,
-                 MASTER, MPI_COMM_WORLD);
-    }
-    else
-    {   
-        MPI_Gatherv(local_temp_space, (params.local_nrows), mpi_row
-                , cells, bl_counts, disps, mpi_row,
-                 MASTER, MPI_COMM_WORLD);
-    }
-
-
+    else {printf("Not implemented\n");}
 
     if (params.my_rank == MASTER)
     {
