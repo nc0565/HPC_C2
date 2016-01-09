@@ -693,3 +693,64 @@ void propagate_row_wise(const param_t params, speed_t* cells, speed_t* tmp_cells
         }
     }
 }
+
+void av_velocity_local(const param_t params, speed_t* cells, int* obstacles, double* recv, int* temp/*, double* av_buff*/)
+{
+    int    ii,jj,kk, addr;       /* generic counters */
+    int    tot_cells = 0;  /* no. of cells used in calculation */
+    double tot_u;          /* accumulated magnitudes of velocity for each cell */
+
+    double local_density;  /* total density in cell */
+    double u_x;            /* x-component of velocity for current cell */
+    double u_y;            /* y-component of velocity for current cell */
+
+    /* initialise */
+    tot_u = 0.0;
+
+    /* loop over all non-blocked cells */
+    for (ii = 0; ii < params.local_nrows; ii++)
+    {
+        addr = ii*params.nx;
+        for (jj = 0; jj < params.local_ncols; jj++, addr++)
+        {
+            /* ignore occupied cells */
+            if (!obstacles[addr])
+            {
+                /* local density total */
+                local_density = 0.0;
+
+                for (kk = 0; kk < NSPEEDS; kk++)
+                {
+                    local_density += cells[addr].speeds[kk];
+                }
+
+                /* x-component of velocity */
+                u_x = (cells[addr].speeds[1] +
+                        cells[addr].speeds[5] +
+                        cells[addr].speeds[8]
+                    - (cells[addr].speeds[3] +
+                        cells[addr].speeds[6] +
+                        cells[addr].speeds[7])) /
+                    local_density;
+
+                /* compute y velocity component */
+                u_y = (cells[addr].speeds[2] +
+                        cells[addr].speeds[5] +
+                        cells[addr].speeds[6]
+                    - (cells[addr].speeds[4] +
+                        cells[addr].speeds[7] +
+                        cells[addr].speeds[8])) /
+                    local_density;
+
+                /* accumulate the norm of x- and y- velocity components */
+                tot_u += sqrt(u_x*u_x + u_y*u_y);
+                /* increase counter of inspected cells */
+                 ++tot_cells;
+            }
+        }
+    }
+
+    MPI_Reduce(&tot_u, recv, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    MPI_Reduce(&tot_cells, temp, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+    // return tot_u / (double)tot_cells;
+}

@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
     if (params.my_rank == MASTER)
     {
         parse_args(argc, argv, &final_state_file, &av_vels_file, &param_file);
-        initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles, &av_vels); 
+        initialise(param_file, &accel_area, &params, &cells, &tmp_cells, &obstacles/*, &av_vels*/); 
     }
 
     // Declare types
@@ -226,6 +226,10 @@ int main(int argc, char* argv[])
         gettimeofday(&timstr,NULL);
         tic=timstr.tv_sec+(timstr.tv_usec/1000000.0);
     }
+
+    av_vels = (double*) malloc(sizeof(double)*(params.max_iters));
+    if (av_vels == NULL) DIE("Cannot allocate memory for av_vels");
+
     // This only deals with the rowise stripes
     for (ii = 0; ii < params.max_iters; ii++)
     {
@@ -248,12 +252,14 @@ int main(int argc, char* argv[])
         }
 
         // Includes the two buffered halo steps
-        propagate_row_wise2(params,local_work_space,local_temp_space, send_buff/*, read_buff*/);
+        propagate_row_wise2(params, local_work_space, local_temp_space, send_buff/*, read_buff*/);
 
-        collision_local(params,local_work_space,local_temp_space,local_obstacles);
+        collision_local(params, local_work_space, local_temp_space, local_obstacles);
 
+        int temp;
+        av_velocity_local(params, local_work_space, local_obstacles, &av_vels[ii], &temp/*, double* av_buff*/);
 
-
+        av_vels[ii] /= (double) temp;
 
 // if (ii>=0)
 // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
@@ -299,11 +305,12 @@ int main(int argc, char* argv[])
         printf("Elapsed system CPU time:\t%.6f (s)\n", systim);
 
         write_values(final_state_file, av_vels_file, params, cells, obstacles, av_vels);
-        finalise(&cells, &tmp_cells, &obstacles, &av_vels);
+        finalise(&cells, &tmp_cells, &obstacles/*, &av_vels*/);
     }
 
     free(bl_counts);
     free(disps);
+    free(av_vels);
     MPI_Type_free(&mpi_param);
     MPI_Type_free(&mpi_accel_area);
     MPI_Type_free(&mpi_speed_t);

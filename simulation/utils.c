@@ -96,7 +96,7 @@ void parse_args (int argc, char* argv[],
 
 void initialise(const char* param_file, accel_area_t * accel_area,
     param_t* params, speed_t** cells_ptr, speed_t** tmp_cells_ptr,
-    int** obstacles_ptr, double** av_vels_ptr)
+    int** obstacles_ptr)
 {
     FILE   *fp;            /* file pointer */
     int    ii,jj, kk;          /* generic counters */
@@ -188,9 +188,6 @@ void initialise(const char* param_file, accel_area_t * accel_area,
     *obstacles_ptr = (int*) malloc(sizeof(int)*(params->ny*params->nx));
     if (*obstacles_ptr == NULL) DIE("Cannot allocate memory for patches");
 
-    *av_vels_ptr = (double*) malloc(sizeof(double)*(params->max_iters));
-    if (*av_vels_ptr == NULL) DIE("Cannot allocate memory for av_vels");
-
     w0 = params->density * 4.0/9.0;
     w1 = params->density      /9.0;
     w2 = params->density      /36.0;
@@ -234,7 +231,7 @@ void initialise(const char* param_file, accel_area_t * accel_area,
                     y_pos <  obstacles[kk].obs_y_max)
                 {
                     (*obstacles_ptr)[ii*params->nx + jj] = 1;
-                    
+
                 }
             }
         }
@@ -244,12 +241,11 @@ void initialise(const char* param_file, accel_area_t * accel_area,
 }
 
 void finalise(speed_t** cells_ptr, speed_t** tmp_cells_ptr,
-    int** obstacles_ptr, double** av_vels_ptr)
+    int** obstacles_ptr)
 {
     /* Free allocated memory */
     free(*cells_ptr);
     free(*tmp_cells_ptr);
     free(*obstacles_ptr);
-    free(*av_vels_ptr);
 }
 
