@@ -112,19 +112,21 @@ int main(int argc, char* argv[])
     speed_t* local_work_space = NULL;
     speed_t* local_temp_space = NULL;
     double*  send_buff = NULL;
-    double*  read_buff = NULL;
+    // double*  read_buff = NULL;
     int*     local_obstacles = NULL;
-    calculate_local_stripes(&params, com_size, &send_buff, &read_buff,
+    int grid_shape = calculate_local_stripes(&params, com_size, &send_buff, /*&read_buff,*/
      &local_work_space, &local_temp_space, &local_obstacles);
     // printf("Rank:%d params->local_nrows=%d params->local_ncols=%d\n", params->my_rank, params->local_nrows, params->local_ncols);
 
 
 // =======================================================================================
     
+    int* bl_counts;
+    int* disps;
     MPI_Datatype mpi_row;
     int acel_row_rank=-1;
     // scatter, shift and exchange based on striping
-    if (params.grid_fat!=0)
+    if (grid_shape!=0)
     {               // Row stripes are contigous in C memory
         // create data type for
         MPI_Type_contiguous(params.local_ncols, mpi_speed_t, &mpi_row);
@@ -136,13 +138,55 @@ int main(int argc, char* argv[])
         // int MPI_Type_size(MPI_Datatype datatype, int *size);
         // int MPI_Type_size_x(MPI_Datatype datatype, MPI_Count *size);
 
-        MPI_Scatter(cells, params.local_nrows, mpi_row,
+
+        if (grid_shape==-1)
+        {
+
+        MPI_Scatter(cells, params.local_nrows,  mpi_row,
          local_work_space, params.local_nrows, mpi_row,
           MASTER, MPI_COMM_WORLD);
 
         MPI_Scatter(obstacles, params.local_ncols*(params.local_nrows), MPI_INT,
          local_obstacles, params.local_ncols*(params.local_nrows), MPI_INT,
           MASTER, MPI_COMM_WORLD);
+        }
+        else
+        {
+            bl_counts = (int*) malloc(com_size*sizeof(int));
+            disps = (int*) malloc(com_size*sizeof(int));
+
+            disps[0] = 0;
+            bl_counts[0] = (params.ny / com_size);
+            for (int i = 1; i < com_size-1; ++i)
+            {
+                bl_counts[i] = (params.ny / com_size);
+                disps[i] = disps[i-1] + (params.ny / com_size);
+            }
+            bl_counts[com_size-1] = (params.ny / com_size) +(params.ny % com_size);
+            disps[com_size-1] = disps[com_size-2] + (params.ny / com_size);
+
+            MPI_Scatterv(cells, bl_counts, disps, mpi_row,
+             local_work_space, params.local_nrows, mpi_row,
+              MASTER, MPI_COMM_WORLD);
+
+            bl_counts[0] *= params.local_ncols;
+            for (int i = 1; i < com_size; ++i)
+            {
+                bl_counts[i] *= params.local_ncols;
+                disps[i] *= params.local_ncols;
+            }
+
+            MPI_Scatterv(obstacles, bl_counts,  disps, MPI_INT,
+             local_obstacles, params.local_ncols*(params.local_nrows), MPI_INT,
+              MASTER, MPI_COMM_WORLD);
+
+            bl_counts[0] /= params.local_ncols;
+            for (int i = 1; i < com_size; ++i)
+            {
+                bl_counts[i] /= params.local_ncols;
+                disps[i] /= params.local_ncols;
+            }
+        }
 
         // Calculate the rank and nex index that the acel row exists in
         // the new row is the crrect row index, including the halo
@@ -204,13 +248,16 @@ int main(int argc, char* argv[])
         }
 
         // Includes the two buffered halo steps
-        propagate_row_wise2(params,local_work_space,local_temp_space, send_buff, read_buff);
+        propagate_row_wise2(params,local_work_space,local_temp_space, send_buff/*, read_buff*/);
 
         collision_local(params,local_work_space,local_temp_space,local_obstacles);
 
-if (ii>=0)
-MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
-printf("\n");
+
+
+
+// if (ii>=0)
+// MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);
+// printf("\n");
         #ifdef DEBUG
         printf("==timestep: %d==\n", ii);
         printf("av velocity: %.12E\n", av_vels[ii]);
@@ -220,9 +267,20 @@ printf("\n");
 
 // ================================================================
 
-    MPI_Gather(local_temp_space, (params.local_nrows), mpi_row
-            , cells, (params.local_nrows), mpi_row,
-             MASTER, MPI_COMM_WORLD);
+    if (grid_shape==-1)
+    {
+        MPI_Gather(local_temp_space, params.local_nrows, mpi_row
+                , cells, params.local_nrows, mpi_row,
+                 MASTER, MPI_COMM_WORLD);
+    }
+    else
+    {   
+        MPI_Gatherv(local_temp_space, (params.local_nrows), mpi_row
+                , cells, bl_counts, disps, mpi_row,
+                 MASTER, MPI_COMM_WORLD);
+    }
+
+
 
     if (params.my_rank == MASTER)
     {
@@ -244,6 +302,8 @@ printf("\n");
         finalise(&cells, &tmp_cells, &obstacles, &av_vels);
     }
 
+    free(bl_counts);
+    free(disps);
     MPI_Type_free(&mpi_param);
     MPI_Type_free(&mpi_accel_area);
     MPI_Type_free(&mpi_speed_t);
@@ -370,7 +430,7 @@ void setup(param_t* params, accel_area_t* accel_area, int com_size,
  MPI_Datatype* mpi_param, MPI_Datatype* mpi_accel_area, MPI_Datatype* mpi_speed_t/*, MPI_Datatype* temp_t*/)
 {
     // Create mpi type for param
-    int blocklengths[2] = {10,3};
+    int blocklengths[2] = {9,3};
     MPI_Datatype types[2] = {MPI_INT, MPI_DOUBLE};
     MPI_Aint displacements[2];
     MPI_Get_address(&(params->nx), &displacements[0]);
@@ -393,9 +453,6 @@ void setup(param_t* params, accel_area_t* accel_area, int com_size,
     // Broadcast accel_area
     MPI_Bcast(accel_area, 1, *mpi_accel_area, MASTER, MPI_COMM_WORLD);
 
-
-    // Set stripe and buffer direction and size
-    params->grid_fat = ((params->nx - params->ny) >= -200)? 1:0; /* 1 if the grid is square or fat, 0 if it's tall */
     //int params->local_nrows;    // Number of rows in the current rank         Done in params
     //int params->local_ncols;    // Number of cols in the current rank
     // int last_nrows = -1;     // Number of rows in the last rank
@@ -428,10 +485,12 @@ void setup(param_t* params, accel_area_t* accel_area, int com_size,
     MPI_Type_commit(mpi_speed_t);
 }
 
-void calculate_local_stripes(param_t* params, int com_size, double** send_buff
-    , double** read_buff, speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles)
+int calculate_local_stripes(param_t* params, int com_size, double** send_buff
+    , /*double** read_buff,*/ speed_t** local_work_space, speed_t** local_temp_space, int** local_obstacles)
 {
-    if (params->grid_fat!=0)   // Row-wise
+    // Set stripe and buffer direction and size
+    int grid_shape = ((params->nx - params->ny) >= -200)? 1:0; /* 1 if the grid is square or fat, 0 if it's tall; -1 perfectly divisible.*/
+    if (grid_shape!=0)   // Row-wise
     {
         params->local_ncols = params->nx;     // Each row has all cols
         params->local_nrows = params->ny / com_size;
@@ -439,6 +498,11 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         if (params->my_rank == com_size-1)
         {
             params->local_nrows += (params->ny % com_size);
+        }
+
+        if ((params->ny % com_size)==0)
+        {
+            grid_shape = -1;
         }
 
         if (params->local_nrows <1)
@@ -450,8 +514,8 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         // Allocate message bufferes and the local workspace with a halo.
         *send_buff = (double*) malloc(3*sizeof(double)*params->nx);
         if (*send_buff == NULL) DIE("Cannot allocate memory for the send buffer");
-        *read_buff = (double*) malloc(3*sizeof(double)*params->nx);
-        if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
+        // *read_buff = (double*) malloc(3*sizeof(double)*params->nx);
+        // if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
         *local_work_space = (speed_t*) malloc(params->nx*(params->local_nrows)*sizeof(speed_t));
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
         *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->nx*(params->local_nrows));
@@ -469,6 +533,12 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
             params->local_ncols += (params->nx % com_size);
         }
 
+        // Shouldn't be needed.
+        if ((params->nx % com_size)==0)
+        {
+            grid_shape = -1;
+        }
+
         if (params->local_ncols <1)
         {
             fprintf(stderr, "Error: Too many processes, local_ncols<1\n");
@@ -478,8 +548,8 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         // Allocate message bufferes and the local workspaces with a halo.
         *send_buff = (double*) malloc(3*sizeof(double)*params->ny);
         if (*send_buff == NULL) DIE("Cannot allocate memory for the send buffer");
-        *read_buff = (double*) malloc(3*sizeof(double)*params->ny);
-        if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
+        // *read_buff = (double*) malloc(3*sizeof(double)*params->ny);
+        // if (*read_buff == NULL) DIE("Cannot allocate memory for the read buffer");
         *local_work_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols+2));
         if (*local_work_space == NULL) DIE("Cannot allocate memory for the local work space");
         *local_temp_space = (speed_t*) malloc(sizeof(speed_t)*params->ny*(params->local_ncols));
@@ -487,4 +557,6 @@ void calculate_local_stripes(param_t* params, int com_size, double** send_buff
         *local_obstacles = (int*) malloc(sizeof(int)*params->ny*((params->local_ncols)));
         if (*local_obstacles == NULL) DIE("Cannot allocate memory for the local obstacles");
     }
+
+    return grid_shape;
 }

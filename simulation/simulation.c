@@ -298,7 +298,7 @@ double av_velocity(const param_t params, speed_t* cells, int* obstacles)
     return tot_u / (double)tot_cells;
 }
 
-void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cells, double* send_buff, double* recv_buff)
+void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cells, double* send_buff/*, double* recv_buff*/)
 {
     int ii=0,jj,addr=0;            /* generic counters */
     int x_e,x_w,y_n,y_s;  /* indices of neighbouring cells */
@@ -324,34 +324,30 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         send_buff[(jj*3)+2] = cells[addr].speeds[8]; /* south-east */
     }
 
-        printf("Cell:%d Rank %d: sending to Rank %d\nSW=%f\t S=%f\t SE=%f\n", 0, params.my_rank, params.prev,
-            send_buff[2], send_buff[0], send_buff[1]);
-        // printf("Cell:%d Rank %d: sending to Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", 101, params.my_rank, params.prev,
-            // send_buff[305], send_buff[303], send_buff[304]);
+        // printf("Cell:%d Rank %d: sending to Rank %d\nSW=%f\t S=%f\t SE=%f\n", 0, params.my_rank, params.prev,
+            // send_buff[2], send_buff[0], send_buff[1]);
     // Exchange temp halo back
-    MPI_Sendrecv(send_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
-     recv_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
+    MPI_Sendrecv_replace(send_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
+      params.next, HALO_VELS,
       MPI_COMM_WORLD, &status);
 
-        printf("Cell:%d Rank %d: receiving from Rank %d\nSW=%f to cell %d\t S=%f to cell %d\t SE=%f to cell %d\n", (params.local_nrows-1)*params.local_ncols, params.my_rank, params.next,
-            send_buff[1], ((params.local_nrows-1)*params.local_ncols)+(params.local_ncols-1), send_buff[0], ((params.local_nrows-1)*params.local_ncols)
-                , send_buff[2], ((params.local_nrows-1)*params.local_ncols)+1);
-        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tSW=%f\t S=%f\t SE=%f\n", (params.local_nrows)*params.local_ncols-1, params.my_rank, params.next,
-            // recv_buff[305], recv_buff[303], recv_buff[304]);
+        // printf("Cell:%d Rank %d: receiving from Rank %d\nSW=%f to cell %d\t S=%f to cell %d\t SE=%f to cell %d\n", (params.local_nrows-1)*params.local_ncols, params.my_rank, params.next,
+        //     send_buff[1], ((params.local_nrows-1)*params.local_ncols)+(params.local_ncols-1), send_buff[0], ((params.local_nrows-1)*params.local_ncols)
+        //         , send_buff[2], ((params.local_nrows-1)*params.local_ncols)+1);
 
     addr = ((params.local_nrows-1)*params.local_ncols);
-    tmp_cells[addr].speeds[4] = recv_buff[0];
-    tmp_cells[addr+(params.local_ncols-1)].speeds[7] = recv_buff[1];
-    tmp_cells[++addr].speeds[8] = recv_buff[2];
+    tmp_cells[addr].speeds[4] = send_buff[0];
+    tmp_cells[addr+(params.local_ncols-1)].speeds[7] = send_buff[1];
+    tmp_cells[++addr].speeds[8] = send_buff[2];
     for (jj = 1; jj < params.local_ncols-1; jj++)
     {
-        tmp_cells[addr].speeds[4] = recv_buff[(jj*3)];
-        tmp_cells[addr-1].speeds[7] = recv_buff[(jj*3)+1];
-        tmp_cells[++addr].speeds[8] = recv_buff[(jj*3)+2];
+        tmp_cells[addr].speeds[4] = send_buff[(jj*3)];
+        tmp_cells[addr-1].speeds[7] = send_buff[(jj*3)+1];
+        tmp_cells[++addr].speeds[8] = send_buff[(jj*3)+2];
     }
-    tmp_cells[addr].speeds[4] = recv_buff[303];
-    tmp_cells[addr-1].speeds[7] = recv_buff[304];
-    tmp_cells[(params.local_nrows-1)*params.local_ncols].speeds[8] = recv_buff[305];
+    tmp_cells[addr].speeds[4] = send_buff[303];
+    tmp_cells[addr-1].speeds[7] = send_buff[304];
+    tmp_cells[(params.local_nrows-1)*params.local_ncols].speeds[8] = send_buff[305];
 
     /* loop over _middle_ cells */
     for (ii = 1; ii < params.local_nrows-1; ii++)
@@ -417,32 +413,28 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         tmp_cells[y_s*params.local_ncols + x_w].speeds[7] = cells[addr].speeds[7]; /* south-west */
         tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[addr].speeds[8]; /* south-east */
     }
-        printf("Cell:%d Rank %d: sending to Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", params.local_ncols*(params.local_nrows-1), params.my_rank, params.next,
-            recv_buff[2], recv_buff[0], recv_buff[1]);
-        // printf("Cell:%d Rank %d: sending to Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", params.local_ncols*params.local_nrows-1, params.my_rank, params.next,
-            // recv_buff[305], recv_buff[303], recv_buff[304]);
+        // printf("Cell:%d Rank %d: sending to Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", params.local_ncols*(params.local_nrows-1), params.my_rank, params.next,
+            // send_buff[2], send_buff[0], send_buff[1]);
 
-    MPI_Sendrecv(send_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
-                 recv_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
+    MPI_Sendrecv_replace(send_buff, params.local_ncols*3, MPI_DOUBLE, params.next, HALO_VELS,
+                  params.prev, HALO_VELS,
                    MPI_COMM_WORLD, &status);
 
-        printf("Cell:%d Rank %d: receiving from Rank %d\n\tNW=%f to cell %d\t N=%f to cell %d\t NE=%f to cell %d\n", 0, params.my_rank, params.prev,
-            recv_buff[2], (params.local_ncols-1), recv_buff[0], 0, recv_buff[1], 1);
-        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tNW=%f\t N=%f\t NE=%f\n", 101, params.my_rank, params.prev,
-            // recv_buff[305], recv_buff[303], recv_buff[304]);
+        // printf("Cell:%d Rank %d: receiving from Rank %d\n\tNW=%f to cell %d\t N=%f to cell %d\t NE=%f to cell %d\n", 0, params.my_rank, params.prev,
+            // send_buff[2], (params.local_ncols-1), send_buff[0], 0, send_buff[1], 1);
     addr = 0;
-    tmp_cells[addr].speeds[2] = recv_buff[0];
-    tmp_cells[(params.local_ncols-1)].speeds[6] = recv_buff[3];
-    tmp_cells[++addr].speeds[5] = recv_buff[2];
+    tmp_cells[addr].speeds[2] = send_buff[0];
+    tmp_cells[(params.local_ncols-1)].speeds[6] = send_buff[3];
+    tmp_cells[++addr].speeds[5] = send_buff[2];
     for (jj = 1; jj < params.local_ncols-1; jj++)
     {
-        tmp_cells[addr].speeds[2] = recv_buff[(jj*3)];
-        tmp_cells[addr-1].speeds[6] = recv_buff[(jj*3)+2];
-        tmp_cells[++addr].speeds[5] = recv_buff[(jj*3)+1];
+        tmp_cells[addr].speeds[2] = send_buff[(jj*3)];
+        tmp_cells[addr-1].speeds[6] = send_buff[(jj*3)+2];
+        tmp_cells[++addr].speeds[5] = send_buff[(jj*3)+1];
     }
-    tmp_cells[addr].speeds[2] = recv_buff[303];
-    tmp_cells[addr-1].speeds[6] = recv_buff[305];   
-    tmp_cells[0].speeds[5] = recv_buff[304];
+    tmp_cells[addr].speeds[2] = send_buff[303];
+    tmp_cells[addr-1].speeds[6] = send_buff[305];   
+    tmp_cells[0].speeds[5] = send_buff[304];
 }
 
 void accelerate_flow_Row_RW(const param_t params, const accel_area_t accel_area,
