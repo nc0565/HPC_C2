@@ -144,7 +144,7 @@ void initialise(const char* param_file, accel_area_t * accel_area,
     {
         accel_area->col_or_row = ACCEL_ROW;
         accel_area->idx = idx*(params->ny/BOX_Y_SIZE);
-        printf("Start: row idx=%d\n", accel_area->idx);
+        // printf("Start: row idx=%d\n", accel_area->idx);
     }
     else if (!(strcmp(accel_dir_buf, "column")))
     {
