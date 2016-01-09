@@ -323,31 +323,22 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
         send_buff[(jj*3)+1] = cells[addr].speeds[7]; /* south-west */
         send_buff[(jj*3)+2] = cells[addr].speeds[8]; /* south-east */
     }
+    MPI_Request request = MPI_REQUEST_NULL, request2 = MPI_REQUEST_NULL;
+    MPI_Isend(send_buff,params.local_ncols*3,MPI_DOUBLE,params.prev,HALO_VELS,MPI_COMM_WORLD,&request);
+    MPI_Irecv(send_buff,params.local_ncols*3,MPI_DOUBLE,params.next,HALO_VELS,MPI_COMM_WORLD,&request2);
 
         // printf("Cell:%d Rank %d: sending to Rank %d\nSW=%f\t S=%f\t SE=%f\n", 0, params.my_rank, params.prev,
             // send_buff[2], send_buff[0], send_buff[1]);
     // Exchange temp halo back
-    MPI_Sendrecv_replace(send_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
-      params.next, HALO_VELS,
-      MPI_COMM_WORLD, &status);
+    // MPI_Sendrecv_replace(send_buff, params.local_ncols*3, MPI_DOUBLE, params.prev, HALO_VELS,
+    //   params.next, HALO_VELS,
+    //   MPI_COMM_WORLD, &status);
+
+
 
         // printf("Cell:%d Rank %d: receiving from Rank %d\nSW=%f to cell %d\t S=%f to cell %d\t SE=%f to cell %d\n", (params.local_nrows-1)*params.local_ncols, params.my_rank, params.next,
         //     send_buff[1], ((params.local_nrows-1)*params.local_ncols)+(params.local_ncols-1), send_buff[0], ((params.local_nrows-1)*params.local_ncols)
         //         , send_buff[2], ((params.local_nrows-1)*params.local_ncols)+1);
-
-    addr = ((params.local_nrows-1)*params.local_ncols);
-    tmp_cells[addr].speeds[4] = send_buff[0];
-    tmp_cells[addr+(params.local_ncols-1)].speeds[7] = send_buff[1];
-    tmp_cells[++addr].speeds[8] = send_buff[2];
-    for (jj = 1; jj < params.local_ncols-1; jj++)
-    {
-        tmp_cells[addr].speeds[4] = send_buff[(jj*3)];
-        tmp_cells[addr-1].speeds[7] = send_buff[(jj*3)+1];
-        tmp_cells[++addr].speeds[8] = send_buff[(jj*3)+2];
-    }
-    tmp_cells[addr].speeds[4] = send_buff[303];
-    tmp_cells[addr-1].speeds[7] = send_buff[304];
-    tmp_cells[(params.local_nrows-1)*params.local_ncols].speeds[8] = send_buff[305];
 
     /* loop over _middle_ cells */
     for (ii = 1; ii < params.local_nrows-1; ii++)
@@ -391,6 +382,23 @@ void propagate_row_wise2(const param_t params, speed_t* cells, speed_t* tmp_cell
             tmp_cells[y_s*params.local_ncols + x_e].speeds[8] = cells[addr].speeds[8]; /* south-east */
         }
     }
+    MPI_Wait(&request,&status);
+    MPI_Wait(&request2,&status);
+
+    addr = ((params.local_nrows-1)*params.local_ncols);
+    tmp_cells[addr].speeds[4] = send_buff[0];
+    tmp_cells[addr+(params.local_ncols-1)].speeds[7] = send_buff[1];
+    tmp_cells[++addr].speeds[8] = send_buff[2];
+    for (jj = 1; jj < params.local_ncols-1; jj++)
+    {
+        tmp_cells[addr].speeds[4] = send_buff[(jj*3)];
+        tmp_cells[addr-1].speeds[7] = send_buff[(jj*3)+1];
+        tmp_cells[++addr].speeds[8] = send_buff[(jj*3)+2];
+    }
+    tmp_cells[addr].speeds[4] = send_buff[303];
+    tmp_cells[addr-1].speeds[7] = send_buff[304];
+    tmp_cells[(params.local_nrows-1)*params.local_ncols].speeds[8] = send_buff[305];
+
 
     addr = (params.local_nrows-1)*params.local_ncols;
     ii = params.local_nrows-1;
