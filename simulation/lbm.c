@@ -194,15 +194,17 @@ int main(int argc, char* argv[])
         // the new row is the crrect row index, including the halo
         if (accel_area.col_or_row==ACCEL_ROW){
             int lrows = params.ny/com_size;
-            acel_row_rank = accel_area.idx /lrows;
+            // printf("idx=%d \n", accel_area.idx);
+            acel_row_rank = (accel_area.idx) / lrows;
             if ((accel_area.idx %( lrows)) !=0)  // If there's a remainder, check if the rank should be imcremented.
             { 
-                acel_row_rank = ((accel_area.idx /(lrows))== com_size)? com_size : acel_row_rank; 
+                acel_row_rank = ((accel_area.idx /(lrows))== com_size-1)? com_size-1 : acel_row_rank; 
                 // Adjust the index for the local rank
                 if (acel_row_rank>0)
                 {
+                    printf("Cacl _acel row %d in rank %d\n", accel_area.idx, acel_row_rank);
                     accel_area.idx -= (acel_row_rank!=com_size)? (acel_row_rank)*lrows:(acel_row_rank-1)*lrows;;
-                    if (accel_area.idx<1) accel_area.idx = 1;
+                    // if (accel_area.idx<1) accel_area.idx = 1;
                 }
             }
             else
@@ -210,12 +212,14 @@ int main(int argc, char* argv[])
                 if (acel_row_rank!=0)
                 {
                     acel_row_rank--;
-                    accel_area.idx -= (acel_row_rank)*2;
+                    accel_area.idx -= (acel_row_rank)*params.local_nrows;
                 }
             }
         }
-        // printf("acel row %d in rank %d\n", accel_area.idx, acel_row_rank);
-        // accel_area.idx =3;
+        // accel_area.idx *= (params.local_nrows/BOX_Y_SIZE);
+        // accel_area.idx =10;
+        // acel_row_rank = 1;
+        printf("acel row %d in rank %d\n", accel_area.idx, acel_row_rank);
 
     }
     else {printf("Not implemented\n");}
@@ -227,11 +231,12 @@ int main(int argc, char* argv[])
         /* iterate for max_iters timesteps */
         gettimeofday(&timstr,NULL);
         tic=timstr.tv_sec+(timstr.tv_usec/1000000.0);
-    }
 
     av_vels = (double*) malloc(sizeof(double)*(params.max_iters));
     if (av_vels == NULL) DIE("Cannot allocate memory for av_vels");
+    }
 
+    int temp=-1;
     if (grid_shape!=0)
     { 
         // This only deals with the rowise stripes
@@ -259,11 +264,14 @@ int main(int argc, char* argv[])
             propagate_row_wise2(params, local_work_space, local_temp_space, send_buff/*, read_buff*/);
 
             collision_local(params, local_work_space, local_temp_space, local_obstacles);
-            int temp=-1;
-            av_velocity_local(params, local_work_space, local_obstacles, &av_vels[ii], &temp/*, double* av_buff*/);
-                // if (params.my_rank==0 && ii ==params.max_iters-1)
-                // printf("Rank:%d temp=%d\n", params.my_rank, temp);
-            av_vels[ii] /= (double) temp;
+            double hold;
+            av_velocity_local(params, local_work_space, local_obstacles, &hold, &temp/*, double* av_buff*/);
+                if (params.my_rank==0 && ii ==params.max_iters-1)
+                printf("Rank:%d temp=%d\n", params.my_rank, temp);
+            if (params.my_rank==0)
+            {
+                av_vels[ii] = hold / (double) temp;
+            }
 
     // if (ii>=0)
     // MPI_Abort(MPI_COMM_WORLD, EXIT_FAILURE);

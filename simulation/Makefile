@@ -4,13 +4,13 @@ CFLAGS=-O3 -g -Wall -Wextra -Wno-unused-parameter -std=c99
 
 EXE=lbm
 
-PARAM_FILE=../inputs/large_pipe.params
+PARAM_FILE=../inputs/small_pipe.params
 
 FINAL_STATE_FILE=./final_state.dat
 AV_VELS_FILE=./av_vels.dat
 
-REF_FINAL_STATE_FILE=../check/large_pipe.final_state.dat
-REF_AV_VELS_FILE=../check/large_pipe.av_vels.dat
+REF_FINAL_STATE_FILE=../check/small_pipe.final_state.dat
+REF_AV_VELS_FILE=../check/small_pipe.av_vels.dat
 
 LDLIBS=-lm
 
@@ -28,7 +28,7 @@ run: $(EXE)
 	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
 test: $(EXE)
-	mpirun -n 6 ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
+	mpirun -n 3 ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
 plot:
 	gnuplot final_state.plt

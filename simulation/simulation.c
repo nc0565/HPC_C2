@@ -447,7 +447,7 @@ void accelerate_flow_Row_RW(const param_t params, const accel_area_t accel_area,
     w1 = params.density * params.accel / 9.0;
     w2 = params.density * params.accel / 36.0;
 
-    int addr = (accel_area.idx)*params.local_ncols;
+    int addr = (accel_area.idx)*params.nx;
     // printf("row=%d, col=%d,  start at index=%d\n", ii, params.local_ncols, addr);
 
     // The new index accounts for the halo row
@@ -753,6 +753,7 @@ void av_velocity_local(const param_t params, speed_t* cells, int* obstacles, dou
     MPI_Reduce(&tot_u, recv, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
     if (*temp==-1)
     {
+        *temp = 1;
         MPI_Reduce(&tot_cells, temp, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     }
     // return tot_u / (double)tot_cells;
