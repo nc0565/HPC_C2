@@ -4,7 +4,7 @@
 #PBS -joe
 #PBS -o LBM.out
 #PBS -q teaching
-#PBS -l nodes=1:ppn=6,walltime=00:10:00
+#PBS -l nodes=4:ppn=16,walltime=00:10:00
 
 #! Mail to user if job aborts
 #PBS -m a
@@ -13,7 +13,7 @@
 application="make run"
 
 #! Run options for the application
-options="PARAM_FILE=../inputs/small_pipe.params"
+options="PARAM_FILE=../inputs/large_pipe.params"
 
 ###############################################################
 ### You should not have to change anything below this line ####
@@ -23,8 +23,8 @@ options="PARAM_FILE=../inputs/small_pipe.params"
 
 cd $PBS_O_WORKDIR
 
-LD_PRELOAD=""
-export LD_PRELOAD=""
+# LD_PRELOAD=""
+# export LD_PRELOAD=""
 echo Running on host `hostname`
 echo Time is `date`
 echo Directory is `pwd`

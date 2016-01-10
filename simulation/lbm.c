@@ -154,8 +154,8 @@ int main(int argc, char* argv[])
         }
         else
         {
-            int lrow = (params.ny / com_size);
-            int extra = (params.ny % com_size);
+            // int lrow = (params.ny / com_size);
+            // int extra = (params.ny % com_size);
             bl_counts = (int*) malloc(com_size*sizeof(int));
             disps = (int*) malloc(com_size*sizeof(int));
 

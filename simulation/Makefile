@@ -1,16 +1,16 @@
 CC=mpicc
 
-CFLAGS=-O3 -g -Wall -Wextra -Wno-unused-parameter -std=c99 -msse3 -ffast-math
+CFLAGS=-O3 -Wall -Wextra -Wno-unused-parameter -std=c99 -msse3 -ffast-math
 
 EXE=lbm
 
-PARAM_FILE=../inputs/small_pipe.params
+PARAM_FILE=../inputs/mod_large_pipe.params
 
 FINAL_STATE_FILE=./final_state.dat
 AV_VELS_FILE=./av_vels.dat
 
-REF_FINAL_STATE_FILE=../check/small_pipe.final_state.dat
-REF_AV_VELS_FILE=../check/small_pipe.av_vels.dat
+REF_FINAL_STATE_FILE=../check/mod_large_pipe.final_state.dat
+REF_AV_VELS_FILE=../check/mod_large_pipe.av_vels.dat
 
 LDLIBS=-lm
 
@@ -28,7 +28,7 @@ run: $(EXE)
 	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
 test: $(EXE)
-	mpirun -n 3 ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
+	mpirun -n 12 ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
 mimd:
 	mpirun -n 1 ./mimd1 -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE) : -n 2 ./mimd2 -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
