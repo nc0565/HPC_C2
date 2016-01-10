@@ -1,0 +1,495 @@
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+Running on host node31-029
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+Time is Sun Jan 10 10:18:52 GMT 2016
+Directory is /panfs/panasas01/cosc/nc0565/test/HPC_C2/simulation
+PBS job ID is 3898975.master.cm.cluster
+This jobs runs on the following machines:
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+node31-029 node31-032 node31-031 node31-030
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+./lbm -a ./av_vels.dat -f ./final_state.dat -p ../inputs/large_pipe.params
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+==done==
+Reynolds number:		6.765504870104E+00
+Elapsed time:			16.351509 (s)
+Elapsed user CPU time:		16.282524 (s)
+Elapsed system CPU time:	0.316951 (s)
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.
+ERROR: ld.so: object '/panfs/panasas01/cosc/jp8463/icd/bin/libOpenCL.so' from LD_PRELOAD cannot be preloaded: ignored.

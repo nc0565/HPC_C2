@@ -1,0 +1,99 @@
+South
+
+Cell:0 Rank 0: sending to Rank 4
+        S=0.011111      SE=0.002778      SW=0.002778
+Cell:2142 Rank 4: receiving from Rank 0
+        S=0.011111      SE=0.002778      SW=0.002778
+
+Cell:0 Rank 1: sending to Rank 0
+        S=0.011111      SE=0.002778      SW=0.002778
+Cell:1938 Rank 0: receiving from Rank 1
+        S=0.011111      SE=0.002778      SW=0.002778
+
+
+Cell:101 Rank 0: sending to Rank 4
+        S=0.011111      SE=0.002778      SW=0.002778
+Cell:2243 Rank 4: receiving from Rank 0
+        S=0.011111      SE=0.002778      SW=0.002778
+        
+Cell:101 Rank 1: sending to Rank 0
+        S=0.011111      SE=0.002778      SW=0.002778
+Cell:2039 Rank 0: receiving from Rank 1
+        S=0.011111      SE=0.002778      SW=0.002778
+
+North
+
+Cell:1938 Rank 0: sending to Rank 1
+        N=0.011111      NE=0.002778      NW=0.002778
+Cell:0 Rank 1: receiving from Rank 0
+        N=0.011111      NE=0.002778      NW=0.002778
+
+Cell:1938 Rank 1: sending to Rank 2
+        N=0.011111      NE=0.002778      NW=0.002778
+Cell:0 Rank 2: receiving from Rank 1
+        N=0.011111      NE=0.002778      NW=0.002778
+
+
+Cell:2039 Rank 0: sending to Rank 1
+        N=0.011111      NE=0.002778      NW=0.002778
+Cell:101 Rank 1: receiving from Rank 0
+        N=0.011111      NE=0.002778      NW=0.002778
+        
+Cell:2039 Rank 1: sending to Rank 2
+        N=0.011111      NE=0.002778      NW=0.002778
+Cell:101 Rank 2: receiving from Rank 1
+        N=0.011111      NE=0.002778      NW=0.002778
+
+
+South Cells
+
+Cell:0 Rank 1: sending to Rank 0
+SW=0.002778      S=0.011111      SE=0.002778
+Cell:1938 Rank 0: receiving from Rank 1
+SW=0.002778 to cell 2039         S=0.011111 to cell 1938         SE=0.002778 to cell 1939
+
+Cell:0 Rank 0: sending to Rank 4
+SW=0.002778      S=0.011111      SE=0.002778
+Cell:2142 Rank 4: receiving from Rank 0
+SW=0.002778 to cell 2243         S=0.011111 to cell 2142         SE=0.002778 to cell 2143
+
+
+North Cells
+
+Cell:1938 Rank 0: sending to Rank 1
+        NW=0.002778      N=0.011111      NE=0.002778
+Cell:0 Rank 1: receiving from Rank 0
+        NW=0.002778 to cell 101  N=0.011111 to cell 0    NE=0.002778 to cell 1
+
+Cell:2142 Rank 4: sending to Rank 0
+        NW=0.002778      N=0.011111      NE=0.002778
+Cell:0 Rank 0: receiving from Rank 4
+        NW=0.000000 to cell 101  N=0.000000 to cell 0    NE=0.000000 to cell 1
+
+
+
+after switch to replace (output 'may' have been false before reading the same buffer).
+
+S
+
+Cell:0 Rank 0: sending to Rank 1
+SW=0.002778      S=0.011111      SE=0.002778
+Cell:5100 Rank 1: receiving from Rank 0
+SW=0.002778 to cell 5201         S=0.011111 to cell 5100         SE=0.002778 to cell 5101
+
+Cell:0 Rank 1: sending to Rank 0
+SW=0.002778      S=0.011111      SE=0.002778
+Cell:5100 Rank 0: receiving from Rank 1
+SW=0.002778 to cell 5201         S=0.011111 to cell 5100         SE=0.002778 to cell 5101
+
+N
+
+Cell:5100 Rank 0: sending to Rank 1
+        NW=0.002778      N=0.011111      NE=0.002778
+Cell:0 Rank 0: receiving from Rank 1
+        NW=0.002778 to cell 101  N=0.011111 to cell 0    NE=0.002778 to cell 1
+
+Cell:5100 Rank 1: sending to Rank 0
+        NW=0.002778      N=0.011111      NE=0.002778
+Cell:0 Rank 1: receiving from Rank 0
+        NW=0.002778 to cell 101  N=0.011111 to cell 0    NE=0.002778 to cell 1

@@ -1,0 +1,25 @@
+Timings
+
+local - without averages
+========================
+box 1
+92.541459 
+
+box 2
+47.099523
+
+box 4
+24.286456
+
+box 16
+20.149790
+
+inovations:
+Async
+Inplace
+MIMD
+AUTO VECTORISE
+0 AVERAGE velocites
+3 state
+increment address
+grab all velocities at once
