@@ -264,13 +264,13 @@ int main(int argc, char* argv[])
             }
 
             // Includes the two buffered halo steps
-            // propagate_row_wise2(params, local_work_space, local_temp_space, local_obstacles, send_buff/*, read_buff*/);
+            propagate_row_wise2(params, local_work_space, local_temp_space, local_obstacles, send_buff/*, read_buff*/);
             // Versions that skip inner obstacles
-            propagate_row_wise3(params, local_work_space, local_temp_space, local_obstacles, send_buff/*, read_buff*/);
+            // propagate_row_wise3(params, local_work_space, local_temp_space, local_obstacles, send_buff/*, read_buff*/);
 
-            // collision_local(params, local_work_space, local_temp_space, local_obstacles);
+            collision_local(params, local_work_space, local_temp_space, local_obstacles);
             // Versions that skip inner obstacles
-            collision_local2(params, local_work_space, local_temp_space, local_obstacles);
+            // collision_local2(params, local_work_space, local_temp_space, local_obstacles);
             double hold;
             av_velocity_local(params, local_work_space, local_obstacles, &hold, &temp/*, double* av_buff*/);
                 // if (params.my_rank==0 /*&& ii ==params.max_iters-1*/)
