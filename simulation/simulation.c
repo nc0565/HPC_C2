@@ -1053,8 +1053,12 @@ void av_velocity_local(const param_t params, speed_t* cells, int* obstacles, dou
         }
     }
 
-    // Could use ireduce if openmpi had implemented that far.
+    // Could use ireduce if openmpi had implemented that standard.
+    if (params.my_rank==0)
+    MPI_Reduce(MPI_IN_PLACE, recv, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+    else
     MPI_Reduce(&tot_u, recv, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
     if (*temp==-1)
     {
         *temp = 1;
