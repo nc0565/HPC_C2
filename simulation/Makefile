@@ -1,6 +1,6 @@
 CC=mpicc
 
-CFLAGS=-O3 -g -Wall -Wextra -Wno-unused-parameter -std=c99
+CFLAGS=-O3 -g -Wall -Wextra -Wno-unused-parameter -std=c99 -msse3 -ffast-math
 
 EXE=lbm
 
@@ -28,7 +28,10 @@ run: $(EXE)
 	./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
 test: $(EXE)
-	mpirun -n 6 ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
+	mpirun -n 3 ./$(EXE) -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
+
+mimd:
+	mpirun -n 1 ./mimd1 -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE) : -n 2 ./mimd2 -a $(AV_VELS_FILE) -f $(FINAL_STATE_FILE) -p $(PARAM_FILE)
 
 plot:
 	gnuplot final_state.plt

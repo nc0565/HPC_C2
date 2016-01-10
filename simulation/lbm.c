@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
     int* bl_counts = NULL;
     int* disps = NULL;
     MPI_Datatype mpi_row;
-    int acel_row_rank=-1;
+    int acel_row_rank=0;
     // scatter, shift and exchange based on striping
     if (grid_shape!=0)
     {               // Row stripes are contigous in C memory
@@ -192,7 +192,8 @@ int main(int argc, char* argv[])
 
         // Calculate the rank and nex index that the acel row exists in
         // the new row is the crrect row index, including the halo
-        if (accel_area.col_or_row==ACCEL_ROW){
+        if (accel_area.col_or_row==ACCEL_ROW && com_size!=1)
+        {
             int lrows = params.ny/com_size;
             // printf("idx=%d \n", accel_area.idx);
             acel_row_rank = (accel_area.idx) / lrows;
@@ -217,8 +218,9 @@ int main(int argc, char* argv[])
             }
 
         }
+        // accel_area.idx = 124;
         // accel_area.idx *= (params.local_nrows/BOX_Y_SIZE);
-        // accel_area.idx = 10;
+        // accel_area.idx = 79;
         // acel_row_rank = 3;
         // printf("acel row %d in rank %d\n", accel_area.idx, acel_row_rank);
 
@@ -271,8 +273,8 @@ int main(int argc, char* argv[])
             collision_local2(params, local_work_space, local_temp_space, local_obstacles);
             double hold;
             av_velocity_local(params, local_work_space, local_obstacles, &hold, &temp/*, double* av_buff*/);
-                // if (params.my_rank==0 && ii ==params.max_iters-1)
-                // printf("Rank:%d temp=%d\n", params.my_rank, temp);
+                // if (params.my_rank==0 /*&& ii ==params.max_iters-1*/)
+                // printf("Rank:%d temp=%d tcount=%d hold=%f\n", params.my_rank, temp, tcount, hold);
             if (params.my_rank==0)
             {
                 av_vels[ii] = hold / (double) temp;
