@@ -154,9 +154,27 @@ int main(int argc, char* argv[])
         }
         else
         {
+            int lrow = (params.ny / com_size);
+            int extra = (params.ny % com_size);
             bl_counts = (int*) malloc(com_size*sizeof(int));
             disps = (int*) malloc(com_size*sizeof(int));
 
+            /*disps[0] = 0;
+            if (extra>0){
+                bl_counts[0] = lrow+1;
+                extra--;
+            }
+            else bl_counts[0] = lrow;
+            for (int i = 1; i < com_size; ++i)
+            {
+                if (extra>0){
+                    bl_counts[i] = lrow+1;
+                    extra--;
+                }
+                else bl_counts[i] = lrow;
+
+                disps[i] = disps[i-1] + bl_counts[i-1];
+            }*/
             disps[0] = 0;
             bl_counts[0] = (params.ny / com_size);
             for (int i = 1; i < com_size-1; ++i)
@@ -182,12 +200,39 @@ int main(int argc, char* argv[])
              local_obstacles, params.local_ncols*(params.local_nrows), MPI_INT,
               MASTER, MPI_COMM_WORLD);
 
-            bl_counts[0] /= params.local_ncols;
+            /*bl_counts[0] /= params.local_ncols;
             for (int i = 1; i < com_size; ++i)
             {
                 bl_counts[i] /= params.local_ncols;
                 disps[i] /= params.local_ncols;
+            }*/
+            /*extra = (params.ny % com_size);
+            disps[0] = 0;
+            if (extra>0){
+                bl_counts[0] = lrow+1;
+                extra--;
             }
+            else bl_counts[0] = lrow;
+            for (int i = 1; i < com_size; ++i)
+            {
+                if (extra>0){
+                    bl_counts[i] = lrow+1;
+                    extra--;
+                }
+                else bl_counts[i] = lrow;
+
+                disps[i] = disps[i-1] + bl_counts[i-1];
+            }*/
+            disps[0] = 0;
+            bl_counts[0] = (params.ny / com_size);
+            for (int i = 1; i < com_size-1; ++i)
+            {
+                bl_counts[i] = (params.ny / com_size);
+                disps[i] = disps[i-1] + (params.ny / com_size);
+            }
+            bl_counts[com_size-1] = (params.ny / com_size) +(params.ny % com_size);
+            disps[com_size-1] = disps[com_size-2] + (params.ny / com_size);
+
         }
 
         // Calculate the rank and nex index that the acel row exists in
@@ -527,6 +572,8 @@ int calculate_local_stripes(param_t* params, int com_size, double** send_buff
         {
             params->local_nrows += (params->ny % com_size);
         }
+        // if (params->my_rank<(params->ny % com_size))
+        //     params->local_nrows +=1
 
         if ((params->ny % com_size)==0)
         {
